@@ -1,0 +1,3758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar System Match</title>
+  <style>
+    body { margin: 0; padding: 20px; background: #0f172a; font-family: sans-serif; }
+    #game-container { max-width: 900px; margin: 0 auto; }
+    /* ==========================================================================
+   ActivityEngine Unified Stylesheet
+   Wordwall-style interactive mechanics & themes
+   ========================================================================== */
+
+:root {
+  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-chalk: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+  
+  /* Default Modern Theme */
+  --bg-app: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --secondary: #06b6d4;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --warning: #f59e0b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --hud-bg: rgba(255, 255, 255, 0.88);
+  --hud-border: #e2e8f0;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ==========================================================================
+   THEMES
+   ========================================================================== */
+
+/* Chalkboard Theme */
+.theme-chalkboard {
+  --bg-app: #1e392a;
+  --bg-surface: #244634;
+  --bg-surface-elevated: #2d5540;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --primary: #eab308;
+  --primary-hover: #ca8a04;
+  --primary-light: rgba(234, 179, 8, 0.15);
+  --secondary: #38bdf8;
+  --accent: #f97316;
+  --success: #4ade80;
+  --success-light: rgba(74, 222, 128, 0.2);
+  --danger: #f87171;
+  --danger-light: rgba(248, 113, 113, 0.2);
+  --card-bg: #2b4f3b;
+  --card-border: #3d6a51;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --hud-bg: rgba(30, 57, 42, 0.92);
+  --hud-border: #3d6a51;
+}
+
+/* Arcade / Cyberpunk Neon Theme */
+.theme-arcade {
+  --bg-app: #0f172a;
+  --bg-surface: #1e1b4b;
+  --bg-surface-elevated: #312e81;
+  --text-primary: #38bdf8;
+  --text-secondary: #c084fc;
+  --text-muted: #818cf8;
+  --primary: #ec4899;
+  --primary-hover: #db2777;
+  --primary-light: rgba(236, 72, 153, 0.2);
+  --secondary: #06b6d4;
+  --accent: #facc15;
+  --success: #22c55e;
+  --success-light: rgba(34, 197, 94, 0.2);
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.2);
+  --card-bg: #1e1b4b;
+  --card-border: #6366f1;
+  --card-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+  --hud-bg: rgba(15, 23, 42, 0.95);
+  --hud-border: #ec4899;
+}
+
+/* Sunset Coral Theme */
+.theme-sunset {
+  --bg-app: #fff1f2;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #fff5f5;
+  --text-primary: #881337;
+  --text-secondary: #9f1239;
+  --text-muted: #be123c;
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --primary-light: #ffe4e6;
+  --secondary: #fb923c;
+  --accent: #e11d48;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --card-bg: #ffffff;
+  --card-border: #fecdd3;
+  --card-shadow: 0 4px 12px rgba(244, 63, 94, 0.08);
+  --hud-bg: rgba(255, 255, 255, 0.9);
+  --hud-border: #fda4af;
+}
+
+/* Emerald Forest Theme */
+.theme-forest {
+  --bg-app: #f0fdf4;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f0fdf4;
+  --text-primary: #064e3b;
+  --text-secondary: #065f46;
+  --text-muted: #047857;
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-light: #d1fae5;
+  --secondary: #10b981;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --success-light: #a7f3d0;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --card-bg: #ffffff;
+  --card-border: #a7f3d0;
+  --card-shadow: 0 4px 12px rgba(5, 150, 105, 0.08);
+  --hud-bg: rgba(255, 255, 255, 0.92);
+  --hud-border: #6ee7b7;
+}
+
+/* Playful Kids Theme */
+.theme-kids {
+  --bg-app: #fefce8;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #fffbeb;
+  --text-primary: #713f12;
+  --text-secondary: #854d0e;
+  --text-muted: #a16207;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-light: #dbeafe;
+  --secondary: #f97316;
+  --accent: #ec4899;
+  --success: #22c55e;
+  --success-light: #bbf7d0;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --card-bg: #ffffff;
+  --card-border: #fde047;
+  --card-shadow: 0 6px 0 #fde047;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --hud-bg: rgba(255, 255, 255, 0.95);
+  --hud-border: #facc15;
+}
+
+/* Midnight Dark Theme */
+.theme-midnight {
+  --bg-app: #090d16;
+  --bg-surface: #111827;
+  --bg-surface-elevated: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: rgba(99, 102, 241, 0.15);
+  --secondary: #38bdf8;
+  --accent: #fbbf24;
+  --success: #34d399;
+  --success-light: rgba(52, 211, 153, 0.15);
+  --danger: #f87171;
+  --danger-light: rgba(248, 113, 113, 0.15);
+  --card-bg: #111827;
+  --card-border: #374151;
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --hud-bg: rgba(17, 24, 39, 0.9);
+  --hud-border: #374151;
+}
+
+/* ==========================================================================
+   CORE CONTAINER & HUD
+   ========================================================================== */
+
+.activity-container {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.activity-container * {
+  box-sizing: border-box;
+}
+
+/* HUD BAR (Header) */
+.activity-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--hud-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hud-border);
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.activity-hud-left,
+.activity-hud-center,
+.activity-hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-title-badge {
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-type-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.hud-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--card-border);
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.hud-stat-icon {
+  font-size: 1.1rem;
+}
+
+.hud-lives {
+  display: flex;
+  gap: 3px;
+}
+
+.hud-heart {
+  color: var(--danger);
+  font-size: 1.1rem;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.hud-heart.lost {
+  opacity: 0.25;
+  filter: grayscale(1);
+  transform: scale(0.85);
+}
+
+.hud-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  font-weight: 600;
+}
+
+.hud-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.hud-btn:active {
+  transform: translateY(1px);
+}
+
+/* ACTIVITY STAGE */
+.activity-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  position: relative;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-instruction-banner {
+  background: var(--bg-surface);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 10px 18px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: var(--card-shadow);
+}
+
+/* ==========================================================================
+   GAME 1: MATCHING (Pairs, Connect-by-Line, Drag Cards)
+   ========================================================================== */
+.matching-game-wrap {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+}
+
+.matching-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.matching-svg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.matching-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.matching-item {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  font-weight: 600;
+  position: relative;
+}
+
+.matching-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.matching-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px var(--primary-light), 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.matching-item.matched {
+  border-color: var(--success);
+  background: var(--success-light);
+  cursor: default;
+  transform: none;
+  opacity: 0.9;
+}
+
+.matching-item.wrong {
+  border-color: var(--danger);
+  background: var(--danger-light);
+  animation: shake 0.4s ease-in-out;
+}
+
+.match-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: var(--bg-surface);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.matching-item.matched .match-dot {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.matching-item.selected .match-dot {
+  background: var(--primary);
+  transform: scale(1.3);
+}
+
+/* ==========================================================================
+   GAME 2: WORD SEARCH
+   ========================================================================== */
+.wordsearch-layout {
+  display: flex;
+  gap: 32px;
+  max-width: 1050px;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.wordsearch-grid-wrap {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  display: inline-block;
+  user-select: none;
+  touch-action: none;
+}
+
+.wordsearch-grid {
+  display: grid;
+  gap: 4px;
+}
+
+.ws-cell {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  background: var(--bg-surface-elevated);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, background-color 0.15s;
+  color: var(--text-primary);
+}
+
+.ws-cell:hover {
+  background: var(--primary-light);
+  transform: scale(1.08);
+}
+
+.ws-cell.selecting {
+  background: var(--primary);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+}
+
+.ws-cell.found {
+  background: var(--success-light);
+  color: var(--success);
+  font-weight: 900;
+}
+
+.wordsearch-sidebar {
+  flex: 1;
+  min-width: 250px;
+  max-width: 320px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.word-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.word-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-elevated);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.word-item.found {
+  text-decoration: line-through;
+  opacity: 0.6;
+  background: var(--success-light);
+  color: var(--success);
+}
+
+/* ==========================================================================
+   GAME 3: READING COMPREHENSION
+   ========================================================================== */
+.reading-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+  height: 520px;
+}
+
+.reading-passage-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reading-passage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.passage-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.passage-content {
+  flex: 1;
+  overflow-y: auto;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  padding-right: 10px;
+  color: var(--text-primary);
+}
+
+.passage-content p {
+  margin-bottom: 16px;
+  position: relative;
+  padding-left: 18px;
+}
+
+.passage-content p::before {
+  content: "¶";
+  position: absolute;
+  left: 0;
+  opacity: 0.3;
+  font-size: 0.85rem;
+}
+
+.highlighted-text {
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.reading-questions-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.q-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.q-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.q-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-elevated);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.q-opt:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateX(4px);
+}
+
+.q-opt.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.q-opt.correct {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.q-opt.wrong {
+  border-color: var(--danger);
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.q-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+}
+
+/* ==========================================================================
+   GAME 4: SORTING & CATEGORIZING (Buckets / Columns)
+   ========================================================================== */
+.sorting-layout {
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sorting-pool {
+  background: var(--card-bg);
+  border: 2px dashed var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  min-height: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sort-item {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--card-border);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: grab;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.sort-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.sort-item.dragging {
+  opacity: 0.5;
+}
+
+.sorting-buckets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+.sort-bucket {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.sort-bucket.drag-over {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: scale(1.02);
+}
+
+.bucket-header {
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-align: center;
+  border-bottom: 2px solid var(--card-border);
+  background: var(--bg-surface-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bucket-content {
+  flex: 1;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   GAME 5: CLOZE / FILL IN THE BLANK
+   ========================================================================== */
+.cloze-layout {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cloze-passage-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--card-shadow);
+  line-height: 2.2;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.cloze-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  min-height: 36px;
+  padding: 2px 12px;
+  margin: 0 4px;
+  border-bottom: 3px solid var(--primary);
+  background: var(--bg-surface-elevated);
+  border-radius: 6px;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  vertical-align: middle;
+}
+
+.cloze-slot.filled {
+  background: var(--primary-light);
+}
+
+.cloze-slot.correct {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.cloze-slot.wrong {
+  border-color: var(--danger);
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.cloze-bank {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cloze-chip {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
+}
+
+.cloze-chip:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.cloze-chip.used {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+/* ==========================================================================
+   GAME 6: LABELING DIAGRAM
+   ========================================================================== */
+.diagram-layout {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.diagram-canvas-wrap {
+  flex: 1;
+  min-width: 380px;
+  position: relative;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.diagram-stage {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.diagram-img,
+.diagram-svg-container svg {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.diagram-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8), 0 4px 10px rgba(0,0,0,0.3);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+}
+
+.diagram-pin:hover,
+.diagram-pin.active {
+  transform: translate(-50%, -50%) scale(1.25);
+  background: var(--accent);
+}
+
+.diagram-pin.labeled {
+  background: var(--success);
+  width: auto;
+  min-width: 32px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.diagram-bank {
+  width: 260px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.diagram-label-chip {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--card-border);
+  background: var(--bg-surface-elevated);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.diagram-label-chip:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateX(3px);
+}
+
+.diagram-label-chip.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.diagram-label-chip.placed {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   GAME 7: QUIZ / GAMESHOW
+   ========================================================================== */
+.quiz-game-layout {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quiz-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.quiz-question-text {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-bottom: 28px;
+}
+
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.quiz-option-btn {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.quiz-option-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.quiz-option-btn.correct {
+  background: var(--success);
+  border-color: var(--success);
+  color: #ffffff;
+}
+
+.quiz-option-btn.wrong {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.quiz-lifelines {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.lifeline-btn {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--card-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lifeline-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lifeline-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   GAME 8: SPIN THE WHEEL
+   ========================================================================== */
+.wheel-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.wheel-container {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.wheel-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 36px solid #ef4444;
+  z-index: 20;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.wheel-spin-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 4px solid var(--primary);
+  color: var(--primary);
+  font-weight: 900;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+  z-index: 15;
+}
+
+.wheel-spin-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   GAME 9: ANAGRAM / UNJUMBLE
+   ========================================================================== */
+.anagram-layout {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.anagram-clue-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 24px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.anagram-slots-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 70px;
+  align-items: center;
+}
+
+.anagram-slot {
+  width: 54px;
+  height: 60px;
+  border-bottom: 4px solid var(--primary);
+  background: var(--bg-surface-elevated);
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  box-shadow: var(--card-shadow);
+}
+
+.anagram-pool-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.anagram-letter-tile {
+  width: 56px;
+  height: 62px;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--primary-hover), 0 8px 12px rgba(0,0,0,0.15);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.anagram-letter-tile:hover {
+  transform: translateY(-4px);
+}
+
+.anagram-letter-tile.placed {
+  opacity: 0.25;
+  pointer-events: none;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--primary-hover);
+}
+
+/* ==========================================================================
+   GAME 10: SPEED TAP / WHACK-A-MOLE
+   ========================================================================== */
+.speedtap-layout {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.speedtap-target-banner {
+  background: var(--primary-light);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 14px 24px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.speedtap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+  max-width: 650px;
+}
+
+.mole-hole {
+  aspect-ratio: 1;
+  background: var(--card-bg);
+  border: 3px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.mole-card {
+  position: absolute;
+  width: 85%;
+  height: 85%;
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  animation: molePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.1s;
+}
+
+.mole-card:hover {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   GAME 11: CROSSWORD
+   ========================================================================== */
+.crossword-layout {
+  display: flex;
+  gap: 28px;
+  max-width: 1000px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.crossword-grid-wrap {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+.crossword-grid {
+  display: grid;
+  gap: 2px;
+  background: var(--card-border);
+  border: 2px solid var(--card-border);
+}
+
+.cw-cell {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  position: relative;
+}
+
+.cw-cell.active {
+  background: #ffffff;
+}
+
+.cw-cell.highlight {
+  background: var(--primary-light);
+}
+
+.cw-cell.selected {
+  background: #fde047;
+}
+
+.cw-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.cw-num {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.crossword-clues {
+  flex: 1;
+  min-width: 280px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.cw-clue-item {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.15s;
+}
+
+.cw-clue-item:hover,
+.cw-clue-item.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   GAME 12: MEMORY MATCH (3D Card Flip)
+   ========================================================================== */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 750px;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  transform: rotateY(180deg) scale(0.95);
+  opacity: 0.8;
+  cursor: default;
+}
+
+.memory-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  box-shadow: var(--card-shadow);
+}
+
+.memory-face-back {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #ffffff;
+  font-size: 2rem;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.memory-face-front {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--card-border);
+  transform: rotateY(180deg);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   VICTORY / GAME OVER MODAL
+   ========================================================================== */
+.activity-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 20px;
+}
+
+.activity-modal-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-stars {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 2.8rem;
+  margin-bottom: 16px;
+}
+
+.modal-star {
+  color: #d1d5db;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.modal-star.active {
+  color: #eab308;
+  animation: starPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.modal-stat-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.modal-stat-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.modal-stat-lbl {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.primary-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes starPop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.4) rotate(15deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes molePop {
+  0% { transform: translateY(50px) scale(0.5); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .reading-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .matching-board {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .quiz-options-grid {
+    grid-template-columns: 1fr;
+  }
+  .wheel-container {
+    width: 320px;
+    height: 320px;
+  }
+  .ws-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div id="game-container"></div>
+  <script>/**
+ * ActivityEngine Audio Synthesizer (Zero external dependencies)
+ * Uses Web Audio API to create authentic arcade & game sound effects.
+ */
+class SoundSynth {
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+    this.masterGain = null;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        this.ctx = new AudioCtx();
+        this.masterGain = this.ctx.createGain();
+        this.masterGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        this.masterGain.connect(this.ctx.destination);
+      }
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  play(type) {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      switch (type) {
+        case 'click':
+        case 'tap': {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.05);
+          break;
+        }
+        case 'flip':
+        case 'whoosh': {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.exponentialRampToValueAtTime(700, now + 0.08);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.08);
+          break;
+        }
+        case 'correct':
+        case 'match': {
+          // Cheerful chime (arpeggio E5 -> G#5 -> B5 -> E6)
+          const notes = [659.25, 830.61, 987.77, 1318.51];
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            gain.gain.setValueAtTime(0, now + idx * 0.07);
+            gain.gain.linearRampToValueAtTime(0.3, now + idx * 0.07 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.35);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.35);
+          });
+          break;
+        }
+        case 'wrong':
+        case 'error': {
+          // Low buzzy double-thud
+          [180, 140].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+            gain.gain.setValueAtTime(0.25, now + idx * 0.12);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.1);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now + idx * 0.12);
+            osc.stop(now + idx * 0.12 + 0.1);
+          });
+          break;
+        }
+        case 'tick': {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(1200, now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.02);
+          break;
+        }
+        case 'wheel-tick': {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(900 + Math.random() * 200, now);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.03);
+          break;
+        }
+        case 'fanfare':
+        case 'win': {
+          // Major fanfare chord cascade
+          const chords = [
+            { f: 523.25, t: 0.0, d: 0.2 }, // C5
+            { f: 659.25, t: 0.15, d: 0.2 }, // E5
+            { f: 783.99, t: 0.3, d: 0.2 }, // G5
+            { f: 1046.50, t: 0.45, d: 0.6 }, // C6
+            { f: 1318.51, t: 0.6, d: 0.8 }, // E6
+          ];
+          chords.forEach(c => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(c.f, now + c.t);
+            gain.gain.setValueAtTime(0, now + c.t);
+            gain.gain.linearRampToValueAtTime(0.35, now + c.t + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + c.t + c.d);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now + c.t);
+            osc.stop(now + c.t + c.d);
+          });
+          break;
+        }
+        case 'gameover': {
+          const notes = [440, 415, 392, 349];
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.18);
+            gain.gain.setValueAtTime(0.2, now + idx * 0.18);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.18 + 0.2);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now + idx * 0.18);
+            osc.stop(now + idx * 0.18 + 0.2);
+          });
+          break;
+        }
+        case 'star': {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1200, now);
+          osc.frequency.exponentialRampToValueAtTime(1800, now + 0.2);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.25);
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn('Audio play error:', e);
+    }
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    return this.enabled;
+  }
+}
+
+window.SoundSynth = SoundSynth;
+</script>
+  <script>/**
+ * ActivityEngine Confetti & Particle Effects (Pure Canvas)
+ */
+class ParticleEngine {
+  constructor() {
+    this.canvas = null;
+    this.ctx = null;
+    this.particles = [];
+    this.animId = null;
+    this.init();
+  }
+
+  init() {
+    let existing = document.getElementById('engine-particle-canvas');
+    if (existing) {
+      this.canvas = existing;
+      this.ctx = this.canvas.getContext('2d');
+      return;
+    }
+    this.canvas = document.createElement('canvas');
+    this.canvas.id = 'engine-particle-canvas';
+    this.canvas.style.position = 'fixed';
+    this.canvas.style.top = '0';
+    this.canvas.style.left = '0';
+    this.canvas.style.width = '100%';
+    this.canvas.style.height = '100%';
+    this.canvas.style.pointerEvents = 'none';
+    this.canvas.style.zIndex = '99999';
+    document.body.appendChild(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+  }
+
+  resize() {
+    if (!this.canvas) return;
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
+
+  confettiBurst(originX, originY, count = 70) {
+    const x = originX !== undefined ? originX : window.innerWidth / 2;
+    const y = originY !== undefined ? originY : window.innerHeight / 2;
+    const colors = ['#f43f5e', '#ec4899', '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#06b6d4', '#eab308'];
+
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 4 + Math.random() * 12;
+      this.particles.push({
+        type: 'confetti',
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 3,
+        size: 6 + Math.random() * 8,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 15,
+        opacity: 1,
+        gravity: 0.25,
+        drag: 0.96,
+        life: 1
+      });
+    }
+
+    if (!this.animId) this.animate();
+  }
+
+  floatingText(x, y, text, color = '#10b981') {
+    this.particles.push({
+      type: 'text',
+      x: x || window.innerWidth / 2,
+      y: y || window.innerHeight / 2,
+      text: text,
+      color: color,
+      vy: -2.5,
+      opacity: 1,
+      scale: 1.2,
+      life: 1
+    });
+    if (!this.animId) this.animate();
+  }
+
+  animate() {
+    if (!this.ctx) return;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+
+      if (p.type === 'confetti') {
+        p.vx *= p.drag;
+        p.vy = p.vy * p.drag + p.gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.rotationSpeed;
+        p.life -= 0.012;
+
+        this.ctx.save();
+        this.ctx.translate(p.x, p.y);
+        this.ctx.rotate((p.rotation * Math.PI) / 180);
+        this.ctx.fillStyle = p.color;
+        this.ctx.globalAlpha = Math.max(0, p.life);
+        this.ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+        this.ctx.restore();
+      } else if (p.type === 'text') {
+        p.y += p.vy;
+        p.life -= 0.02;
+
+        this.ctx.save();
+        this.ctx.font = 'bold 24px "Inter", system-ui, sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillStyle = p.color;
+        this.ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        this.ctx.shadowBlur = 4;
+        this.ctx.globalAlpha = Math.max(0, p.life);
+        this.ctx.fillText(p.text, p.x, p.y);
+        this.ctx.restore();
+      }
+
+      if (p.life <= 0) {
+        this.particles.splice(i, 1);
+      }
+    }
+
+    if (this.particles.length > 0) {
+      this.animId = requestAnimationFrame(() => this.animate());
+    } else {
+      this.animId = null;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+}
+
+window.ParticleEngine = ParticleEngine;
+</script>
+  <script>/**
+ * ActivityEngine Core v1.0.0
+ * Universal Educational Game & Activity Engine (Wordwall & LearningApps Mechanics)
+ * Fully standalone, zero external dependencies.
+ */
+
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.ActivityEngine = factory();
+  }
+}(typeof self !== 'undefined' ? self : this, function () {
+
+  // Global sound & particle singletons
+  const sound = window.SoundSynth ? new window.SoundSynth() : { play: () => {}, toggle: () => true };
+  const particles = window.ParticleEngine ? new window.ParticleEngine() : { confettiBurst: () => {}, floatingText: () => {} };
+
+  class ActivityEngine {
+    constructor(container, options = {}) {
+      this.container = typeof container === 'string' ? document.querySelector(container) : container;
+      if (!this.container) {
+        throw new Error('ActivityEngine: Container element not found');
+      }
+      this.options = Object.assign({
+        theme: 'default',
+        sound: true,
+        lives: null, // null for unlimited, or number (e.g. 3)
+        timer: null, // { enabled: true, mode: 'countdown'|'countup', seconds: 120 }
+        showStats: true,
+        onComplete: null,
+        onScore: null,
+        onMistake: null,
+      }, options);
+
+      this.currentActivity = null;
+      this.state = {
+        score: 0,
+        maxScore: 0,
+        streak: 0,
+        lives: 3,
+        maxLives: 3,
+        timerSeconds: 0,
+        timerInterval: null,
+        isCompleted: false,
+        startTime: null,
+        mistakes: 0,
+      };
+
+      this.eventListeners = {};
+      this.initShell();
+    }
+
+    // Event Emitter API
+    on(event, callback) {
+      if (!this.eventListeners[event]) this.eventListeners[event] = [];
+      this.eventListeners[event].push(callback);
+      return this;
+    }
+
+    emit(event, data) {
+      if (this.eventListeners[event]) {
+        this.eventListeners[event].forEach(cb => cb(data));
+      }
+      if (this.options['on' + event.charAt(0).toUpperCase() + event.slice(1)]) {
+        this.options['on' + event.charAt(0).toUpperCase() + event.slice(1)](data);
+      }
+    }
+
+    // Initialize Outer Container Shell & HUD
+    initShell() {
+      this.container.innerHTML = `
+        <div class="activity-container theme-${this.options.theme}">
+          <div class="activity-hud" id="hud-bar">
+            <div class="activity-hud-left">
+              <span class="hud-type-tag" id="hud-activity-type">ACTIVITY</span>
+              <span class="hud-title-badge" id="hud-activity-title">Title</span>
+            </div>
+            <div class="activity-hud-center">
+              <div class="hud-stat" id="hud-timer-box" style="display:none;">
+                <span class="hud-stat-icon">⏱️</span>
+                <span id="hud-timer-val">00:00</span>
+              </div>
+              <div class="hud-stat" id="hud-score-box">
+                <span class="hud-stat-icon">⭐</span>
+                <span id="hud-score-val">0</span>
+              </div>
+              <div class="hud-stat hud-lives" id="hud-lives-box" style="display:none;"></div>
+            </div>
+            <div class="activity-hud-right">
+              <button class="hud-btn" id="hud-sound-btn" title="Toggle Sound">🔊</button>
+              <button class="hud-btn" id="hud-fullscreen-btn" title="Fullscreen">⛶</button>
+              <button class="hud-btn" id="hud-reset-btn" title="Restart">🔄</button>
+            </div>
+          </div>
+          <div class="activity-stage" id="activity-stage"></div>
+        </div>
+      `;
+
+      this.hudEl = this.container.querySelector('#hud-bar');
+      this.stageEl = this.container.querySelector('#activity-stage');
+      this.mainWrapper = this.container.querySelector('.activity-container');
+
+      // Bind HUD Buttons
+      this.container.querySelector('#hud-sound-btn').onclick = () => {
+        const on = sound.toggle();
+        this.container.querySelector('#hud-sound-btn').textContent = on ? '🔊' : '🔇';
+      };
+
+      this.container.querySelector('#hud-fullscreen-btn').onclick = () => {
+        if (!document.fullscreenElement) {
+          this.mainWrapper.requestFullscreen().catch(err => console.warn(err));
+        } else {
+          document.exitFullscreen();
+        }
+      };
+
+      this.container.querySelector('#hud-reset-btn').onclick = () => {
+        this.reset();
+      };
+    }
+
+    setTheme(themeName) {
+      this.mainWrapper.className = `activity-container theme-${themeName}`;
+    }
+
+    load(config) {
+      this.currentActivity = JSON.parse(JSON.stringify(config));
+      if (this.currentActivity.theme) {
+        this.setTheme(this.currentActivity.theme);
+      }
+      this.reset();
+    }
+
+    reset() {
+      if (!this.currentActivity) return;
+      if (this.state.timerInterval) clearInterval(this.state.timerInterval);
+
+      // Reset state
+      this.state.score = 0;
+      this.state.streak = 0;
+      this.state.mistakes = 0;
+      this.state.isCompleted = false;
+      this.state.startTime = Date.now();
+
+      // Configure lives
+      const livesConfig = this.currentActivity.lives !== undefined ? this.currentActivity.lives : this.options.lives;
+      const livesBox = this.container.querySelector('#hud-lives-box');
+      if (livesConfig && livesConfig > 0) {
+        this.state.lives = livesConfig;
+        this.state.maxLives = livesConfig;
+        livesBox.style.display = 'flex';
+        this.renderLives();
+      } else {
+        this.state.lives = null;
+        livesBox.style.display = 'none';
+      }
+
+      // Configure timer
+      const timerConfig = this.currentActivity.timer || this.options.timer;
+      const timerBox = this.container.querySelector('#hud-timer-box');
+      if (timerConfig && timerConfig.enabled) {
+        timerBox.style.display = 'inline-flex';
+        if (timerConfig.mode === 'countdown') {
+          this.state.timerSeconds = timerConfig.seconds || 60;
+        } else {
+          this.state.timerSeconds = 0;
+        }
+        this.updateTimerDisplay();
+        this.state.timerInterval = setInterval(() => {
+          if (timerConfig.mode === 'countdown') {
+            this.state.timerSeconds--;
+            if (this.state.timerSeconds <= 5 && this.state.timerSeconds > 0) {
+              sound.play('tick');
+            }
+            if (this.state.timerSeconds <= 0) {
+              this.state.timerSeconds = 0;
+              clearInterval(this.state.timerInterval);
+              this.gameOver('Time is up!');
+            }
+          } else {
+            this.state.timerSeconds++;
+          }
+          this.updateTimerDisplay();
+        }, 1000);
+      } else {
+        timerBox.style.display = 'none';
+      }
+
+      // Update HUD Labels
+      this.container.querySelector('#hud-activity-type').textContent = (this.currentActivity.type || 'Activity').toUpperCase();
+      this.container.querySelector('#hud-activity-title').textContent = this.currentActivity.title || 'Interactive Activity';
+      this.updateScoreDisplay();
+
+      // Clear stage
+      this.stageEl.innerHTML = '';
+
+      // Add instruction banner if available
+      if (this.currentActivity.instruction) {
+        const instr = document.createElement('div');
+        instr.className = 'activity-instruction-banner';
+        instr.innerHTML = `<span>💡</span><span>${this.currentActivity.instruction}</span>`;
+        this.stageEl.appendChild(instr);
+      }
+
+      // Render corresponding game mechanics
+      switch (this.currentActivity.type) {
+        case 'matching':
+          this.renderMatching();
+          break;
+        case 'wordsearch':
+          this.renderWordSearch();
+          break;
+        case 'reading':
+          this.renderReading();
+          break;
+        case 'sorting':
+          this.renderSorting();
+          break;
+        case 'cloze':
+          this.renderCloze();
+          break;
+        case 'diagram':
+          this.renderDiagram();
+          break;
+        case 'quiz':
+          this.renderQuiz();
+          break;
+        case 'wheel':
+          this.renderWheel();
+          break;
+        case 'anagram':
+          this.renderAnagram();
+          break;
+        case 'speedtap':
+          this.renderSpeedTap();
+          break;
+        case 'crossword':
+          this.renderCrossword();
+          break;
+        case 'memory':
+          this.renderMemory();
+          break;
+        default:
+          this.stageEl.innerHTML += `<div style="padding: 30px; text-align: center;">Unknown activity type: ${this.currentActivity.type}</div>`;
+      }
+    }
+
+    renderLives() {
+      const box = this.container.querySelector('#hud-lives-box');
+      box.innerHTML = '';
+      for (let i = 0; i < this.state.maxLives; i++) {
+        const heart = document.createElement('span');
+        heart.className = `hud-heart ${i >= this.state.lives ? 'lost' : ''}`;
+        heart.textContent = '❤️';
+        box.appendChild(heart);
+      }
+    }
+
+    loseLife() {
+      if (this.state.lives !== null) {
+        this.state.lives--;
+        this.renderLives();
+        sound.play('error');
+        if (this.state.lives <= 0) {
+          this.gameOver('Out of lives!');
+          return true;
+        }
+      }
+      return false;
+    }
+
+    addScore(points = 100) {
+      this.state.streak++;
+      const bonus = this.state.streak > 2 ? Math.min(this.state.streak * 20, 100) : 0;
+      const totalGain = points + bonus;
+      this.state.score += totalGain;
+      this.updateScoreDisplay();
+      sound.play('correct');
+      particles.floatingText(window.innerWidth / 2, window.innerHeight / 2, `+${totalGain}`, '#10b981');
+      this.emit('score', { score: this.state.score, streak: this.state.streak, gain: totalGain });
+    }
+
+    recordMistake() {
+      this.state.streak = 0;
+      this.state.mistakes++;
+      sound.play('wrong');
+      this.emit('mistake', { mistakes: this.state.mistakes });
+      this.loseLife();
+    }
+
+    updateScoreDisplay() {
+      this.container.querySelector('#hud-score-val').textContent = this.state.score;
+    }
+
+    updateTimerDisplay() {
+      const mins = Math.floor(this.state.timerSeconds / 60);
+      const secs = this.state.timerSeconds % 60;
+      this.container.querySelector('#hud-timer-val').textContent =
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    gameOver(reason = 'Game Over') {
+      if (this.state.timerInterval) clearInterval(this.state.timerInterval);
+      sound.play('gameover');
+      this.showSummaryModal(false, reason);
+    }
+
+    victory() {
+      if (this.state.isCompleted) return;
+      this.state.isCompleted = true;
+      if (this.state.timerInterval) clearInterval(this.state.timerInterval);
+      sound.play('win');
+      particles.confettiBurst();
+      setTimeout(() => {
+        particles.confettiBurst(window.innerWidth * 0.3, window.innerHeight * 0.4, 50);
+        particles.confettiBurst(window.innerWidth * 0.7, window.innerHeight * 0.4, 50);
+      }, 300);
+      this.showSummaryModal(true, 'Spectacular Job!');
+      this.emit('complete', {
+        score: this.state.score,
+        mistakes: this.state.mistakes,
+        timeTaken: Math.round((Date.now() - this.state.startTime) / 1000)
+      });
+    }
+
+    showSummaryModal(isWin, heading) {
+      const starsCount = !isWin ? 0 : this.state.mistakes === 0 ? 3 : this.state.mistakes <= 2 ? 2 : 1;
+      const timeTaken = Math.round((Date.now() - this.state.startTime) / 1000);
+      const mins = Math.floor(timeTaken / 60);
+      const secs = timeTaken % 60;
+      const timeStr = `${mins}m ${secs}s`;
+
+      const modal = document.createElement('div');
+      modal.className = 'activity-modal-overlay';
+      modal.innerHTML = `
+        <div class="activity-modal-card">
+          <div class="modal-stars">
+            <span class="modal-star ${starsCount >= 1 ? 'active' : ''}">★</span>
+            <span class="modal-star ${starsCount >= 2 ? 'active' : ''}">★</span>
+            <span class="modal-star ${starsCount >= 3 ? 'active' : ''}">★</span>
+          </div>
+          <div class="modal-title">${isWin ? heading : 'Try Again!'}</div>
+          <div class="modal-subtitle">${isWin ? 'You have successfully completed this activity!' : heading}</div>
+          
+          <div class="modal-stats-grid">
+            <div class="modal-stat-box">
+              <div class="modal-stat-val">${this.state.score}</div>
+              <div class="modal-stat-lbl">Score</div>
+            </div>
+            <div class="modal-stat-box">
+              <div class="modal-stat-val">${timeStr}</div>
+              <div class="modal-stat-lbl">Time</div>
+            </div>
+            <div class="modal-stat-box">
+              <div class="modal-stat-val">${this.state.mistakes}</div>
+              <div class="modal-stat-lbl">Mistakes</div>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="primary-btn" id="modal-retry-btn">🔄 Play Again</button>
+            <button class="secondary-btn" id="modal-review-btn">👀 Review</button>
+          </div>
+        </div>
+      `;
+
+      this.stageEl.appendChild(modal);
+
+      modal.querySelector('#modal-retry-btn').onclick = () => {
+        modal.remove();
+        this.reset();
+      };
+      modal.querySelector('#modal-review-btn').onclick = () => {
+        modal.remove();
+      };
+    }
+
+    /* ==========================================================================
+       1. MATCHING MECHANICS (Connect pairs, SVG line connector, Tap/Drag)
+       ========================================================================== */
+    renderMatching() {
+      const data = this.currentActivity.data || [];
+      const wrap = document.createElement('div');
+      wrap.className = 'matching-game-wrap';
+
+      const svgLayer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svgLayer.setAttribute('class', 'matching-svg-layer');
+
+      const board = document.createElement('div');
+      board.className = 'matching-board';
+
+      const colLeft = document.createElement('div');
+      colLeft.className = 'matching-column';
+      const colRight = document.createElement('div');
+      colRight.className = 'matching-column';
+
+      // Shuffle items
+      const leftItems = data.map((d, i) => ({ id: `left-${i}`, pairId: i, text: d.left, image: d.leftImage }));
+      const rightItems = data.map((d, i) => ({ id: `right-${i}`, pairId: i, text: d.right, image: d.rightImage }))
+                             .sort(() => Math.random() - 0.5);
+
+      leftItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'matching-item';
+        div.dataset.id = item.id;
+        div.dataset.pair = item.pairId;
+        div.innerHTML = `
+          <span>${item.text || ''}</span>
+          <span class="match-dot"></span>
+        `;
+        colLeft.appendChild(div);
+      });
+
+      rightItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'matching-item';
+        div.dataset.id = item.id;
+        div.dataset.pair = item.pairId;
+        div.innerHTML = `
+          <span class="match-dot"></span>
+          <span>${item.text || ''}</span>
+        `;
+        colRight.appendChild(div);
+      });
+
+      board.appendChild(colLeft);
+      board.appendChild(colRight);
+      wrap.appendChild(svgLayer);
+      wrap.appendChild(board);
+      this.stageEl.appendChild(wrap);
+
+      let selectedLeft = null;
+      let matchedCount = 0;
+      const totalPairs = data.length;
+
+      const drawLines = () => {
+        svgLayer.innerHTML = '';
+        const matchedLefts = colLeft.querySelectorAll('.matching-item.matched');
+        const wrapRect = wrap.getBoundingClientRect();
+
+        matchedLefts.forEach(leftEl => {
+          const pairId = leftEl.dataset.pair;
+          const rightEl = colRight.querySelector(`.matching-item.matched[data-pair="${pairId}"]`);
+          if (rightEl) {
+            const leftDot = leftEl.querySelector('.match-dot').getBoundingClientRect();
+            const rightDot = rightEl.querySelector('.match-dot').getBoundingClientRect();
+
+            const x1 = leftDot.left + leftDot.width / 2 - wrapRect.left;
+            const y1 = leftDot.top + leftDot.height / 2 - wrapRect.top;
+            const x2 = rightDot.left + rightDot.width / 2 - wrapRect.left;
+            const y2 = rightDot.top + rightDot.height / 2 - wrapRect.top;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const dx = (x2 - x1) * 0.5;
+            const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', '#10b981');
+            path.setAttribute('stroke-width', '4');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke-linecap', 'round');
+            svgLayer.appendChild(path);
+          }
+        });
+      };
+
+      // Click event handling
+      colLeft.addEventListener('click', (e) => {
+        const item = e.target.closest('.matching-item');
+        if (!item || item.classList.contains('matched')) return;
+        sound.play('tap');
+
+        colLeft.querySelectorAll('.matching-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedLeft = item;
+      });
+
+      colRight.addEventListener('click', (e) => {
+        const item = e.target.closest('.matching-item');
+        if (!item || item.classList.contains('matched') || !selectedLeft) return;
+
+        if (selectedLeft.dataset.pair === item.dataset.pair) {
+          // Correct Match!
+          selectedLeft.classList.remove('selected');
+          selectedLeft.classList.add('matched');
+          item.classList.add('matched');
+          matchedCount++;
+          this.addScore(100);
+          drawLines();
+
+          selectedLeft = null;
+          if (matchedCount === totalPairs) {
+            setTimeout(() => this.victory(), 500);
+          }
+        } else {
+          // Incorrect Match
+          selectedLeft.classList.add('wrong');
+          item.classList.add('wrong');
+          this.recordMistake();
+          setTimeout(() => {
+            selectedLeft.classList.remove('wrong', 'selected');
+            item.classList.remove('wrong');
+            selectedLeft = null;
+          }, 600);
+        }
+      });
+
+      window.addEventListener('resize', drawLines);
+    }
+
+    /* ==========================================================================
+       2. WORD SEARCH MECHANICS (Dynamic Grid Gen, Multi-angle drag highlight)
+       ========================================================================== */
+    renderWordSearch() {
+      const words = (this.currentActivity.data && this.currentActivity.data.words) || ['LEARN', 'STUDY', 'CHALK', 'PAPER', 'SMART'];
+      const gridSize = this.currentActivity.data && this.currentActivity.data.gridSize || 10;
+
+      // Build grid matrix
+      const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+      const directions = [
+        [0, 1],   // horizontal
+        [1, 0],   // vertical
+        [1, 1],   // diagonal down-right
+        [-1, 1]   // diagonal up-right
+      ];
+
+      const placedWords = [];
+
+      words.forEach(rawWord => {
+        const word = rawWord.toUpperCase().replace(/[^A-Z]/g, '');
+        let placed = false;
+        let attempts = 0;
+
+        while (!placed && attempts < 100) {
+          attempts++;
+          const dir = directions[Math.floor(Math.random() * directions.length)];
+          const r = Math.floor(Math.random() * gridSize);
+          const c = Math.floor(Math.random() * gridSize);
+
+          let fits = true;
+          for (let i = 0; i < word.length; i++) {
+            const nr = r + dir[0] * i;
+            const nc = c + dir[1] * i;
+            if (nr < 0 || nr >= gridSize || nc < 0 || nc >= gridSize || (grid[nr][nc] !== '' && grid[nr][nc] !== word[i])) {
+              fits = false;
+              break;
+            }
+          }
+
+          if (fits) {
+            const coords = [];
+            for (let i = 0; i < word.length; i++) {
+              const nr = r + dir[0] * i;
+              const nc = c + dir[1] * i;
+              grid[nr][nc] = word[i];
+              coords.push(`${nr}-${nc}`);
+            }
+            placedWords.push({ word, coords, found: false });
+            placed = true;
+          }
+        }
+      });
+
+      // Fill remaining empty cells with random letters
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          if (!grid[r][c]) {
+            grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+          }
+        }
+      }
+
+      // Render Layout
+      const layout = document.createElement('div');
+      layout.className = 'wordsearch-layout';
+
+      const gridWrap = document.createElement('div');
+      gridWrap.className = 'wordsearch-grid-wrap';
+      const gridEl = document.createElement('div');
+      gridEl.className = 'wordsearch-grid';
+      gridEl.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'ws-cell';
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+          cell.textContent = grid[r][c];
+          gridEl.appendChild(cell);
+        }
+      }
+      gridWrap.appendChild(gridEl);
+
+      const sidebar = document.createElement('div');
+      sidebar.className = 'wordsearch-sidebar';
+      sidebar.innerHTML = `
+        <div style="font-weight: 800; font-size: 1.1rem;">Words to Find (${placedWords.length})</div>
+        <div class="word-list" id="ws-word-list"></div>
+      `;
+
+      const wordListEl = sidebar.querySelector('#ws-word-list');
+      placedWords.forEach(pw => {
+        const item = document.createElement('div');
+        item.className = 'word-item';
+        item.dataset.word = pw.word;
+        item.innerHTML = `<span>${pw.word}</span> <span>🔍</span>`;
+        wordListEl.appendChild(item);
+      });
+
+      layout.appendChild(gridWrap);
+      layout.appendChild(sidebar);
+      this.stageEl.appendChild(layout);
+
+      // Drag selection logic
+      let isSelecting = false;
+      let startCell = null;
+      let selectedCoords = [];
+
+      const getCellFromEvent = (e) => {
+        const touch = e.touches ? e.touches[0] : e;
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        return target && target.classList.contains('ws-cell') ? target : null;
+      };
+
+      const getLineCoords = (r1, c1, r2, c2) => {
+        const dr = r2 - r1;
+        const dc = c2 - c1;
+        const steps = Math.max(Math.abs(dr), Math.abs(dc));
+        if (steps === 0) return [`${r1}-${c1}`];
+
+        const rStep = dr === 0 ? 0 : dr / steps;
+        const cStep = dc === 0 ? 0 : dc / steps;
+
+        // Only allow straight horizontal, vertical, diagonal
+        if (Math.abs(dr) !== 0 && Math.abs(dc) !== 0 && Math.abs(dr) !== Math.abs(dc)) {
+          return [`${r1}-${c1}`];
+        }
+
+        const list = [];
+        for (let i = 0; i <= steps; i++) {
+          list.push(`${Math.round(r1 + rStep * i)}-${Math.round(c1 + cStep * i)}`);
+        }
+        return list;
+      };
+
+      const onStart = (e) => {
+        const cell = getCellFromEvent(e);
+        if (!cell) return;
+        isSelecting = true;
+        startCell = cell;
+        sound.play('tap');
+        updateSelection([`${cell.dataset.r}-${cell.dataset.c}`]);
+      };
+
+      const onMove = (e) => {
+        if (!isSelecting || !startCell) return;
+        const currentCell = getCellFromEvent(e);
+        if (!currentCell) return;
+
+        const coords = getLineCoords(
+          parseInt(startCell.dataset.r),
+          parseInt(startCell.dataset.c),
+          parseInt(currentCell.dataset.r),
+          parseInt(currentCell.dataset.c)
+        );
+        updateSelection(coords);
+      };
+
+      const updateSelection = (coords) => {
+        selectedCoords = coords;
+        gridEl.querySelectorAll('.ws-cell').forEach(c => c.classList.remove('selecting'));
+        coords.forEach(coord => {
+          const [r, c] = coord.split('-');
+          const cell = gridEl.querySelector(`.ws-cell[data-r="${r}"][data-c="${c}"]`);
+          if (cell) cell.classList.add('selecting');
+        });
+      };
+
+      const onEnd = () => {
+        if (!isSelecting) return;
+        isSelecting = false;
+        gridEl.querySelectorAll('.ws-cell').forEach(c => c.classList.remove('selecting'));
+
+        // Check if selection matches any placed word
+        const formedWord = selectedCoords.map(coord => {
+          const [r, c] = coord.split('-');
+          return grid[r][c];
+        }).join('');
+        const reversedWord = formedWord.split('').reverse().join('');
+
+        const target = placedWords.find(pw => !pw.found && (pw.word === formedWord || pw.word === reversedWord));
+
+        if (target) {
+          target.found = true;
+          this.addScore(150);
+          sound.play('match');
+          selectedCoords.forEach(coord => {
+            const [r, c] = coord.split('-');
+            const cell = gridEl.querySelector(`.ws-cell[data-r="${r}"][data-c="${c}"]`);
+            if (cell) cell.classList.add('found');
+          });
+
+          const wordItem = sidebar.querySelector(`.word-item[data-word="${target.word}"]`);
+          if (wordItem) wordItem.classList.add('found');
+
+          // Check win condition
+          if (placedWords.every(pw => pw.found)) {
+            setTimeout(() => this.victory(), 500);
+          }
+        }
+
+        selectedCoords = [];
+        startCell = null;
+      };
+
+      gridWrap.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+
+      gridWrap.addEventListener('touchstart', onStart, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: true });
+      window.addEventListener('touchend', onEnd);
+    }
+
+    /* ==========================================================================
+       3. READING COMPREHENSION MECHANICS (Story Passage, TTS, Interactive Quiz)
+       ========================================================================== */
+    renderReading() {
+      const data = this.currentActivity.data || {
+        passageTitle: 'The Marvel of Photosynthesis',
+        passageText: 'Plants are the primary producers on Earth. Through a remarkable biochemical process called photosynthesis, they harness solar radiation and convert it into chemical energy stored in glucose molecules.\n\nChloroplasts contain the green pigment chlorophyll, which absorbs blue and red wavelengths of light while reflecting green. During this reaction, water molecules absorbed by roots are split, releasing oxygen gas into the atmosphere as a vital byproduct.\n\nWithout photosynthesis, the atmospheric oxygen would rapidly deplete, collapsing complex terrestrial and marine food webs.',
+        questions: [
+          {
+            question: 'What is the primary green pigment in plant chloroplasts?',
+            options: ['Hemoglobin', 'Chlorophyll', 'Melanin', 'Carotene'],
+            answerIndex: 1,
+            explanation: 'Chlorophyll is the pigment that captures sunlight for photosynthesis.'
+          },
+          {
+            question: 'Which gas is released into the atmosphere as a byproduct?',
+            options: ['Carbon Dioxide', 'Nitrogen', 'Oxygen', 'Methane'],
+            answerIndex: 2,
+            explanation: 'Water splitting during photosynthesis produces oxygen gas.'
+          }
+        ]
+      };
+
+      const layout = document.createElement('div');
+      layout.className = 'reading-layout';
+
+      // Left Passage Card
+      const passageCard = document.createElement('div');
+      passageCard.className = 'reading-passage-card';
+      passageCard.innerHTML = `
+        <div class="reading-passage-header">
+          <div class="passage-title">${data.passageTitle || 'Reading Passage'}</div>
+          <button class="hud-btn" id="tts-btn">🔊 Read Aloud</button>
+        </div>
+        <div class="passage-content" id="passage-content">
+          ${(data.passageText || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        </div>
+      `;
+
+      // Right Question Card
+      let currentQIndex = 0;
+      const questionsCard = document.createElement('div');
+      questionsCard.className = 'reading-questions-card';
+
+      const renderQuestion = () => {
+        const q = data.questions[currentQIndex];
+        questionsCard.innerHTML = `
+          <div class="q-badge">Question ${currentQIndex + 1} of ${data.questions.length}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="q-options" id="reading-q-options">
+            ${q.options.map((opt, i) => `
+              <div class="q-opt" data-index="${i}">
+                <span style="opacity:0.6;">${String.fromCharCode(65 + i)}.</span>
+                <span>${opt}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div class="q-nav">
+            <span style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);" id="reading-feedback"></span>
+            <button class="primary-btn" id="reading-next-btn" style="display:none;">Next Question ➔</button>
+          </div>
+        `;
+
+        const optEls = questionsCard.querySelectorAll('.q-opt');
+        let answered = false;
+
+        optEls.forEach(el => {
+          el.addEventListener('click', () => {
+            if (answered) return;
+            answered = true;
+            const chosen = parseInt(el.dataset.index);
+            const feedbackEl = questionsCard.querySelector('#reading-feedback');
+            const nextBtn = questionsCard.querySelector('#reading-next-btn');
+
+            if (chosen === q.answerIndex) {
+              el.classList.add('correct');
+              feedbackEl.textContent = '✓ Correct! ' + (q.explanation || '');
+              feedbackEl.style.color = 'var(--success)';
+              this.addScore(100);
+            } else {
+              el.classList.add('wrong');
+              optEls[q.answerIndex].classList.add('correct');
+              feedbackEl.textContent = '✗ ' + (q.explanation || 'Incorrect choice.');
+              feedbackEl.style.color = 'var(--danger)';
+              this.recordMistake();
+            }
+
+            nextBtn.style.display = 'inline-block';
+            nextBtn.onclick = () => {
+              currentQIndex++;
+              if (currentQIndex < data.questions.length) {
+                renderQuestion();
+              } else {
+                this.victory();
+              }
+            };
+          });
+        });
+      };
+
+      layout.appendChild(passageCard);
+      layout.appendChild(questionsCard);
+      this.stageEl.appendChild(layout);
+
+      renderQuestion();
+
+      // Text-To-Speech reader button
+      const ttsBtn = passageCard.querySelector('#tts-btn');
+      ttsBtn.onclick = () => {
+        if ('speechSynthesis' in window) {
+          if (window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            ttsBtn.textContent = '🔊 Read Aloud';
+          } else {
+            const utterance = new SpeechSynthesisUtterance(data.passageText);
+            utterance.rate = 0.95;
+            utterance.onend = () => { ttsBtn.textContent = '🔊 Read Aloud'; };
+            window.speechSynthesis.speak(utterance);
+            ttsBtn.textContent = '⏹️ Stop Reading';
+          }
+        } else {
+          alert('Text-to-speech is not supported in this browser environment.');
+        }
+      };
+    }
+
+    /* ==========================================================================
+       4. SORTING & CATEGORIZING MECHANICS (Drag & Drop Buckets / Columns)
+       ========================================================================== */
+    renderSorting() {
+      const data = this.currentActivity.data || {
+        categories: [
+          { id: 'cat1', title: 'Solid', color: '#3b82f6', icon: '🧊' },
+          { id: 'cat2', title: 'Liquid', color: '#06b6d4', icon: '💧' },
+          { id: 'cat3', title: 'Gas', color: '#f59e0b', icon: '💨' }
+        ],
+        items: [
+          { text: 'Ice Cube', categoryId: 'cat1' },
+          { text: 'Water Vapor', categoryId: 'cat3' },
+          { text: 'Orange Juice', categoryId: 'cat2' },
+          { text: 'Iron Rod', categoryId: 'cat1' },
+          { text: 'Helium Balloon', categoryId: 'cat3' },
+          { text: 'Milk', categoryId: 'cat2' }
+        ]
+      };
+
+      const layout = document.createElement('div');
+      layout.className = 'sorting-layout';
+
+      // Item source tray
+      const pool = document.createElement('div');
+      pool.className = 'sorting-pool';
+      pool.id = 'sorting-pool';
+
+      const shuffledItems = [...data.items].sort(() => Math.random() - 0.5);
+      shuffledItems.forEach((item, idx) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'sort-item';
+        itemEl.id = `sort-item-${idx}`;
+        itemEl.draggable = true;
+        itemEl.dataset.cat = item.categoryId;
+        itemEl.dataset.text = item.text;
+        itemEl.textContent = item.text;
+        pool.appendChild(itemEl);
+      });
+
+      // Categories buckets grid
+      const bucketsGrid = document.createElement('div');
+      bucketsGrid.className = 'sorting-buckets-grid';
+
+      data.categories.forEach(cat => {
+        const bucket = document.createElement('div');
+        bucket.className = 'sort-bucket';
+        bucket.dataset.cat = cat.id;
+        bucket.innerHTML = `
+          <div class="bucket-header" style="border-top: 4px solid ${cat.color || 'var(--primary)'};">
+            <span>${cat.icon || '📁'}</span>
+            <span>${cat.title}</span>
+          </div>
+          <div class="bucket-content" id="bucket-${cat.id}"></div>
+        `;
+        bucketsGrid.appendChild(bucket);
+      });
+
+      layout.appendChild(pool);
+      layout.appendChild(bucketsGrid);
+      this.stageEl.appendChild(layout);
+
+      let selectedItemEl = null;
+      let totalSorted = 0;
+      const totalItems = data.items.length;
+
+      // Tap-to-select support for mobile / touch
+      pool.addEventListener('click', (e) => {
+        const item = e.target.closest('.sort-item');
+        if (!item) return;
+        sound.play('tap');
+        pool.querySelectorAll('.sort-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedItemEl = item;
+      });
+
+      bucketsGrid.addEventListener('click', (e) => {
+        const bucket = e.target.closest('.sort-bucket');
+        if (!bucket || !selectedItemEl) return;
+        assignItemToBucket(selectedItemEl, bucket);
+      });
+
+      // Drag and drop handlers
+      pool.querySelectorAll('.sort-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', item.id);
+          item.classList.add('dragging');
+        });
+        item.addEventListener('dragend', () => {
+          item.classList.remove('dragging');
+        });
+      });
+
+      bucketsGrid.querySelectorAll('.sort-bucket').forEach(bucket => {
+        bucket.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          bucket.classList.add('drag-over');
+        });
+        bucket.addEventListener('dragleave', () => {
+          bucket.classList.remove('drag-over');
+        });
+        bucket.addEventListener('drop', (e) => {
+          e.preventDefault();
+          bucket.classList.remove('drag-over');
+          const itemId = e.dataTransfer.getData('text/plain');
+          const item = document.getElementById(itemId);
+          if (item) {
+            assignItemToBucket(item, bucket);
+          }
+        });
+      });
+
+      const assignItemToBucket = (itemEl, bucketEl) => {
+        const targetCat = bucketEl.dataset.cat;
+        const itemCat = itemEl.dataset.cat;
+
+        if (targetCat === itemCat) {
+          // Correct!
+          sound.play('correct');
+          this.addScore(100);
+          itemEl.classList.remove('selected');
+          itemEl.draggable = false;
+          itemEl.style.cursor = 'default';
+          itemEl.style.borderColor = 'var(--success)';
+          itemEl.style.background = 'var(--success-light)';
+          bucketEl.querySelector('.bucket-content').appendChild(itemEl);
+          totalSorted++;
+          selectedItemEl = null;
+
+          if (totalSorted === totalItems) {
+            setTimeout(() => this.victory(), 500);
+          }
+        } else {
+          // Wrong category!
+          this.recordMistake();
+          itemEl.classList.add('wrong');
+          setTimeout(() => {
+            itemEl.classList.remove('wrong', 'selected');
+            selectedItemEl = null;
+          }, 500);
+        }
+      };
+    }
+
+    /* ==========================================================================
+       5. CLOZE / FILL IN THE BLANK MECHANICS (Chip Drop, Inline Blanks)
+       ========================================================================== */
+    renderCloze() {
+      // Template string with gaps e.g. "The {sun} rises in the {east} and sets in the {west}."
+      const data = this.currentActivity.data || {
+        text: 'The {sun} is the star at the center of the Solar System. Earth revolves around it in an {elliptical} orbit, completing one revolution every {365} days.',
+        distractors: ['moon', 'square', '24']
+      };
+
+      const rawText = data.text;
+      const regex = /\{([^}]+)\}/g;
+      const answers = [];
+      let match;
+      while ((match = regex.exec(rawText)) !== null) {
+        answers.push(match[1]);
+      }
+
+      const layout = document.createElement('div');
+      layout.className = 'cloze-layout';
+
+      // Passage card
+      const passageCard = document.createElement('div');
+      passageCard.className = 'cloze-passage-card';
+
+      let gapIndex = 0;
+      const formattedHtml = rawText.replace(regex, (_, answer) => {
+        const idx = gapIndex++;
+        return `<span class="cloze-slot" data-index="${idx}" data-answer="${answer}">___</span>`;
+      });
+      passageCard.innerHTML = formattedHtml;
+
+      // Word Chips Bank
+      const allChips = [...answers, ...(data.distractors || [])].sort(() => Math.random() - 0.5);
+      const bank = document.createElement('div');
+      bank.className = 'cloze-bank';
+
+      allChips.forEach((chipText, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'cloze-chip';
+        chip.dataset.text = chipText;
+        chip.textContent = chipText;
+        bank.appendChild(chip);
+      });
+
+      layout.appendChild(passageCard);
+      layout.appendChild(bank);
+      this.stageEl.appendChild(layout);
+
+      let selectedChip = null;
+      let filledGaps = 0;
+      const totalGaps = answers.length;
+
+      bank.addEventListener('click', (e) => {
+        const chip = e.target.closest('.cloze-chip');
+        if (!chip || chip.classList.contains('used')) return;
+        sound.play('tap');
+        bank.querySelectorAll('.cloze-chip').forEach(c => c.style.outline = 'none');
+        chip.style.outline = '3px solid #ffffff';
+        selectedChip = chip;
+      });
+
+      passageCard.addEventListener('click', (e) => {
+        const slot = e.target.closest('.cloze-slot');
+        if (!slot || slot.classList.contains('correct') || !selectedChip) return;
+
+        const chosenWord = selectedChip.dataset.text;
+        const correctWord = slot.dataset.answer;
+
+        if (chosenWord.toLowerCase().trim() === correctWord.toLowerCase().trim()) {
+          slot.textContent = chosenWord;
+          slot.classList.add('correct');
+          selectedChip.classList.add('used');
+          selectedChip.style.outline = 'none';
+          this.addScore(100);
+          filledGaps++;
+          selectedChip = null;
+
+          if (filledGaps === totalGaps) {
+            setTimeout(() => this.victory(), 500);
+          }
+        } else {
+          slot.textContent = chosenWord;
+          slot.classList.add('wrong');
+          this.recordMistake();
+          setTimeout(() => {
+            slot.textContent = '___';
+            slot.classList.remove('wrong');
+            if (selectedChip) selectedChip.style.outline = 'none';
+            selectedChip = null;
+          }, 600);
+        }
+      });
+    }
+
+    /* ==========================================================================
+       6. LABELING DIAGRAM MECHANICS (Interactive Hotspots & Labels)
+       ========================================================================== */
+    renderDiagram() {
+      const data = this.currentActivity.data || {
+        diagramSvg: `
+          <svg viewBox="0 0 600 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="400" fill="#f8fafc" rx="16"/>
+            <!-- Flower Anatomy SVG Diagram -->
+            <path d="M300,380 C300,280 290,200 300,160" stroke="#16a34a" stroke-width="16" fill="none" stroke-linecap="round"/>
+            <!-- Leaves -->
+            <path d="M295,290 C220,280 180,310 160,330 C200,350 260,320 295,300" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+            <path d="M305,240 C380,230 420,260 440,280 C400,300 340,270 305,250" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+            <!-- Petals -->
+            <circle cx="300" cy="100" r="50" fill="#f43f5e" opacity="0.85"/>
+            <circle cx="240" cy="130" r="50" fill="#f43f5e" opacity="0.85"/>
+            <circle cx="360" cy="130" r="50" fill="#f43f5e" opacity="0.85"/>
+            <circle cx="260" cy="190" r="50" fill="#f43f5e" opacity="0.85"/>
+            <circle cx="340" cy="190" r="50" fill="#f43f5e" opacity="0.85"/>
+            <!-- Center Receptacle -->
+            <circle cx="300" cy="150" r="38" fill="#fbbf24" stroke="#d97706" stroke-width="4"/>
+            <!-- Roots base -->
+            <ellipse cx="300" cy="385" rx="80" ry="12" fill="#78350f" opacity="0.4"/>
+          </svg>
+        `,
+        labels: [
+          { id: 'p1', name: 'Petal', x: 230, y: 100 },
+          { id: 'p2', name: 'Center / Pollen', x: 300, y: 150 },
+          { id: 'p3', name: 'Stem', x: 300, y: 220 },
+          { id: 'p4', name: 'Leaf', x: 200, y: 310 },
+          { id: 'p5', name: 'Roots', x: 300, y: 380 }
+        ]
+      };
+
+      const layout = document.createElement('div');
+      layout.className = 'diagram-layout';
+
+      // Canvas / Stage
+      const canvasWrap = document.createElement('div');
+      canvasWrap.className = 'diagram-canvas-wrap';
+
+      const stage = document.createElement('div');
+      stage.className = 'diagram-stage';
+      stage.innerHTML = data.diagramSvg || `<img src="${data.imageUrl}" class="diagram-img"/>`;
+
+      // Pins
+      data.labels.forEach((lbl, idx) => {
+        const pin = document.createElement('div');
+        pin.className = 'diagram-pin';
+        pin.id = `pin-${lbl.id}`;
+        pin.dataset.id = lbl.id;
+        pin.dataset.name = lbl.name;
+        pin.style.left = `${(lbl.x / 600) * 100}%`;
+        pin.style.top = `${(lbl.y / 400) * 100}%`;
+        pin.textContent = idx + 1;
+        stage.appendChild(pin);
+      });
+
+      canvasWrap.appendChild(stage);
+
+      // Labels Bank
+      const bank = document.createElement('div');
+      bank.className = 'diagram-bank';
+      bank.innerHTML = '<div style="font-weight: 800; margin-bottom: 6px;">Select & Place Labels:</div>';
+
+      const shuffledLabels = [...data.labels].sort(() => Math.random() - 0.5);
+      shuffledLabels.forEach(lbl => {
+        const chip = document.createElement('div');
+        chip.className = 'diagram-label-chip';
+        chip.dataset.id = lbl.id;
+        chip.dataset.name = lbl.name;
+        chip.textContent = lbl.name;
+        bank.appendChild(chip);
+      });
+
+      layout.appendChild(canvasWrap);
+      layout.appendChild(bank);
+      this.stageEl.appendChild(layout);
+
+      let selectedChip = null;
+      let placedCount = 0;
+      const totalLabels = data.labels.length;
+
+      bank.addEventListener('click', (e) => {
+        const chip = e.target.closest('.diagram-label-chip');
+        if (!chip || chip.classList.contains('placed')) return;
+        sound.play('tap');
+        bank.querySelectorAll('.diagram-label-chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        selectedChip = chip;
+      });
+
+      stage.addEventListener('click', (e) => {
+        const pin = e.target.closest('.diagram-pin');
+        if (!pin || pin.classList.contains('labeled') || !selectedChip) return;
+
+        if (pin.dataset.id === selectedChip.dataset.id) {
+          // Correct!
+          sound.play('match');
+          this.addScore(100);
+          pin.classList.add('labeled');
+          pin.textContent = selectedChip.dataset.name;
+          selectedChip.classList.add('placed');
+          selectedChip.classList.remove('selected');
+          placedCount++;
+          selectedChip = null;
+
+          if (placedCount === totalLabels) {
+            setTimeout(() => this.victory(), 500);
+          }
+        } else {
+          this.recordMistake();
+          pin.classList.add('wrong');
+          setTimeout(() => pin.classList.remove('wrong'), 500);
+        }
+      });
+    }
+
+    /* ==========================================================================
+       7. QUIZ / GAMESHOW MECHANICS (Timer attack, lifelines, streak bonus)
+       ========================================================================== */
+    renderQuiz() {
+      const questions = (this.currentActivity.data && this.currentActivity.data.questions) || [
+        {
+          question: 'What is the powerhouse organelle of the cell?',
+          options: ['Ribosome', 'Mitochondria', 'Nucleus', 'Endoplasmic Reticulum'],
+          answerIndex: 1
+        },
+        {
+          question: 'What is the chemical formula for water?',
+          options: ['CO2', 'NaCl', 'H2O', 'CH4'],
+          answerIndex: 2
+        }
+      ];
+
+      let qIdx = 0;
+      let used5050 = false;
+      const layout = document.createElement('div');
+      layout.className = 'quiz-game-layout';
+
+      const renderCurrent = () => {
+        const q = questions[qIdx];
+        layout.innerHTML = `
+          <div class="quiz-card">
+            <div style="font-weight: 700; color: var(--primary); margin-bottom: 8px;">Question ${qIdx + 1} of ${questions.length}</div>
+            <div class="quiz-question-text">${q.question}</div>
+            <div class="quiz-options-grid" id="quiz-opts">
+              ${q.options.map((opt, i) => `
+                <button class="quiz-option-btn" data-index="${i}">
+                  <span>${opt}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="quiz-lifelines">
+            <button class="lifeline-btn" id="ll-5050" ${used5050 ? 'disabled' : ''}>🎯 50:50 Lifeline</button>
+          </div>
+        `;
+
+        const optBtns = layout.querySelectorAll('.quiz-option-btn');
+        let answered = false;
+
+        optBtns.forEach(btn => {
+          btn.onclick = () => {
+            if (answered) return;
+            answered = true;
+            const chosen = parseInt(btn.dataset.index);
+
+            if (chosen === q.answerIndex) {
+              btn.classList.add('correct');
+              this.addScore(150);
+            } else {
+              btn.classList.add('wrong');
+              optBtns[q.answerIndex].classList.add('correct');
+              this.recordMistake();
+            }
+
+            setTimeout(() => {
+              qIdx++;
+              if (qIdx < questions.length) {
+                renderCurrent();
+              } else {
+                this.victory();
+              }
+            }, 1000);
+          };
+        });
+
+        const btn50 = layout.querySelector('#ll-5050');
+        if (btn50) {
+          btn50.onclick = () => {
+            if (used5050 || answered) return;
+            used5050 = true;
+            btn50.disabled = true;
+            sound.play('whoosh');
+
+            const wrongIndices = q.options.map((_, i) => i).filter(i => i !== q.answerIndex);
+            const toRemove = wrongIndices.sort(() => Math.random() - 0.5).slice(0, 2);
+            toRemove.forEach(idx => {
+              optBtns[idx].style.visibility = 'hidden';
+            });
+          };
+        }
+      };
+
+      this.stageEl.appendChild(layout);
+      renderCurrent();
+    }
+
+    /* ==========================================================================
+       8. SPIN THE WHEEL MECHANICS (Canvas Physics & Elimination)
+       ========================================================================== */
+    renderWheel() {
+      const items = (this.currentActivity.data && this.currentActivity.data.items) || [
+        'Team Alpha', 'Team Beta', 'Team Gamma', 'Team Delta', 'Team Epsilon', 'Team Zeta'
+      ];
+
+      const colors = ['#f43f5e', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#3b82f6'];
+
+      const layout = document.createElement('div');
+      layout.className = 'wheel-layout';
+
+      layout.innerHTML = `
+        <div class="wheel-container">
+          <div class="wheel-pointer"></div>
+          <canvas class="wheel-canvas" id="wheel-canvas" width="420" height="420"></canvas>
+          <button class="wheel-spin-btn" id="wheel-btn">SPIN</button>
+        </div>
+        <div style="font-weight: 700; font-size: 1.1rem;" id="wheel-winner-text">Click SPIN to randomly select!</div>
+      `;
+
+      this.stageEl.appendChild(layout);
+
+      const canvas = layout.querySelector('#wheel-canvas');
+      const ctx = canvas.getContext('2d');
+      const spinBtn = layout.querySelector('#wheel-btn');
+      const winnerText = layout.querySelector('#wheel-winner-text');
+
+      let currentAngle = 0;
+      let isSpinning = false;
+
+      const drawWheel = () => {
+        const numSlices = items.length;
+        const sliceAngle = (Math.PI * 2) / numSlices;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = centerX - 10;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        items.forEach((item, i) => {
+          const angle = currentAngle + i * sliceAngle;
+          ctx.beginPath();
+          ctx.fillStyle = colors[i % colors.length];
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, angle, angle + sliceAngle);
+          ctx.closePath();
+          ctx.fill();
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = '#ffffff';
+          ctx.stroke();
+
+          // Slice Label
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(angle + sliceAngle / 2);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 16px "Inter", system-ui, sans-serif';
+          ctx.shadowColor = 'rgba(0,0,0,0.5)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(item, radius - 24, 6);
+          ctx.restore();
+        });
+      };
+
+      drawWheel();
+
+      spinBtn.onclick = () => {
+        if (isSpinning || items.length === 0) return;
+        isSpinning = true;
+        sound.play('whoosh');
+
+        const spinRotations = 5 + Math.random() * 5;
+        const totalSpinAngle = spinRotations * Math.PI * 2 + Math.random() * Math.PI * 2;
+        const duration = 4000;
+        const startTime = performance.now();
+        const initialAngle = currentAngle;
+
+        let lastTickSlice = -1;
+
+        const animateSpin = (time) => {
+          const elapsed = time - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          currentAngle = initialAngle + totalSpinAngle * easeOut;
+
+          // Sound tick on peg crossing
+          const numSlices = items.length;
+          const sliceAngle = (Math.PI * 2) / numSlices;
+          const currentSlice = Math.floor((currentAngle % (Math.PI * 2)) / sliceAngle);
+          if (currentSlice !== lastTickSlice) {
+            sound.play('wheel-tick');
+            lastTickSlice = currentSlice;
+          }
+
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(animateSpin);
+          } else {
+            isSpinning = false;
+            // Calculate winning item at top pointer (3 * PI / 2)
+            const normalizedAngle = (Math.PI * 2 - (currentAngle % (Math.PI * 2)) + Math.PI * 1.5) % (Math.PI * 2);
+            const winnerIdx = Math.floor(normalizedAngle / sliceAngle) % numSlices;
+            const winner = items[winnerIdx];
+
+            winnerText.textContent = `🎉 Selected: ${winner}!`;
+            sound.play('win');
+            particles.confettiBurst();
+            this.addScore(100);
+          }
+        };
+
+        requestAnimationFrame(animateSpin);
+      };
+    }
+
+    /* ==========================================================================
+       9. ANAGRAM / WORD UNJUMBLE MECHANICS
+       ========================================================================== */
+    renderAnagram() {
+      const data = this.currentActivity.data || {
+        clue: 'The biological process of cell division producing two identical daughter cells.',
+        word: 'MITOSIS'
+      };
+
+      const targetWord = data.word.toUpperCase().replace(/\s/g, '');
+      const letters = targetWord.split('').sort(() => Math.random() - 0.5);
+
+      const layout = document.createElement('div');
+      layout.className = 'anagram-layout';
+
+      layout.innerHTML = `
+        <div class="anagram-clue-card">💡 ${data.clue || 'Unjumble the letters to find the word:'}</div>
+        <div class="anagram-slots-row" id="anagram-slots"></div>
+        <div class="anagram-pool-row" id="anagram-pool"></div>
+        <button class="hud-btn" id="anagram-clear-btn" style="margin-top: 10px;">Clear All</button>
+      `;
+
+      this.stageEl.appendChild(layout);
+
+      const slotsEl = layout.querySelector('#anagram-slots');
+      const poolEl = layout.querySelector('#anagram-pool');
+
+      for (let i = 0; i < targetWord.length; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'anagram-slot';
+        slot.dataset.index = i;
+        slotsEl.appendChild(slot);
+      }
+
+      letters.forEach((ltr, idx) => {
+        const tile = document.createElement('div');
+        tile.className = 'anagram-letter-tile';
+        tile.id = `tile-${idx}`;
+        tile.textContent = ltr;
+        poolEl.appendChild(tile);
+      });
+
+      let placedTiles = [];
+
+      poolEl.addEventListener('click', (e) => {
+        const tile = e.target.closest('.anagram-letter-tile');
+        if (!tile || tile.classList.contains('placed')) return;
+        sound.play('tap');
+
+        const nextSlotIndex = placedTiles.length;
+        if (nextSlotIndex < targetWord.length) {
+          tile.classList.add('placed');
+          placedTiles.push(tile);
+          slotsEl.children[nextSlotIndex].textContent = tile.textContent;
+
+          // Check if full
+          if (placedTiles.length === targetWord.length) {
+            const formed = placedTiles.map(t => t.textContent).join('');
+            if (formed === targetWord) {
+              sound.play('correct');
+              this.addScore(200);
+              setTimeout(() => this.victory(), 500);
+            } else {
+              this.recordMistake();
+              slotsEl.querySelectorAll('.anagram-slot').forEach(s => s.style.borderColor = 'var(--danger)');
+              setTimeout(() => {
+                slotsEl.querySelectorAll('.anagram-slot').forEach(s => {
+                  s.style.borderColor = 'var(--primary)';
+                  s.textContent = '';
+                });
+                placedTiles.forEach(t => t.classList.remove('placed'));
+                placedTiles = [];
+              }, 700);
+            }
+          }
+        }
+      });
+
+      layout.querySelector('#anagram-clear-btn').onclick = () => {
+        slotsEl.querySelectorAll('.anagram-slot').forEach(s => s.textContent = '');
+        placedTiles.forEach(t => t.classList.remove('placed'));
+        placedTiles = [];
+      };
+    }
+
+    /* ==========================================================================
+       10. SPEED TAP / WHACK-A-MOLE MECHANICS
+       ========================================================================== */
+    renderSpeedTap() {
+      const data = this.currentActivity.data || {
+        instruction: 'Tap only the PRIME numbers!',
+        targets: ['2', '3', '5', '7', '11', '13', '17', '19'],
+        distractors: ['4', '6', '8', '9', '10', '12', '14', '15', '16', '18']
+      };
+
+      const layout = document.createElement('div');
+      layout.className = 'speedtap-layout';
+
+      layout.innerHTML = `
+        <div class="speedtap-target-banner">${data.instruction}</div>
+        <div class="speedtap-grid" id="mole-grid"></div>
+      `;
+
+      this.stageEl.appendChild(layout);
+
+      const grid = layout.querySelector('#mole-grid');
+      for (let i = 0; i < 9; i++) {
+        const hole = document.createElement('div');
+        hole.className = 'mole-hole';
+        hole.id = `hole-${i}`;
+        grid.appendChild(hole);
+      }
+
+      let activeInterval = null;
+      let caughtCount = 0;
+      const targetCountGoal = 10;
+
+      const spawnMole = () => {
+        if (this.state.isCompleted) return;
+        const availableHoles = Array.from(grid.children).filter(h => h.children.length === 0);
+        if (availableHoles.length === 0) return;
+
+        const randomHole = availableHoles[Math.floor(Math.random() * availableHoles.length)];
+        const isTarget = Math.random() < 0.55;
+        const text = isTarget
+          ? data.targets[Math.floor(Math.random() * data.targets.length)]
+          : data.distractors[Math.floor(Math.random() * data.distractors.length)];
+
+        const card = document.createElement('div');
+        card.className = 'mole-card';
+        card.textContent = text;
+        card.dataset.target = isTarget ? 'true' : 'false';
+
+        card.onclick = (e) => {
+          e.stopPropagation();
+          if (card.dataset.target === 'true') {
+            sound.play('correct');
+            this.addScore(100);
+            caughtCount++;
+            card.remove();
+            if (caughtCount >= targetCountGoal) {
+              clearInterval(activeInterval);
+              setTimeout(() => this.victory(), 500);
+            }
+          } else {
+            this.recordMistake();
+            card.style.background = 'var(--danger-light)';
+            setTimeout(() => card.remove(), 200);
+          }
+        };
+
+        randomHole.appendChild(card);
+        setTimeout(() => {
+          if (card.parentNode) card.remove();
+        }, 1800);
+      };
+
+      activeInterval = setInterval(spawnMole, 900);
+    }
+
+    /* ==========================================================================
+       11. CROSSWORD PUZZLE MECHANICS
+       ========================================================================== */
+    renderCrossword() {
+      const data = this.currentActivity.data || {
+        grid: [
+          ['C', 'A', 'T', '#', '#'],
+          ['O', '#', 'E', '#', '#'],
+          ['W', '#', 'A', 'P', 'E'],
+          ['#', '#', 'C', '#', '#'],
+          ['#', '#', 'H', '#', '#']
+        ],
+        clues: [
+          { num: 1, dir: 'across', clue: 'Feline domestic pet', answer: 'CAT' },
+          { num: 1, dir: 'down', clue: 'Bovine farm milk animal', answer: 'COW' },
+          { num: 2, dir: 'down', clue: 'Hot infusion beverage or schooling instructor', answer: 'TEACH' },
+          { num: 3, dir: 'across', clue: 'Primate ancestor', answer: 'APE' }
+        ]
+      };
+
+      const layout = document.createElement('div');
+      layout.className = 'crossword-layout';
+
+      const gridWrap = document.createElement('div');
+      gridWrap.className = 'crossword-grid-wrap';
+
+      const rows = data.grid.length;
+      const cols = data.grid[0].length;
+
+      const gridEl = document.createElement('div');
+      gridEl.className = 'crossword-grid';
+      gridEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const letter = data.grid[r][c];
+          const cell = document.createElement('div');
+          cell.className = `cw-cell ${letter !== '#' ? 'active' : ''}`;
+          if (letter !== '#') {
+            cell.innerHTML = `<input type="text" maxlength="1" class="cw-input" data-r="${r}" data-c="${c}" data-answer="${letter}"/>`;
+          }
+          gridEl.appendChild(cell);
+        }
+      }
+      gridWrap.appendChild(gridEl);
+
+      const cluesCard = document.createElement('div');
+      cluesCard.className = 'crossword-clues';
+      cluesCard.innerHTML = `
+        <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">Crossword Clues</div>
+        ${data.clues.map(c => `
+          <div class="cw-clue-item" data-num="${c.num}" data-dir="${c.dir}">
+            <b>${c.num}. ${c.dir.toUpperCase()}:</b> ${c.clue}
+          </div>
+        `).join('')}
+        <button class="primary-btn" id="cw-check-btn" style="margin-top: 14px;">Check Answers</button>
+      `;
+
+      layout.appendChild(gridWrap);
+      layout.appendChild(cluesCard);
+      this.stageEl.appendChild(layout);
+
+      const inputs = gridWrap.querySelectorAll('.cw-input');
+      inputs.forEach((input, idx) => {
+        input.addEventListener('input', () => {
+          sound.play('tap');
+          if (input.value && idx < inputs.length - 1) {
+            inputs[idx + 1].focus();
+          }
+        });
+      });
+
+      cluesCard.querySelector('#cw-check-btn').onclick = () => {
+        let allCorrect = true;
+        inputs.forEach(inp => {
+          if (inp.value.toUpperCase() === inp.dataset.answer.toUpperCase()) {
+            inp.parentElement.style.background = 'var(--success-light)';
+          } else {
+            inp.parentElement.style.background = 'var(--danger-light)';
+            allCorrect = false;
+          }
+        });
+
+        if (allCorrect) {
+          sound.play('correct');
+          this.addScore(300);
+          setTimeout(() => this.victory(), 500);
+        } else {
+          this.recordMistake();
+        }
+      };
+    }
+
+    /* ==========================================================================
+       12. MEMORY MATCH MECHANICS (3D Flippable Cards)
+       ========================================================================== */
+    renderMemory() {
+      const data = this.currentActivity.data || {
+        pairs: [
+          { a: 'Hydrogen', b: 'H' },
+          { a: 'Helium', b: 'He' },
+          { a: 'Carbon', b: 'C' },
+          { a: 'Oxygen', b: 'O' },
+          { a: 'Gold', b: 'Au' },
+          { a: 'Silver', b: 'Ag' }
+        ]
+      };
+
+      const cards = [];
+      data.pairs.forEach((pair, pairIdx) => {
+        cards.push({ id: `c-${pairIdx}-a`, pairIdx, text: pair.a });
+        cards.push({ id: `c-${pairIdx}-b`, pairIdx, text: pair.b });
+      });
+      cards.sort(() => Math.random() - 0.5);
+
+      const grid = document.createElement('div');
+      grid.className = 'memory-grid';
+
+      cards.forEach(card => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'memory-card';
+        cardEl.dataset.id = card.id;
+        cardEl.dataset.pair = card.pairIdx;
+        cardEl.innerHTML = `
+          <div class="memory-face memory-face-back">?</div>
+          <div class="memory-face memory-face-front">${card.text}</div>
+        `;
+        grid.appendChild(cardEl);
+      });
+
+      this.stageEl.appendChild(grid);
+
+      let flipped = [];
+      let lockBoard = false;
+      let matchedPairs = 0;
+      const totalPairs = data.pairs.length;
+
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.memory-card');
+        if (!card || lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+        sound.play('flip');
+        card.classList.add('flipped');
+        flipped.push(card);
+
+        if (flipped.length === 2) {
+          lockBoard = true;
+          const [card1, card2] = flipped;
+
+          if (card1.dataset.pair === card2.dataset.pair) {
+            // Matched!
+            sound.play('match');
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            this.addScore(100);
+            matchedPairs++;
+            flipped = [];
+            lockBoard = false;
+
+            if (matchedPairs === totalPairs) {
+              setTimeout(() => this.victory(), 500);
+            }
+          } else {
+            // Mismatch
+            this.recordMistake();
+            setTimeout(() => {
+              card1.classList.remove('flipped');
+              card2.classList.remove('flipped');
+              flipped = [];
+              lockBoard = false;
+            }, 900);
+          }
+        }
+      });
+    }
+  }
+
+  return ActivityEngine;
+}));
+</script>
+  <script>
+    const game = new ActivityEngine('#game-container');
+    game.load({"type":"matching","title":"Solar System Match","instruction":"Connect each planet with its characteristic.","theme":"default","timer":{"enabled":true,"mode":"countup"},"lives":3,"data":[{"left":"Mercury","right":"Closest to the Sun"},{"left":"Venus","right":"Hottest planet"},{"left":"Mars","right":"The Red Planet"}]});
+  </script>
+</body>
+</html>

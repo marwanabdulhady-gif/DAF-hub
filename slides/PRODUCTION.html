@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dar Al Fikr · Production Workbench & A5 Print Studio (All 91 Doors)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,600;1,9..144,700&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #12857c;
+  --teal-lit: #2ec4b6;
+  --gold: #c9a227;
+  --gold-lit: #f0cf6a;
+  --night: #041615;
+  --night-card: #082220;
+  --night-card-2: #0d2e2b;
+  --border: rgba(201,162,39,0.22);
+  --border-lit: rgba(46,196,182,0.45);
+  --text-main: #eaf4f2;
+  --text-muted: #9ebdb7;
+  --text-dust: #759992;
+  --pass: #38ef7d;
+  --option-a: #9ee0d4;
+  --option-b: #ffe9a0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  min-height: 100%;
+  background: radial-gradient(1400px 900px at 50% -10%, #0c3330 0%, var(--night) 65%);
+  color: var(--text-main);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px 100px; }
+
+/* Header */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+.brand-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .22em;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(28px, 4vw, 40px);
+  color: #fff;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+h1 em { color: var(--gold-lit); font-style: italic; }
+
+/* Two-Panel Layout */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1020px) {
+  .layout-grid { grid-template-columns: 1fr; }
+}
+
+/* Sidebar: Gate & Door Selector */
+.sidebar {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: calc(100vh - 80px);
+  position: sticky;
+  top: 20px;
+}
+.search-input {
+  width: 100%;
+  background: var(--night-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13.5px;
+}
+.search-input:focus { outline: none; border-color: var(--teal-lit); }
+
+.gates-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.gate-nav-btn {
+  background: var(--night-card-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.gate-nav-btn:hover { border-color: var(--gold); color: var(--gold-lit); }
+.gate-nav-btn.active { background: var(--gold); color: #1a160f; border-color: var(--gold-lit); font-weight: 800; }
+
+.door-list-scroll {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+.door-list-item {
+  background: var(--night-card-2);
+  border: 1px solid rgba(234,244,242,0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all .15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.door-list-item:hover { transform: translateX(3px); border-color: var(--teal-lit); }
+.door-list-item.selected {
+  background: rgba(18,133,124,0.25);
+  border-color: var(--teal-lit);
+  box-shadow: 0 0 12px rgba(46,196,182,0.2);
+}
+.door-item-code { font-family: 'Space Mono', monospace; font-weight: 800; color: var(--gold-lit); font-size: 13px; }
+.door-item-title { font-size: 12.5px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+
+/* Main Workbench Stage */
+.workbench-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Door Overview Header */
+.door-overview-card {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.door-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.gate-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--gold-lit);
+  background: rgba(201,162,39,0.12);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+.active-door-title { font-family: 'Fraunces', Georgia, serif; font-size: 26px; color: #fff; font-weight: 800; }
+.active-door-job { color: var(--teal-lit); font-weight: 700; font-size: 14.5px; }
+
+/* Option A vs Option B Toggle */
+.option-selector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 680px) { .option-selector-grid { grid-template-columns: 1fr; } }
+
+.option-box {
+  background: var(--night-card-2);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all .2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.option-box:hover { border-color: var(--gold); }
+.option-box.selected-a {
+  border-color: var(--teal-lit);
+  background: rgba(18,133,124,0.15);
+  box-shadow: 0 0 16px rgba(46,196,182,0.25);
+}
+.option-box.selected-b {
+  border-color: var(--gold-lit);
+  background: rgba(201,162,39,0.15);
+  box-shadow: 0 0 16px rgba(201,162,39,0.25);
+}
+.opt-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.opt-label.a { color: var(--option-a); }
+.opt-label.b { color: var(--option-b); }
+.opt-title { font-size: 15px; font-weight: 700; color: #fff; }
+.opt-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
+/* Print Studio Actions */
+.studio-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+.action-btn {
+  background: linear-gradient(135deg, var(--teal), var(--teal-lit));
+  border: none;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity .15s ease;
+}
+.action-btn:hover { opacity: 0.9; }
+.action-btn.gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-lit));
+  color: #1a160f;
+}
+
+/* Printable A5 Sheet Previewer */
+.a5-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 30px;
+}
+.a5-sheet {
+  background: #fdfbf7;
+  color: #1a160f;
+  width: 148mm;
+  min-height: 210mm;
+  padding: 16mm 14mm;
+  border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  border: 1px solid #d4c5a9;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+}
+.a5-gold-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: #c9a227;
+}
+.a5-header {
+  border-bottom: 2px solid #1a160f;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.a5-brand {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .15em;
+  font-weight: 700;
+  color: #6b563a;
+  text-transform: uppercase;
+}
+.a5-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a160f;
+  margin: 2px 0;
+}
+.a5-job-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #12857c;
+}
+.a5-door-box {
+  background: #1a160f;
+  color: #f0cf6a;
+  font-family: 'Space Mono', monospace;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.a5-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  border-bottom: 1px dashed #d4c5a9;
+  padding-bottom: 8px;
+}
+.a5-meta-item b { font-weight: 700; color: #4a3e2c; }
+
+.a5-workspace {
+  flex: 1;
+  border: 1.5px dashed #b5a486;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.a5-prompt-box {
+  background: #f4ead0;
+  border-left: 3px solid #c9a227;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #2a2419;
+}
+.a5-prompt-box b { color: #1a160f; }
+
+.a5-grid-lines {
+  flex: 1;
+  background-image: linear-gradient(to bottom, transparent 23px, #e8dfcc 24px);
+  background-size: 100% 24px;
+  min-height: 180px;
+  position: relative;
+}
+
+.a5-footer {
+  border-top: 1.5px solid #1a160f;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 10px;
+}
+.a5-pledge {
+  max-width: 65%;
+  line-height: 1.35;
+  color: #4a3e2c;
+  font-style: italic;
+}
+.a5-seal-box {
+  text-align: center;
+  border: 1.5px solid #c9a227;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: #fff9e6;
+}
+.a5-seal-tag { font-size: 8.5px; font-weight: 800; color: #8a6a10; text-transform: uppercase; font-family: 'Space Mono', monospace; }
+.a5-seal-sig { font-family: 'Fraunces', serif; font-size: 12px; font-weight: 700; color: #1a160f; margin-top: 2px; }
+
+/* AI Critic Simulator */
+.ai-critic-section {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ai-critic-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--gold-lit);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.ai-textarea {
+  width: 100%;
+  min-height: 90px;
+  background: var(--night-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+.ai-textarea:focus { outline: none; border-color: var(--teal-lit); }
+.ai-feedback-box {
+  background: var(--night-card-2);
+  border-left: 3px solid var(--teal-lit);
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 13.5px;
+  color: var(--text-main);
+  display: none;
+}
+.ai-feedback-box.active { display: block; }
+
+/* Print Styles */
+@media print {
+  body { background: #fff; color: #000; padding: 0; }
+  .header-top, .sidebar, .door-overview-card, .option-selector-grid, .studio-actions-bar, .ai-critic-section { display: none !important; }
+  .wrap { max-width: 100%; padding: 0; margin: 0; }
+  .layout-grid { display: block; }
+  .a5-container { padding: 0; margin: 0; }
+  .a5-sheet {
+    box-shadow: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    page-break-after: always;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- Header -->
+  <header class="header-top">
+    <div>
+      <div class="brand-tag">Dar Al Fikr Boys School · FIKR Production Studio</div>
+      <h1>Stage 6 <em>Stone</em> & A5 Print Workbench</h1>
+      <p style="color:var(--text-muted); font-size:14.5px; margin-top:4px;">
+        Every lesson delivers a signed physical artifact. Select any door, choose Option A (Vocational Artifact) or Option B (Mathematical Transfer), and print the authentic A5 sheet.
+      </p>
+    </div>
+    <div style="background:var(--night-card); border:1px solid var(--border); padding:10px 18px; border-radius:12px; text-align:right;">
+      <div style="font-family:'Space Mono',monospace; font-size:18px; font-weight:800; color:var(--gold-lit);">91 DOORS</div>
+      <div style="font-size:10.5px; color:var(--text-dust); text-transform:uppercase;">100% Offline Single-File</div>
+    </div>
+  </header>
+
+  <!-- Layout Grid -->
+  <div class="layout-grid">
+
+    <!-- Sidebar Selector -->
+    <aside class="sidebar">
+      <input type="text" id="doorSearch" class="search-input" placeholder="Search door (e.g. 1-1, 5-4, 10-4)...">
+      
+      <div class="gates-nav" id="gatePills">
+        <button class="gate-nav-btn active" data-gate="all">ALL</button>
+        <button class="gate-nav-btn" data-gate="1">G1</button>
+        <button class="gate-nav-btn" data-gate="2">G2</button>
+        <button class="gate-nav-btn" data-gate="3">G3</button>
+        <button class="gate-nav-btn" data-gate="4">G4</button>
+        <button class="gate-nav-btn" data-gate="5">G5</button>
+        <button class="gate-nav-btn" data-gate="6">G6</button>
+        <button class="gate-nav-btn" data-gate="7">G7</button>
+        <button class="gate-nav-btn" data-gate="8">G8</button>
+        <button class="gate-nav-btn" data-gate="9">G9</button>
+        <button class="gate-nav-btn" data-gate="10">G10</button>
+        <button class="gate-nav-btn" data-gate="11">G11</button>
+        <button class="gate-nav-btn" data-gate="12">G12</button>
+        <button class="gate-nav-btn" data-gate="13">G13</button>
+        <button class="gate-nav-btn" data-gate="14">G14</button>
+        <button class="gate-nav-btn" data-gate="15">G15</button>
+        <button class="gate-nav-btn" data-gate="16">G16</button>
+      </div>
+
+      <div class="door-list-scroll" id="doorList"></div>
+    </aside>
+
+    <!-- Main Workbench Stage -->
+    <main class="workbench-stage">
+
+      <!-- Active Door Header -->
+      <section class="door-overview-card">
+        <div class="door-badge-row">
+          <span class="gate-tag" id="curGateTag">Gate 1 · Sahat al-Misbah</span>
+          <span style="font-family:'Space Mono',monospace; font-size:12px; color:var(--text-dust);" id="curLessonRef">Lesson 1-1</span>
+        </div>
+        <div class="active-door-title" id="curDoorTitle">Numbers Through One Million</div>
+        <div class="active-door-job" id="curDoorJob">Al-Balad Vault Currency Clerk · Lead: Amm Fahad</div>
+      </section>
+
+      <!-- Option A vs Option B Selection -->
+      <section class="option-selector-grid">
+        <div class="option-box selected-a" id="boxOptA" onclick="selectOption('A')">
+          <div class="opt-label a">Option A · Authentic Vocational Artifact</div>
+          <div class="opt-title" id="optATitle">Treasury Deposit Slip</div>
+          <div class="opt-desc" id="optADesc">Fill standard, expanded, and word forms for 356,039. Affix student amānah seal.</div>
+        </div>
+
+        <div class="option-box" id="boxOptB" onclick="selectOption('B')">
+          <div class="opt-label b">Option B · Mathematical Transfer / AI Critic</div>
+          <div class="opt-title" id="optBTitle">Six-Till Architecture Drawing</div>
+          <div class="opt-desc" id="optBDesc">Diagram the 6 place-value tills. Show how the eaten zero is restored without changing value.</div>
+        </div>
+      </section>
+
+      <!-- Action Bar -->
+      <section class="studio-actions-bar">
+        <div>
+          <span style="font-size:13px; color:var(--text-muted);">Previewing: </span>
+          <b style="color:#fff;" id="previewBadge">Option A Slip</b>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="action-btn gold" onclick="window.print()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            Print A5 Sheet
+          </button>
+        </div>
+      </section>
+
+      <!-- Printable A5 Sheet Preview -->
+      <div class="a5-container">
+        <div class="a5-sheet" id="a5Sheet">
+          <div class="a5-gold-bar"></div>
+          
+          <div class="a5-header">
+            <div>
+              <div class="a5-brand">DAR AL FIKR BOYS SCHOOL · JEDDAH</div>
+              <div class="a5-title" id="a5SheetTitle">Treasury Deposit Slip</div>
+              <div class="a5-job-name" id="a5SheetJob">Al-Balad Vault Currency Clerk</div>
+            </div>
+            <div class="a5-door-box" id="a5SheetDoor">DOOR 1-1</div>
+          </div>
+
+          <div class="a5-meta-row">
+            <div class="a5-meta-item"><b>Student Name:</b> _________________________</div>
+            <div class="a5-meta-item"><b>Rifqah Table:</b> [ ] Misbah  [ ] Bi'r  [ ] Nakhl  [ ] Najm</div>
+          </div>
+
+          <div class="a5-workspace">
+            <div class="a5-prompt-box" id="a5Prompt">
+              <b>What to do:</b> Complete the official record for 356,039 in standard form, expanded form, and word name.<br>
+              <b>Done when:</b> All 6 digits occupy their exact place-value seat with zero properly positioned.
+            </div>
+            <div class="a5-grid-lines"></div>
+          </div>
+
+          <div class="a5-footer">
+            <div class="a5-pledge">
+              “Precision in measure is a trust (amānah). I have checked my calculations honestly before Allah.”
+            </div>
+            <div class="a5-seal-box">
+              <div class="a5-seal-tag">Verified Amānah</div>
+              <div class="a5-seal-sig">Ustadh Stamp / Sign</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Critic Socratic Simulator -->
+      <section class="ai-critic-section">
+        <div class="ai-critic-title">Stage 4 Socratic AI Critic Guardrail</div>
+        <p style="font-size:13px; color:var(--text-muted);">
+          In Stage 4 (The Wind), the boy writes his explanation and tests it against the AI Critic. The AI is strictly a Socratic critic and never writes or solves the mathematics.
+        </p>
+        <textarea id="aiInput" class="ai-textarea" placeholder="Paste student mathematical reasoning here to test against the Amanah Critic prompt..."></textarea>
+        <div>
+          <button class="action-btn" id="btnTestCritic" onclick="runAiCritic()">Simulate AI Critic Feedback</button>
+        </div>
+        <div class="ai-feedback-box" id="aiFeedback">
+          <b>AI Critic:</b>
+          <ol style="margin: 8px 0 0 20px; font-size:13px; line-height:1.4;">
+            <li>Did you state the exact value of each place rather than just listing digits?</li>
+            <li>How would you prove to a classmate that the zero is holding a seat rather than adding nothing?</li>
+            <li>Is your explanation written with honesty (amānah) without skipping intermediate steps?</li>
+          </ol>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+/* Master Data for all 91 Doors with Options A and B */
+const PRODUCTION_DATA = [
+  // GATE 1
+  { gate: 1, gateName: "Sahat al-Misbah", code: "1-1", title: "Numbers Through One Million", job: "Al-Balad Vault Currency Clerk",
+    optA: { title: "Treasury Deposit Slip", desc: "Fill standard, expanded, and word forms for 356,039.", prompt: "Complete the official deposit slip for SAR 356,039 in 3 forms. Done when all 6 places are verified." },
+    optB: { title: "Six-Till Architecture Drawing", desc: "Draw the 6 tills; diagram how the eaten zero is restored.", prompt: "Draw the 6 counter tills. Label why zero holds the seat without altering total value." } },
+  { gate: 1, gateName: "Sahat al-Misbah", code: "1-2", title: "Place Value Relationships", job: "Palm Nursery Warehouse Registrar",
+    optA: { title: "Crate Inventory Label", desc: "Record the x10 staircase (5 -> 50 -> 500 -> 5,000).", prompt: "Write the x10 progression for 5 to 5,000 with arrows showing each place-value shift." },
+    optB: { title: "Warehouse Place-Shift Chant", desc: "Write a 4-line rule: digit stays, seat changes.", prompt: "Compose a 4-line mathematical rule explaining why shifting left multiplies by 10." } },
+  { gate: 1, gateName: "Sahat al-Misbah", code: "1-3", title: "Compare Whole Numbers", job: "Regional Well Inspector",
+    optA: { title: "Comparison Survey Stamp", desc: "Stamp 6,356 < 6,378 with tens place verified.", prompt: "Compare 6,356 and 6,378. Mark the first diverging place value and write the comparison symbol." },
+    optB: { title: "Two-Well Scanner Diagram", desc: "Diagram L->R digit comparison scanner.", prompt: "Draw two number lines comparing well output; mark the exact stop-point of the scanner." } },
+  { gate: 1, gateName: "Sahat al-Misbah", code: "1-4", title: "Round Whole Numbers", job: "Desert Boundary Night Ranger",
+    optA: { title: "Night Ranger Situation Report", desc: "Round 181,376 to 181,000 with halfway mark shown.", prompt: "Locate 181,376 on a number line with halfway flag 181,500. Justify the rounded value." },
+    optB: { title: "Safe Rounding Tolerance Mind Map", desc: "4-bubble map: number -> halfway -> side -> rounded.", prompt: "Construct a 4-bubble decision map showing how to round any 6-digit figure." } },
+
+  // GATE 2
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-1", title: "Mental Math Sums & Differences", job: "Diwan Head Account Clerk",
+    optA: { title: "Diwan Strategy Card", desc: "Write: 'I broke ___ because ___' for 1,034 + 1,289 + 1,566.", prompt: "Document your mental regrouping strategy for 1,034 + 1,289 + 1,566 with full justification." },
+    optB: { title: "AI Critic Mental Proof", desc: "Submit written mental steps to AI Critic.", prompt: "Write out your mental compensation algorithm and answer 3 amānah check questions." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-2", title: "Estimate Sums & Differences", job: "Well-Road Customs Gatekeeper",
+    optA: { title: "Customs Gate Pass", desc: "Rounded addends vs 15,000 threshold with Go/Hold stamp.", prompt: "Estimate Jubail vehicle mass (6,127+4,652+3,393) against 15,000 kg and issue pass." },
+    optB: { title: "Cargo Truck Mass Sketch", desc: "Sketch 3 trucks with rounded loads on bumpers.", prompt: "Draw 3 cargo trucks with rounded addends and determine whether the bridge will hold." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-3", title: "Add Whole Numbers", job: "Recycling Depot Master",
+    optA: { title: "Recycling Stack Ticket", desc: "Line up 357 + 243 + 468 with partial sums.", prompt: "Calculate sum of 3 months of recycled bottles with places aligned and partial sums shown." },
+    optB: { title: "Place-Value Column Poster", desc: "Poster highlighting gold alignment across columns.", prompt: "Draw a column-addition chart showing why ones must align strictly under ones." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-4", title: "Add Greater Numbers", job: "Multi-District Logistics Inspector",
+    optA: { title: "Official Logistics Waybill", desc: "Standard algorithm for 4,219 + 3,742 + 4,436 with carry tokens.", prompt: "Sum 3 district bottle totals using standard algorithm with carry tokens explicit." },
+    optB: { title: "Amanah in Columns Research", desc: "Two-line proof on why place alignment is a trust.", prompt: "Explain in 2 sentences why column misalignment produces fraudulent accounting." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-5", title: "Subtract Whole Numbers", job: "Night Watch Motel Steward",
+    optA: { title: "Night Watch Room Sheet", desc: "Subtract 224 - 176 dark windows with decomposition.", prompt: "Model 224 - 176 by decomposing a tens block to find vacant dark motel rooms." },
+    optB: { title: "Window Grid Subtraction Drawing", desc: "Diagram showing 176 occupied rooms darkened.", prompt: "Draw a grid diagram illustrating the regrouping step in 224 - 176." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-6", title: "Subtract Greater Numbers", job: "Kingdom Boundary Surveyor",
+    optA: { title: "Boundary Difference Chart", desc: "Najran (109,781) - Madinah (103,642) verified by inverse addition.", prompt: "Calculate land difference between Najran and Madinah; prove by adding back." },
+    optB: { title: "Two-Region Survey Map", desc: "Mini-map with difference equation signed.", prompt: "Draw two geographic regions with difference calculated and signed by surveyor." } },
+  { gate: 2, gateName: "Diwan al-Hisab", code: "2-7", title: "Subtract Across Zeros", job: "Milestone Route Surveyor",
+    optA: { title: "Milestone Road Log", desc: "Subtract 5,000 - 1,486 across multiple zeros.", prompt: "Execute subtraction across zeros with every regrouping step inked without panic." },
+    optB: { title: "Zero Seat Regrouping Chant", desc: "4-line poem: A zero is an open seat, not a brick wall.", prompt: "Write a 4-line rule explaining how regrouping ripples across consecutive zero wells." } },
+
+  // GATE 3
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-1", title: "Multiply Multiples of 10, 100, 1,000", job: "Nursery Seedling Master",
+    optA: { title: "Zero-Pattern Seedling Strip", desc: "Record 3x4 -> 3x40 -> 3x400 -> 3x4,000.", prompt: "Calculate seedling rows across tens, hundreds, and thousands; name the pattern." },
+    optB: { title: "Pot-Row Geometric Sketch", desc: "Draw seedling pots showing shifting place chairs.", prompt: "Sketch 4 pot rows showing how the digit 12 shifts places as zeros are added." } },
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-2", title: "Estimate Products", job: "Oasis Wage Assayer",
+    optA: { title: "Wage Envelope Summary", desc: "Estimate SAR 48 x 6 using compatible 50 x 6.", prompt: "Compute compatible estimate vs exact wage for Saud; label as over or under." },
+    optB: { title: "Estimation vs Exact Mind Map", desc: "4-bubble map: compatible choice -> multiply -> compare.", prompt: "Draw a decision map showing when to round up vs down when estimating products." } },
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-3", title: "Arrays & Partial Products", job: "Music-Shade Architect",
+    optA: { title: "Pavilion Seating Layout", desc: "Partition 6 x 18 into 6x10 (60) + 6x8 (48).", prompt: "Label 6 x 18 chair array split by place value; sum partial products." },
+    optB: { title: "Tens-and-Ones Chair Sketch", desc: "Visual diagram of split seating rows.", prompt: "Draw the music-shade pavilion split into tens and ones seating sections." } },
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-4", title: "Area Models & Partial Products", job: "Nursery Wall Mason",
+    optA: { title: "Masonry Area Blueprint", desc: "Unshaded wall area model with no invented sides.", prompt: "Calculate unshaded wall area using only given dimensions and partial area sum." },
+    optB: { title: "AI Critic Area Review", desc: "Submit wall area model to AI Critic for verification.", prompt: "Draft area calculation and answer 3 questions on side length integrity." } },
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-6", title: "Mental Math Multiplication", job: "Date Harvest Field Trader",
+    optA: { title: "Field Trade Leaf-Card", desc: "Name distributive/compensation property with proof.", prompt: "Demonstrate mental product of 4 x 98 = 400 - 8; name the property used." },
+    optB: { title: "20-Second Audio Trade Brief", desc: "Record or write spoken trade explanation.", prompt: "Script a 20-second trader announcement explaining compensation to buyers." } },
+  { gate: 3, gateName: "Nakhil Yusuf", code: "3-8", title: "Model with Math (Problem Solving)", job: "Historical Photo Curator",
+    optA: { title: "Curator Bar Diagram", desc: "Model Khalid (120+128) vs Omar (x2) with bars.", prompt: "Construct scaled 2-bar comparison diagram; solve hidden intermediate question." },
+    optB: { title: "Two-Panel Archive Comic", desc: "Panel 1: problem state. Panel 2: hidden ask solved.", prompt: "Draw a 2-panel comic where the intermediate question is revealed in panel 2." } },
+
+  // GATE 4
+  { gate: 4, gateName: "Mashghala al-Qawafil", code: "4-1", title: "Multiply Multiples of 10", job: "School Supply Depot Master",
+    optA: { title: "Supply Depot Order Form", desc: "Multiply 20 rooms x 20 desks / 30 chairs / 40 pencils.", prompt: "Calculate bulk supply quantities using place-value jumps without losing zeros." },
+    optB: { title: "Classroom Supply Grid Sketch", desc: "Diagram packs of tens across classrooms.", prompt: "Sketch classroom layout showing tens packs multiplied by room count." } },
+  { gate: 4, gateName: "Mashghala al-Qawafil", code: "4-2", title: "Models for 2-Digit by Multiples of 10", job: "Athletic Kit Quartermaster",
+    optA: { title: "Athletic Team Manifest", desc: "Model 10 teams x 25 jerseys as area of tens.", prompt: "Draw 10 x 25 area model partitioned into tens; sum to find total uniforms." },
+    optB: { title: "Team Jersey Poster (A5)", desc: "10 teams x 25 players represented visually.", prompt: "Create an A5 equipment poster displaying total jerseys partitioned by tens." } },
+  { gate: 4, gateName: "Mashghala al-Qawafil", code: "4-3", title: "Estimate 2-Digit Products", job: "Caravan Freight Estimator",
+    optA: { title: "Caravan Freight Estimate Card", desc: "Select factors nearest 1,600 with rounding shown.", prompt: "Estimate cargo load nearest 1,600 kg; compare rounded factors to exact." },
+    optB: { title: "Cargo Tolerance Mind Map", desc: "Map: factor choice -> multiplication -> buffer.", prompt: "Draw a 4-bubble map explaining why compatible factors prevent caravan overload." } },
+  { gate: 4, gateName: "Mashghala al-Qawafil", code: "4-4", title: "Arrays & 2-Digit Partials", job: "Warehouse Array Stacker",
+    optA: { title: "Warehouse Stacking Manifest", desc: "Model 14 x 23 with 4 sub-arrays labelled.", prompt: "Partition 14 x 23 array into 4 distinct quadrants; calculate and sum all partials." },
+    optB: { title: "4-Quadrant Storage Sketch", desc: "Warehouse floor plan split by tens and ones.", prompt: "Draw warehouse layout showing 4 distinct crate storage zones." } },
+  { gate: 4, gateName: "Mashghala al-Qawafil", code: "4-5", title: "Area Models & 2-Digit Partials", job: "Playground Surface Engineer",
+    optA: { title: "Playground Surface Waybill", desc: "4 partial products calculated with no overlaps.", prompt: "Calculate turf area across 4 playground sectors using the distributive property." },
+    optB: { title: "Sports Court Surface Plan", desc: "Drawing of 4 sports courts with partial areas.", prompt: "Draw playground plan with 4 partial product equations inside each court." } },
+
+  // GATE 5
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-1", title: "Mental Math Quotients", job: "Youth Club Card Distributor",
+    optA: { title: "Card Club Distribution Docket", desc: "Divide 270 cards / 9 boxes = 30 cards each.", prompt: "Calculate mental quotient of 270 / 9; write equal share on all 9 box labels." },
+    optB: { title: "Equal Share Distribution Chant", desc: "4-line rule on dividing multiples of 10.", prompt: "Compose 4-line rule on why 270 / 9 equals 3 tens rather than 3 ones." } },
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-2", title: "Estimate Quotients", job: "Arcade Prize Assayer",
+    optA: { title: "Arcade Ticket Estimate Slip", desc: "Estimate 248 / 3 using compatible 240 / 3 = 80.", prompt: "Calculate compatible dividend for 248 / 3 and justify fairness of share." },
+    optB: { title: "Compatible Numbers Mind Map", desc: "Map: dividend -> nearest multiple of divisor -> quotient.", prompt: "Draw a decision map for selecting friendly dividends in division problems." } },
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-3", title: "Estimate Greater Dividends", job: "Carnival Logistician",
+    optA: { title: "Carnival Logistics Slip", desc: "Estimate 3,000 / 8 using 2,400 to 3,200 bounds.", prompt: "Establish upper and lower compatible bounds for 3,000 / 8 tickets." },
+    optB: { title: "Amanah in Estimation Research", desc: "Two lines on why compatible bounds prevent shortage.", prompt: "Explain in 2 sentences why upper/lower bounds protect carnival visitors." } },
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-4", title: "Interpret Remainders", job: "Expedition Watermaster",
+    optA: { title: "Watermaster Ration Docket", desc: "State quotient + certified meaning of leftover.", prompt: "Calculate division result for 47 / 6; state what the 5 leftover units mean." },
+    optB: { title: "The Last Cup 3-Panel Comic", desc: "Panel 1: share. Panel 2: leftover. Panel 3: decision.", prompt: "Draw 3-panel comic illustrating why a remainder cannot be thrown away." } },
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-5", title: "Partial Quotients Division", job: "Aqueduct Reservoir Steward",
+    optA: { title: "Reservoir Subtraction Log", desc: "List honest partial quotient jumps and sum.", prompt: "Divide using partial quotients; list every subtraction step and sum ladder." },
+    optB: { title: "AI Critic Jump Verification", desc: "Submit partial quotient jumps to AI Critic.", prompt: "Document partial quotient steps and answer 3 questions on jump sizes." } },
+  { gate: 5, gateName: "Qismat al-Ma'", code: "5-6", title: "Greater Dividend Partials", job: "Master Irrigation Engineer",
+    optA: { title: "Canal Discharge Waybill", desc: "Complete greater-dividend partial quotient ladder.", prompt: "Execute partial quotient division for 3-digit dividend; account for remainder." },
+    optB: { title: "Canal Flow Step Poster", desc: "Poster: 'Take what you can honestly, again.'", prompt: "Draw irrigation canal diagram showing successive partial quotient withdrawals." } },
+
+  // GATE 6
+  { gate: 6, gateName: "Souq al-Su'al", code: "6-1", title: "Solve Comparison Problems", job: "Souq Spice Merchant",
+    optA: { title: "Spice Trade Comparison Receipt", desc: "Two bars labelled 'times' vs 'more'.", prompt: "Construct 2-bar comparison model; distinguish multiplicative from additive comparison." },
+    optB: { title: "Times vs More Contrast Poster", desc: "Visual comparison poster of TIMES vs MORE.", prompt: "Draw two distinct bar models comparing TIMES as scaling vs MORE as addition." } },
+  { gate: 6, gateName: "Souq al-Su'al", code: "6-2", title: "Continue Comparison Problems", job: "Rope & Rigging Merchant",
+    optA: { title: "Rigging Delivery Receipt", desc: "Two bars fully scaled and named for rope lengths.", prompt: "Model 288-inch rope divided into 6 segments; label both comparison bars." },
+    optB: { title: "20-Second Spoken Order Audio", desc: "State which comparison word governs the problem.", prompt: "Write 20-second audio script explaining the rope comparison model to client." } },
+  { gate: 6, gateName: "Souq al-Su'al", code: "6-3", title: "Model Multi-Step Problems", job: "Souq Purchasing Inspector",
+    optA: { title: "Souq Trip Strip Diagram", desc: "Model entire shopping trip; solve Step 1 first.", prompt: "Draw strip diagram identifying hidden intermediate question before final price." },
+    optB: { title: "Multi-Step Shopping Mind Map", desc: "Map: stall 1 -> stall 2 -> hidden ask -> total.", prompt: "Draw a decision flow diagram mapping all steps of the market transaction." } },
+  { gate: 6, gateName: "Souq al-Su'al", code: "6-5", title: "Solve Multi-Step Problems", job: "Qahwa Trading House Accountant",
+    optA: { title: "Qahwa Ledger Sheet", desc: "Complete multi-step solution with intermediate sums.", prompt: "Solve multi-step coffee transaction; show all intermediate calculation steps." },
+    optB: { title: "AI Critic Multi-Step Audit", desc: "Submit multi-step solution to AI Critic.", prompt: "Paste multi-step solution and answer 3 questions on intermediate reasoning." } },
+  { gate: 6, gateName: "Souq al-Su'al", code: "6-6", title: "Make Sense & Persevere", job: "Master Souq Arbitrator",
+    optA: { title: "Arbitration Certificate", desc: "Two distinct valid solution methods signed.", prompt: "Solve the market dispute using 2 completely different mathematical methods." },
+    optB: { title: "Sabr & Perseverance Poster", desc: "Poster: 'If stuck, find a second way.'", prompt: "Create a motivational math poster illustrating two distinct paths to the same truth." } },
+
+  // GATE 7
+  { gate: 7, gateName: "Bayt al-Tamr", code: "7-1", title: "Understand Factors", job: "Date Packhouse Builder",
+    optA: { title: "Date Crate Factor Manifest", desc: "List all factor pairs of 24 (including 1x24).", prompt: "List all rectangular array dimensions for 24 date crates; verify no factor is missed." },
+    optB: { title: "Crate Array Packing Sketch", desc: "Draw all possible rectangular box packing layouts.", prompt: "Sketch all 4 rectangular packing arrays for 24 dates." } },
+  { gate: 7, gateName: "Bayt al-Tamr", code: "7-2", title: "Factors & Factor Rainbows", job: "Master Date Inspector",
+    optA: { title: "Official Crate Factor Rainbow", desc: "Complete arched factor rainbow inked on wood.", prompt: "Construct arched factor rainbow connecting ascending factor pairs." },
+    optB: { title: "Factor Protection Chant", desc: "4-line poem: Miss one pair, the Dust eats it.", prompt: "Compose 4-line rule on checking paired factors systematically from 1 upward." } },
+  { gate: 7, gateName: "Bayt al-Tamr", code: "7-3", title: "Repeated Reasoning Factors", job: "Warehouse Inventory Logician",
+    optA: { title: "Factor Verification Rule Card", desc: "State square-root stop rule in student's words.", prompt: "Formulate the mathematical rule for when to stop testing possible factors." },
+    optB: { title: "Factor Testing Pattern Poster", desc: "Poster showing 3 examples of paired factor limits.", prompt: "Draw diagram showing where factor pairs cross and repeat in reverse." } },
+  { gate: 7, gateName: "Bayt al-Tamr", code: "7-4", title: "Prime & Composite Numbers", job: "Rare Seed Agronomist",
+    optA: { title: "Seed Classification Dossier", desc: "Prime vs Composite definitions; 1 excluded.", prompt: "Classify given numbers as Prime or Composite with rectangular array proofs." },
+    optB: { title: "Two-Column Classification Chart", desc: "Will split / Will not split visual chart.", prompt: "Create a 2-column reference chart explaining why primes form only 1 line." } },
+  { gate: 7, gateName: "Bayt al-Tamr", code: "7-5", title: "Multiples", job: "Conveyor Belt Dispatcher",
+    optA: { title: "Pallet Dispatch Strip", desc: "First 5 multiples of 7 verified and listed.", prompt: "List the first five multiples of 7; distinguish multiples from factors." },
+    optB: { title: "Factors vs Multiples Mind Map", desc: "4-bubble map contrasting factors and multiples.", prompt: "Draw a mind map showing factors as divisors and multiples as infinite steps." } },
+
+  // GATE 8
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-1", title: "Equivalent Fractions (Area Models)", job: "Courtyard Mosaic Mason",
+    optA: { title: "Courtyard Tile Blueprint", desc: "Two area models proving 1/2 = 2/4 with equal area.", prompt: "Draw two area models of identical size proving 1/2 = 2/4 = 4/8." },
+    optB: { title: "Shade Tiling Pattern Sketch", desc: "Diagram courtyard floor cut into finer tiles.", prompt: "Sketch courtyard floor partitioned into eighths without altering shaded area." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-2", title: "Equivalent Fractions (Number Lines)", job: "Courtyard Shadow Surveyor",
+    optA: { title: "Shadow Survey Line Card", desc: "Dual-scaled fraction line with shared points marked.", prompt: "Plot equivalent fractions at the exact same location on a number line." },
+    optB: { title: "Same Point Fraction Chant", desc: "4-line poem: Different names, identical location.", prompt: "Write a 4-line rule on why equivalent fractions share the same point on a line." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-3", title: "Generate Equivalence (Multiplication)", job: "Tile Expansion Assayer",
+    optA: { title: "Equivalence Scaling Card", desc: "Multiply numerator and denominator by n/n.", prompt: "Generate 3 equivalent fractions by multiplying top and bottom by 2, 3, and 4." },
+    optB: { title: "Grow Name Not Amount Poster", desc: "Poster explaining multiplying by 1 as n/n.", prompt: "Create a visual poster showing why multiplying by n/n equals multiplying by 1." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-4", title: "Generate Equivalence (Division)", job: "Restoration Mason",
+    optA: { title: "Simplification Assay Card", desc: "Divide top and bottom by common factor.", prompt: "Simplify given fractions to simplest form by dividing by common factors." },
+    optB: { title: "Simplification Decision Map", desc: "Mind map on finding common factors for division.", prompt: "Draw a decision flow chart for reducing fractions to simplest terms." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-5", title: "Benchmark Fractions (0, 1/2, 1)", job: "Courtyard Lighting Keeper",
+    optA: { title: "Courtyard Lighting Benchmark Map", desc: "Fractions sorted into <1/2, =1/2, and >1/2.", prompt: "Classify 6 test fractions against benchmarks 0, 1/2, and 1 whole." },
+    optB: { title: "Three-Lamp Courtyard Drawing", desc: "Visual diagram of 3 benchmark lanterns.", prompt: "Draw 3 courtyard lanterns (0, 1/2, 1) with fractions assigned to lamp zones." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-6", title: "Compare Fractions", job: "Courtyard Shade Arbitrator",
+    optA: { title: "Fraction Comparison Ruling", desc: "Compare fractions using common denominator or benchmark.", prompt: "Compare 5/8 vs 3/8 and 2/3 vs 2/5 with mathematical justification." },
+    optB: { title: "AI Critic Fraction Comparison", desc: "Submit fraction comparison proof to AI Critic.", prompt: "Paste comparison reasoning and answer 3 questions on common wholes." } },
+  { gate: 8, gateName: "Sahn al-Zill", code: "8-7", title: "Construct Arguments (Fractions)", job: "Master Court Advocate",
+    optA: { title: "Formal Mathematical Argument", desc: "Two-sentence justification with diagrammatic proof.", prompt: "Write formal mathematical defense proving why one fractional claim is true." },
+    optB: { title: "Evidence Over Volume Poster", desc: "Poster: 'In math, evidence speaks louder than volume.'", prompt: "Create an advocacy poster displaying mathematical proof over assertion." } },
+
+  // GATE 9
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-1", title: "Model Addition of Fractions", job: "Community Master Baker",
+    optA: { title: "Master Baker Tray Model", desc: "Like fraction addition with common denominator intact.", prompt: "Draw joined fraction bar model adding 1/6 + 2/6; justify denominator." },
+    optB: { title: "Before/After Tray Join Sketch", desc: "Diagram of two bread pans combined into one.", prompt: "Sketch two fractional pans combining without altering slice dimensions." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-2", title: "Decompose Fractions", job: "Pantry Portioning Steward",
+    optA: { title: "Portioning Record Sheet", desc: "Three distinct decompositions of 5/6.", prompt: "Write 3 distinct valid decompositions of 5/6 as sums of smaller fractions." },
+    optB: { title: "One Cake Many Cuts Sketch", desc: "Visual diagram of single loaf partitioned 3 ways.", prompt: "Draw 3 identical loaves decomposed into distinct fractional combinations." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-3", title: "Add Like Denominators", job: "Community Kitchen Scribe",
+    optA: { title: "Kitchen Sum Slip", desc: "Add numerators, keep common denominator.", prompt: "Calculate sum of like fractions; explain why denominators are not added." },
+    optB: { title: "Add Parts Keep Cut Chant", desc: "4-line rule on adding numerators only.", prompt: "Write 4-line rule on why adding fractions preserves slice size." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-4", title: "Model Subtraction of Fractions", job: "Pantry Inventory Checker",
+    optA: { title: "Pantry Subtraction Diagram", desc: "Take-away model from a fixed common tray frame.", prompt: "Model subtraction of like fractions by removing slices from fixed frame." },
+    optB: { title: "Common Whole Subtraction Comic", desc: "Comic showing slices removed from correct tray.", prompt: "Draw a 2-panel comic showing why slices must come from the same whole." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-5", title: "Subtract Like Denominators", job: "Grain Rationing Steward",
+    optA: { title: "Rationing Difference Slip", desc: "Like fraction subtraction calculated and signed.", prompt: "Calculate difference of like fractions; verify difference against original whole." },
+    optB: { title: "Join vs Take Fraction Mind Map", desc: "Map contrasting addition vs subtraction of fractions.", prompt: "Draw mind map comparing joining slices vs taking slices from a whole." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-6", title: "Add & Subtract on Same Ledge", job: "Kitchen Dispatcher",
+    optA: { title: "Kitchen Dispatch Ledger", desc: "Operation sign (+/-) mathematically justified.", prompt: "Determine correct operation (+ or -) from word problem and solve with units." },
+    optB: { title: "Two-Door Sign Poster (+ / -)", desc: "Poster showing when problem requires + vs -.", prompt: "Draw poster contrasting joining language vs separating language." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-7", title: "Model Mixed Numbers", job: "Feast Table Supervisor",
+    optA: { title: "Feast Inventory Model", desc: "Mixed number represented as whole + fraction sum.", prompt: "Model mixed number (e.g. 1 3/4) as sum of whole units plus unit fractions." },
+    optB: { title: "Whole-and-Slice Feast Sketch", desc: "Diagram of whole cakes and loose slices.", prompt: "Draw feast table showing whole cakes alongside individual fractional slices." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-8", title: "Add Mixed Numbers", job: "Bulk Grain Assayer",
+    optA: { title: "Bulk Grain Addition Certificate", desc: "Mixed number sum with fraction overflow regrouped.", prompt: "Add mixed numbers; regroup fraction overflow into an extra whole unit." },
+    optB: { title: "AI Critic Overflow Review", desc: "Submit mixed number regrouping to AI Critic.", prompt: "Paste addition steps and answer 3 questions on handling fraction overflow." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-9", title: "Subtract Mixed Numbers", job: "Master Recipe Keeper",
+    optA: { title: "Recipe Subtraction Docket", desc: "Mixed number regrouping (trading 1 whole for n/n).", prompt: "Subtract mixed numbers requiring regrouping 1 whole into common fraction." },
+    optB: { title: "Trade Not Theft Poster", desc: "Poster: 'Regrouping is a trade, not a theft.'", prompt: "Create poster illustrating how 1 whole is traded for 6/6 to enable subtraction." } },
+  { gate: 9, gateName: "Suffat al-Iftar", code: "9-10", title: "Model with Math (Fractions)", job: "Kitchen Chief Architect",
+    optA: { title: "Kitchen Distribution Blueprint", desc: "Scaled bar model matching verified equation.", prompt: "Construct scaled bar diagram for multi-step fraction distribution problem." },
+    optB: { title: "One Picture One Equation Card", desc: "A5 card: matching diagram and equation side by side.", prompt: "Draft side-by-side mathematical model and algebraic equation." } },
+
+  // GATE 10
+  { gate: 10, gateName: "Qirbat al-Juz'", code: "10-1", title: "Fractions as Multiples of Unit Fractions", job: "Water-Skin Calibrator",
+    optA: { title: "Water-Skin Calibration Card", desc: "Unit fraction iteration (3/8 = 3 x 1/8).", prompt: "Express given fractions as multiples of unit fractions (e.g. 4/5 = 4 x 1/5)." },
+    optB: { title: "Water-Skin Notch Diagram", desc: "Diagram skin marked in eighths with 3 filled.", prompt: "Draw water-skin with unit fraction tick marks showing repeated iteration." } },
+  { gate: 10, gateName: "Qirbat al-Juz'", code: "10-2", title: "Multiply Fraction by Whole (Models)", job: "Ration Station Quartermaster",
+    optA: { title: "Ration Station Model Card", desc: "Model fraction x whole with repeated addition bar.", prompt: "Draw visual repeated addition bar model for 3 x 2/5; state final fraction." },
+    optB: { title: "Copies of a Unit Mind Map", desc: "Map: unit size -> copy count -> total fraction.", prompt: "Draw a decision map illustrating fraction multiplication as scaling." } },
+  { gate: 10, gateName: "Qirbat al-Juz'", code: "10-3", title: "Multiply Fraction by Whole (Symbols)", job: "Caravan Water Supply Officer",
+    optA: { title: "Supply Equation Docket", desc: "Equation with explicit units certified (3/8 x 8 gal).", prompt: "Solve fraction x whole number equation; include explicit measurement units." },
+    optB: { title: "Keep the Unit Attached Chant", desc: "4-line rule on preserving physical units in math.", prompt: "Write 4-line rule on why multiplying fractions must retain real-world units." } },
+  { gate: 10, gateName: "Qirbat al-Juz'", code: "10-4", title: "Solve Time Problems (Base 60)", job: "Haramain Rail Station Dispatcher",
+    optA: { title: "Official Haramain Boarding Pass", desc: "Departure, transit duration, and arrival arc (base 60).", prompt: "Calculate train arrival time given 08:45 departure and 2h 50min transit (base 60)." },
+    optB: { title: "Base-60 Station Clock Sketch", desc: "Diagram two clock faces with elapsed time arc.", prompt: "Draw two clock dials showing minute hand carry across the 60-minute mark." } },
+  { gate: 10, gateName: "Qirbat al-Juz'", code: "10-5", title: "Model with Math (Time & Fractions)", job: "Transit Master Chronographer",
+    optA: { title: "Chronographer Transit Blueprint", desc: "Signed mathematical model of multi-leg transit.", prompt: "Construct scaled timeline and equations for multi-leg desert caravan transit." },
+    optB: { title: "AI Critic Transit Schedule Review", desc: "Submit timeline model to AI Critic.", prompt: "Paste transit calculation and answer 3 questions on base-60 accuracy." } },
+
+  // GATE 11
+  { gate: 11, gateName: "Darb al-Athar", code: "11-1", title: "Read Line Plots", job: "Marine Biologist",
+    optA: { title: "Marine Specimen Report", desc: "Line plot read with units and frequency distinguished.", prompt: "Analyze fish length line plot; identify max, min, and modal specimen lengths." },
+    optB: { title: "Missing Label Research Note", desc: "Two lines on why unlabelled axes produce false science.", prompt: "Explain in 2 sentences why plotting dots without units violates data integrity." } },
+  { gate: 11, gateName: "Darb al-Athar", code: "11-2", title: "Make Line Plots", job: "Footwear Quartermaster",
+    optA: { title: "Quartermaster Inventory Line Plot", desc: "Correctly scaled number line with plotted data.", prompt: "Construct scaled line plot from raw shoe size table; place all data dots." },
+    optB: { title: "Shoe Stall Sales Poster", desc: "Poster showing most frequent sizes from plot.", prompt: "Create warehouse poster displaying highest volume shoe sizes from line plot." } },
+  { gate: 11, gateName: "Darb al-Athar", code: "11-3", title: "Solve Problems with Line Plots", job: "Wildlife Track Surveyor",
+    optA: { title: "Wildlife Survey Analysis", desc: "Range and difference equations derived from plot values.", prompt: "Calculate data range (Max length - Min length) using line plot values." },
+    optB: { title: "Values vs Dots Cartoon", desc: "Comic: Nader counts dots; Omar subtracts values.", prompt: "Draw 2-panel comic showing difference between counting dots vs reading lengths." } },
+  { gate: 11, gateName: "Darb al-Athar", code: "11-4", title: "Critique Reasoning on Data", job: "Scientific Data Auditor",
+    optA: { title: "Scientific Audit Memo", desc: "Two-line constructive critique of Nader's claim.", prompt: "Write constructive mathematical critique explaining why 4 dots is not 4 inches." },
+    optB: { title: "AI Critic Data Argument Review", desc: "Submit critique to AI Critic for tone and math check.", prompt: "Paste critique and answer 3 questions on scientific rigor and adab." } },
+
+  // GATE 12
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-1", title: "Fractions & Decimals (Tenths/Hundredths)", job: "Mint Coin Assayer",
+    optA: { title: "Mint Coin Card", desc: "Tenths and hundredths in fraction and decimal forms.", prompt: "Represent 7/10 as 0.7 and 70/100 as 0.70 on official coin assay card." },
+    optB: { title: "10-Stall Market Decimal Sketch", desc: "Draw 10 market stalls with 7 shaded.", prompt: "Sketch 10 market stalls illustrating 7/10 as 0.7 without using 7.10 notation." } },
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-2", title: "Decimals on the Number Line", job: "Market Scale Inspector",
+    optA: { title: "Market Scale Ruler Card", desc: "Decimal points accurately located between tenth ticks.", prompt: "Locate points 0.35, 0.6, and 0.85 on double-scaled decimal number line." },
+    optB: { title: "Decimal Number Line Poster", desc: "Poster showing zoom from tenths to hundredths.", prompt: "Draw magnified number line showing hundredths intervals between 0.3 and 0.4." } },
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-3", title: "Compare Decimals", job: "Treasury Weight Assayer",
+    optA: { title: "Assay Comparison Card", desc: "Place-value comparison proof showing 0.11 > 0.09.", prompt: "Compare decimal coin weights (0.11 oz vs 0.09 oz); justify using tenths place." },
+    optB: { title: "Tenths Before Hundredths Chant", desc: "4-line rule on comparing decimal places left to right.", prompt: "Write 4-line rule explaining why 0.11 is greater than 0.09 despite 9 > 1." } },
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-4", title: "Add Fractions (10 & 100)", job: "Mosaic Restoration Artist",
+    optA: { title: "100-Tile Mosaic Blueprint", desc: "Tenths converted to hundredths and summed correctly.", prompt: "Calculate 4/10 + 5/100 by renaming 4/10 to 40/100; state sum." },
+    optB: { title: "100-Tile Grid Color Sketch", desc: "10x10 grid with tenths and hundredths shaded.", prompt: "Color a 10x10 grid in two shades showing 4 tenths snap to 40 hundredths." } },
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-5", title: "Money Word Problems (SAR)", job: "Al-Balad Souq Cashier",
+    optA: { title: "Souq Cash Register Slip", desc: "Line-item total, cash received, and exact change counted up.", prompt: "Calculate cost of 3 flash drives @ SAR 24, pay with SAR 80, count back change." },
+    optB: { title: "Itemized Souq Customer Receipt", desc: "Receipt drawing with item breakdown and change.", prompt: "Draw official merchant receipt showing subtotals, cash tendered, and change." } },
+  { gate: 12, gateName: "Dakkan al-Halalah", code: "12-6", title: "Structure in Decimals", job: "Trail Milestone Surveyor",
+    optA: { title: "Trail Milepost Survey", desc: "Aligned decimal mile markers with 1.0 whole established.", prompt: "Align 0.25, 0.50, and 0.75 mile distances; locate 1.0 mile whole milestone." },
+    optB: { title: "Three Hikers Trail Poster", desc: "Poster showing 3 hikers along 1-mile trail.", prompt: "Draw trail map showing 3 hikers at decimal intervals from starting line." } },
+
+  // GATE 13
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-1", title: "Customary Units of Length", job: "School Route Surveyor",
+    optA: { title: "School Path Route Card", desc: "Convert 75 yards to 225 feet with proof.", prompt: "Convert 75 yards to feet using 1 yd = 3 ft scaling; show multiplication." },
+    optB: { title: "Path Measurement Sketch", desc: "Diagram of school walkway in yards and feet.", prompt: "Draw school path dual-labelled in yards and feet with conversion formula." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-2", title: "Customary Capacity", job: "Juice Bottler",
+    optA: { title: "Juice Bottling Log", desc: "Convert 1/2 gallon to quarts and pints.", prompt: "Convert 1/2 gallon of juice into quarts and pints using capacity conversion tree." },
+    optB: { title: "Capacity Tree Jug Drawing", desc: "Visual diagram of gallon, quart, and pint jugs.", prompt: "Draw nesting jugs illustrating 1 gallon = 4 quarts = 8 pints = 16 cups." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-3", title: "Customary Weight", job: "Veterinary Assayer",
+    optA: { title: "Veterinary Weight Card", desc: "Convert 1/2 pound to 8 ounces using 1 lb = 16 oz.", prompt: "Convert puppy Badr's weight from pounds to ounces; justify using 16 oz/lb." },
+    optB: { title: "Veterinary Scale Poster", desc: "Poster showing balance scale in pounds and ounces.", prompt: "Draw balance scale showing 1/2 pound balancing with 8 1-ounce weights." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-4", title: "Metric Units of Length", job: "Science Lab Calibrator",
+    optA: { title: "Lab Instrument Calibration Strip", desc: "Marker length dual-labelled in cm and mm.", prompt: "Convert marker length from centimeters to millimeters using x10 metric jump." },
+    optB: { title: "Metric Zoom Ruler Sketch", desc: "Diagram of ruler showing mm sub-divisions.", prompt: "Draw magnified metric ruler showing 10 millimeters inside 1 centimeter." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-5", title: "Metric Capacity & Mass", job: "Water Purification Chemist",
+    optA: { title: "Purification Water-Skin Label", desc: "3 L converted to 3,000 mL and 3,000 g.", prompt: "Convert 3 liters of water to milliliters and mass in grams; show equality." },
+    optB: { title: "Water Mass & Volume Mind Map", desc: "Map connecting 1 L = 1,000 mL = 1,000 g = 1 kg.", prompt: "Draw mind map illustrating unity of metric volume and mass for pure water." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-6", title: "Perimeter & Area Problems", job: "Renovation Contractor",
+    optA: { title: "Renovation Waybill", desc: "Wall width from area; border tape from perimeter.", prompt: "Calculate wall width from 168 sq ft area (8 ft height); calculate perimeter." },
+    optB: { title: "Wall Surface & Border Drawing", desc: "Floor plan with area shaded gold and border teal.", prompt: "Draw wall elevation with area shaded in gold and perimeter traced in teal." } },
+  { gate: 13, gateName: "Mizan al-Dhira'", code: "13-7", title: "Precision in Measurement", job: "Standardization Inspector",
+    optA: { title: "Standardization Report", desc: "Justification of appropriate precision units.", prompt: "Select and justify appropriate units (mm vs cm vs m) for 3 engineering jobs." },
+    optB: { title: "AI Critic Precision Review", desc: "Submit measurement unit choices to AI Critic.", prompt: "Paste unit choices and answer 3 questions on precision as an amānah trust." } },
+
+  // GATE 14
+  { gate: 14, gateName: "Silsilat al-Najm", code: "14-1", title: "Number Sequences", job: "Trail Cryptographer",
+    optA: { title: "Trail Sequence Strip", desc: "Next 6 terms of start 18, add 3 + even/odd feature.", prompt: "List next 6 terms for sequence starting at 18 (+3 rule); state alternating feature." },
+    optB: { title: "Sequence Ridge Sketch", desc: "Diagram of sequence steps carved in mountain path.", prompt: "Draw mountain path with sequence numbers on stone steps showing parity pattern." } },
+  { gate: 14, gateName: "Silsilat al-Najm", code: "14-2", title: "Input/Output Tables", job: "Juice Factory Packager",
+    optA: { title: "Packaging Function Rule Card", desc: "Input x 6 = Output rule verified for 10 and 100.", prompt: "Complete input/output table for packs x 6; calculate total for 10 and 100 packs." },
+    optB: { title: "Juice Packaging Rule Poster", desc: "Poster illustrating function machine with x6 gear.", prompt: "Draw function machine diagram showing input boxes multiplied by 6." } },
+  { gate: 14, gateName: "Silsilat al-Najm", code: "14-3", title: "Repeating Shape Patterns", job: "Mosaic Border Artisan",
+    optA: { title: "Mosaic Border Key", desc: "37th shape identified through core repeat math.", prompt: "Predict the 37th tile in Square-Triangle repeating motif using remainder math." },
+    optB: { title: "Repeating Tile Border Drawing", desc: "Draw pattern to 8th tile, then leap to 37th.", prompt: "Draw the repeating motif core and show mathematical leap to 37th position." } },
+  { gate: 14, gateName: "Silsilat al-Najm", code: "14-4", title: "Structure in Patterns", job: "Architectural Cryptanalyst",
+    optA: { title: "Pattern Architecture Dossier", desc: "Hidden repeating unit identified and verified.", prompt: "Isolate and draw the minimal repeating core block from complex geometric fabric." },
+    optB: { title: "Repeating vs Growing Mind Map", desc: "Mind map contrasting repeating vs growing patterns.", prompt: "Draw a mind map distinguishing repeating cycles from growing numerical rules." } },
+
+  // GATE 15
+  { gate: 15, gateName: "al-Mizwala", code: "15-1", title: "Lines, Rays & Angles", job: "Courtyard Stone Mason",
+    optA: { title: "Stone Mason Angle Sketch", desc: "Right angle benchmark + two acute angles drawn.", prompt: "Identify square corner right angle in court; draw two acute angles with rays." },
+    optB: { title: "Courtyard Right Angle Diagram", desc: "Sketch of court slab with right angle gold.", prompt: "Draw marble courtyard foundation highlighting right, acute, and obtuse angles." } },
+  { gate: 15, gateName: "al-Mizwala", code: "15-2", title: "Understand Angles & Unit Angles", job: "Clockmaker",
+    optA: { title: "Clockmaker Calibration Dial", desc: "Quarter turn named as 90 degrees of 360.", prompt: "Express angle turn at 3 o'clock as 1/4 of 360° circle; state 90° turn." },
+    optB: { title: "360-Degree Turn Clock Drawing", desc: "Draw clock face showing angle fraction arc.", prompt: "Draw clock face illustrating circular fractions as unit angle degrees." } },
+  { gate: 15, gateName: "al-Mizwala", code: "15-4", title: "Measure & Draw Angles", job: "Solar Calibrator",
+    optA: { title: "Solar Calibrator Angle Log", desc: "Exact angle measurement with chosen scale justified.", prompt: "Measure given solar ray angle using protractor; justify inner vs outer scale." },
+    optB: { title: "Dual-Scale Protractor Poster", desc: "Poster: 'Inner vs Outer scale: start at 0°.'", prompt: "Create tool guide showing how to align vertex and 0° baseline on protractor." } },
+  { gate: 15, gateName: "al-Mizwala", code: "15-5", title: "Add & Subtract Angle Measures", job: "Celestial Navigator",
+    optA: { title: "Celestial Angle Chart", desc: "Adjacent angle sum proving angle ABD = whole.", prompt: "Calculate total solar angle by summing adjacent angles; prove sum equals whole." },
+    optB: { title: "Split-Ray Solar Angle Drawing", desc: "Diagram of angle split into two smaller sectors.", prompt: "Draw solar angle arc partitioned by central ray; label all angle measures." } },
+  { gate: 15, gateName: "al-Mizwala", code: "15-6", title: "Use Appropriate Tools (Angles)", job: "Astrolabe Maker",
+    optA: { title: "Instrument Maker Tool Docket", desc: "Protractor selected and justified for angle turning.", prompt: "Select and justify appropriate instruments (protractor vs ruler) for 3 tasks." },
+    optB: { title: "AI Critic Tool Selection Audit", desc: "Submit tool rationale to AI Critic.", prompt: "Paste tool choices and answer 3 questions on geometric tool precision." } },
+
+  // GATE 16
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-1", title: "Lines (Parallel/Perpendicular)", job: "Foundation Engineer",
+    optA: { title: "Foundation Line Blueprint", desc: "Parallel and perpendicular lines identified.", prompt: "Identify parallel and perpendicular foundation lines; prove parallel lines never cross." },
+    optB: { title: "Palm Row Perspective Sketch", desc: "Drawing of parallel palm rows extending to horizon.", prompt: "Draw perspective sketch of parallel lines showing constant equidistant spacing." } },
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-2", title: "Classify Triangles", job: "Stained-Glass Craftsman",
+    optA: { title: "Stained-Glass Triangle Dossier", desc: "Triangles classified by both sides and angles.", prompt: "Classify dome triangles by side lengths (equilateral/isosceles/scalene) and angles." },
+    optB: { title: "Triangle Hierarchy Poster", desc: "Poster showing 2-set sort: Right x Isosceles.", prompt: "Create classification matrix sorting triangles by side types and angle types." } },
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-3", title: "Classify Quadrilaterals", job: "Master Dome Architect",
+    optA: { title: "Quad Family Tree Chart", desc: "Three distinct quadrilaterals drawn and classified.", prompt: "Construct quadrilateral hierarchy showing parallelogram, rectangle, rhombus, square." },
+    optB: { title: "Quadrilateral Family Tree Poster", desc: "Visual nested Venn diagram of quadrilaterals.", prompt: "Draw nested Venn loops illustrating quadrilateral family relationships." } },
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-4", title: "Line Symmetry", job: "Dome Glass Artisan",
+    optA: { title: "Symmetry Inspection Report", desc: "Exact count of symmetry lines for square and star.", prompt: "Determine total lines of symmetry for square (4), rectangle (2), and star (8)." },
+    optB: { title: "Folded Paper Symmetry Photo/Sketch", desc: "Draw shapes along reflection folding lines.", prompt: "Sketch geometric polygons showing dashed symmetry folding lines." } },
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-5", title: "Draw Shapes with Line Symmetry", job: "Islamic Master Draftsman",
+    optA: { title: "Capstone Symmetrical Star Drawing", desc: "Exact symmetrical star drawn across center line.", prompt: "Complete missing half of 8-point geometric star across central line of symmetry." },
+    optB: { title: "Islamic 8-Point Star Artwork", desc: "Draft full 8-point star with dignified geometry.", prompt: "Draft official 8-point geometric star with all 8 symmetry axes ruled." } },
+  { gate: 16, gateName: "Qubbat al-Thamaniya", code: "16-6", title: "Critique Reasoning in Geometry", job: "Chief Geometric Jurist",
+    optA: { title: "Chief Jurist Geometric Ruling", desc: "Two-line constructive mathematical proof on hierarchy.", prompt: "Write formal mathematical critique evaluating geometric hierarchy claims with rigor." },
+    optB: { title: "AI Critic Geometric Argument Audit", desc: "Submit critique to AI Critic for logical check.", prompt: "Paste geometric argument and answer 3 questions on definition validity." } }
+];
+
+/* State */
+let selectedDoor = PRODUCTION_DATA[0];
+let selectedOptionType = "A";
+let activeGateFilter = "all";
+
+/* DOM Elements */
+const doorList = document.getElementById("doorList");
+const doorSearch = document.getElementById("doorSearch");
+const gatePills = document.getElementById("gatePills");
+
+const curGateTag = document.getElementById("curGateTag");
+const curLessonRef = document.getElementById("curLessonRef");
+const curDoorTitle = document.getElementById("curDoorTitle");
+const curDoorJob = document.getElementById("curDoorJob");
+
+const boxOptA = document.getElementById("boxOptA");
+const boxOptB = document.getElementById("boxOptB");
+const optATitle = document.getElementById("optATitle");
+const optADesc = document.getElementById("optADesc");
+const optBTitle = document.getElementById("optBTitle");
+const optBDesc = document.getElementById("optBDesc");
+
+const previewBadge = document.getElementById("previewBadge");
+const a5SheetTitle = document.getElementById("a5SheetTitle");
+const a5SheetJob = document.getElementById("a5SheetJob");
+const a5SheetDoor = document.getElementById("a5SheetDoor");
+const a5Prompt = document.getElementById("a5Prompt");
+const aiFeedback = document.getElementById("aiFeedback");
+
+/* Render Door List */
+function renderDoorList() {
+  doorList.innerHTML = "";
+  const query = doorSearch.value.toLowerCase().trim();
+
+  PRODUCTION_DATA.forEach(d => {
+    if (activeGateFilter !== "all" && String(d.gate) !== String(activeGateFilter)) return;
+
+    if (query && !d.code.toLowerCase().includes(query) &&
+        !d.title.toLowerCase().includes(query) &&
+        !d.job.toLowerCase().includes(query)) {
+      return;
+    }
+
+    const item = document.createElement("div");
+    item.className = "door-list-item" + (d.code === selectedDoor.code ? " selected" : "");
+    item.onclick = () => selectDoor(d);
+    item.innerHTML = `
+      <span class="door-item-code">${d.code}</span>
+      <span class="door-item-title">${d.title}</span>
+    `;
+    doorList.appendChild(item);
+  });
+}
+
+/* Select Door Handler */
+function selectDoor(d) {
+  selectedDoor = d;
+  renderDoorList();
+  updateWorkbench();
+}
+
+/* Select Option A vs B */
+function selectOption(type) {
+  selectedOptionType = type;
+  boxOptA.className = "option-box" + (type === "A" ? " selected-a" : "");
+  boxOptB.className = "option-box" + (type === "B" ? " selected-b" : "");
+  updateSheetPreview();
+}
+
+/* Update Workbench Stage */
+function updateWorkbench() {
+  const d = selectedDoor;
+  curGateTag.textContent = `Gate ${d.gate} · ${d.gateName}`;
+  curLessonRef.textContent = `Door ${d.code}`;
+  curDoorTitle.textContent = d.title;
+  curDoorJob.textContent = d.job;
+
+  optATitle.textContent = d.optA.title;
+  optADesc.textContent = d.optA.desc;
+  optBTitle.textContent = d.optB.title;
+  optBDesc.textContent = d.optB.desc;
+
+  updateSheetPreview();
+}
+
+/* Update A5 Sheet Content */
+function updateSheetPreview() {
+  const d = selectedDoor;
+  const isA = selectedOptionType === "A";
+  const opt = isA ? d.optA : d.optB;
+
+  previewBadge.textContent = isA ? "Option A (Vocational Artifact)" : "Option B (Transfer / Model)";
+  previewBadge.style.color = isA ? "var(--option-a)" : "var(--option-b)";
+
+  a5SheetTitle.textContent = opt.title;
+  a5SheetJob.textContent = d.job;
+  a5SheetDoor.textContent = `DOOR ${d.code}`;
+  
+  a5Prompt.innerHTML = `
+    <b>Task:</b> ${opt.prompt}<br>
+    <b>Done when:</b> Solution shows complete mathematical reasoning, explicit units, and student signature.
+  `;
+}
+
+/* Socratic AI Critic Simulation */
+function runAiCritic() {
+  const input = document.getElementById("aiInput").value.trim();
+  aiFeedback.classList.add("active");
+  if (!input) {
+    aiFeedback.innerHTML = `<b>AI Critic Guardrail (Standing Rule):</b><br>
+      <i>“Do not solve. Do not give the answer. I am a Grade 4 boy. Here is my work: [paste]. Ask me three questions that check whether my reasoning is complete and honest (amānah).”</i><br><br>
+      <b>Sample Socratic Questions:</b>
+      <ol style="margin: 6px 0 0 20px;">
+        <li>Did you name the mathematical property or rule that justifies your calculation?</li>
+        <li>How can you verify your answer using an inverse operation or visual model?</li>
+        <li>Is every place value and measurement unit written with clarity and precision?</li>
+      </ol>`;
+  } else {
+    aiFeedback.innerHTML = `<b>AI Critic Feedback on Student Work:</b><br>
+      <ol style="margin: 6px 0 0 20px;">
+        <li>You wrote: <i>"${input.slice(0, 60)}..."</i> — Can you explain why this step is true using a place-value or bar model?</li>
+        <li>What happens if a classmate asks you to prove that no remainder was ignored or lost?</li>
+        <li>Have you double-checked that your final answer includes the correct physical unit?</li>
+      </ol>`;
+  }
+}
+
+/* Event Listeners */
+doorSearch.addEventListener("input", renderDoorList);
+
+gatePills.addEventListener("click", e => {
+  if (e.target.tagName === "BUTTON") {
+    gatePills.querySelectorAll(".gate-nav-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    activeGateFilter = e.target.dataset.gate;
+    renderDoorList();
+  }
+});
+
+// Initial Setup
+renderDoorList();
+updateWorkbench();
+</script>
+<a href="/" class="daf-hub-back" style="position:fixed;left:12px;bottom:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(6,17,20,.72);color:#e8f3f5;font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(6px);opacity:.75" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75" aria-label="Back to the Learning Hub">&larr; Hub</a><style>@media print{.daf-hub-back{display:none!important}}</style>
+</body>
+</html>

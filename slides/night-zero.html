@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Night Zero · Wadi al-Amanah</title>
+<style>
+:root{--teal:#12857c;--gold:#c9a227;--deep:#0a5f58;--ink:#10242b;--ink2:#47616a;--paper:#f7fbfa;--line:#cde7e3}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0B1F24;color:#EAF4F2;font-family:Georgia,"Iowan Old Style",serif}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px}
+.vp{width:min(920px,100%);aspect-ratio:16/9;background:radial-gradient(1200px 600px at 50% -10%,#1a3d3a 0%,#0B1F24 55%);
+  border-radius:20px;border:1px solid rgba(201,162,39,.35);box-shadow:0 24px 70px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;padding:36px 48px 24px;position:relative;overflow:hidden}
+.gold{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal))}
+.lbl{font-family:system-ui,sans-serif;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+h1{margin:0 0 16px;font-size:clamp(22px,4vw,34px);font-weight:700;line-height:1.25}
+h1 em{font-style:normal;color:var(--gold)}
+p{margin:0 0 12px;font-size:clamp(16px,2.4vw,20px);line-height:1.55;max-width:38em}
+p.dust{color:#c9a227;font-style:italic}
+.boxes{display:flex;gap:8px;margin:18px 0 8px;flex-wrap:wrap}
+.box{width:52px;height:64px;border:2px solid rgba(234,244,242,.35);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.box.empty{border-color:var(--gold);box-shadow:0 0 12px rgba(201,162,39,.45)}
+.nav{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-family:system-ui,sans-serif;font-size:12px;color:#8fb3ad}
+.nav button{background:transparent;border:1px solid rgba(201,162,39,.4);color:var(--gold);border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer}
+.hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:system-ui;font-size:10px;color:#5e7f7a}
+</style>
+</head>
+<body>
+<div class="vp" id="vp">
+  <div class="gold"></div>
+  <div class="lbl" id="lbl"></div>
+  <div id="body"></div>
+  <div class="nav">
+    <button type="button" id="prev">←</button>
+    <span id="c">1 / 6</span>
+    <button type="button" id="next">→</button>
+  </div>
+</div>
+<p class="hint">Week 01 · four minutes · then stop. Keys ← → · Do not say 356,039 tonight.</p>
+<script>
+const S = [
+  {l:"Night Zero · not on any real map",
+   h:"Omar found a page <em>in the wind</em>.",
+   html:`<p>It had seven boxes. No names. No commas.</p>
+     <div class="boxes">
+       <div class="box">?</div><div class="box">?</div><div class="box">?</div>
+       <div class="box empty"></div><div class="box">?</div><div class="box">?</div><div class="box">?</div>
+     </div>
+     <p>Three boxes were empty — as if something had been eaten.</p>`},
+  {l:"The cubes did not agree",
+   h:"He ran to <em>Zayd</em>.",
+   html:`<p>Zayd built the boxes out of little cubes.</p><p>The cubes did not agree with the page.</p>`},
+  {l:"Sahat al-Misbah",
+   h:"They took both to the <em>ruined court</em>.",
+   html:`<p>A valley beyond the last ridge of the Hijaz. Entrusted to people who would measure honestly.</p>
+        <p>A brass lantern hung there. <b>Misbah.</b></p>
+        <p>Misbah did not speak. It never speaks. It only made the empty boxes glow.</p>`},
+  {l:"The Dust",
+   h:"Then the wind had a <em>voice</em>.",
+   html:`<p class="dust">“Zeros are nothing. Skip them. Pretty numbers are enough.”</p>
+        <p>The empty hundreds-box burned gold.</p>`},
+  {l:"Two things, and a third",
+   h:"Omar understood <em>two</em> things.",
+   html:`<p><b>One.</b> Something has been eating the zeros so the wells look fuller than they are.</p>
+        <p><b>Two.</b> Misbah will show what is true. It will never tell the answer.</p>
+        <p><b>Three.</b> He did not yet know the eater’s name.</p>`},
+  {l:"Stop · dawn is not yet",
+   h:"The eater is called <em>Ghubar</em>.",
+   html:`<p>The Dust. It feeds on skipped places, rushed rounding, unfair shares.</p>
+        <p>The Sijill had sixteen pages. Restore a page — Ghubar cannot eat that kind of number.</p>
+        <p>Omar kept the page. Zayd kept the cubes. You kept the lantern lit.</p>
+        <p><b>Stop.</b> Tomorrow we try to read the seven boxes. That is Door 1-1.</p>`}
+];
+let i=0;
+const body=document.getElementById("body");
+const lbl=document.getElementById("lbl");
+const c=document.getElementById("c");
+function draw(){
+  const s=S[i];
+  lbl.textContent=s.l;
+  body.innerHTML=`<h1>${s.h}</h1>${s.html}`;
+  c.textContent=(i+1)+" / "+S.length;
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===S.length-1;
+}
+document.getElementById("prev").onclick=()=>{if(i>0){i--;draw()}};
+document.getElementById("next").onclick=()=>{if(i<S.length-1){i++;draw()}};
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key===" "){e.preventDefault(); if(i<S.length-1){i++;draw()}}
+  if(e.key==="ArrowLeft"){e.preventDefault(); if(i>0){i--;draw()}}
+});
+draw();
+</script>
+<a href="/" class="daf-hub-back" style="position:fixed;left:12px;bottom:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(6,17,20,.72);color:#e8f3f5;font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(6px);opacity:.75" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75" aria-label="Back to the Learning Hub">&larr; Hub</a><style>@media print{.daf-hub-back{display:none!important}}</style>
+</body>
+</html>

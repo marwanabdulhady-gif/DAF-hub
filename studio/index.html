@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Studio · Dar Al Fikr Math Hub</title>
+  <link rel="icon" type="image/png" href="/assets/img/daf-star.png" />
+  
+  <!-- Activity Engine Core Stylesheet -->
+  <link rel="stylesheet" href="css/activity-engine.css">
+  <!-- Studio App Stylesheet -->
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+
+  <!-- Top Studio Navbar -->
+  <header class="studio-navbar">
+    <div class="studio-brand">
+      <div class="studio-logo-badge">⚡</div>
+      <div>
+        <h1 class="studio-title-h1">WordWall Activity Engine</h1>
+        <div class="studio-sub-badge">STUDIO & RUNTIME GENERATOR</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="studio-nav-tabs">
+      <button class="studio-tab-btn active" data-tab="tab-player">🎮 Player & Preview</button>
+      <button class="studio-tab-btn" data-tab="tab-builder">✏️ Visual Builder</button>
+      <button class="studio-tab-btn" data-tab="tab-json">💾 JSON Config</button>
+      <button class="studio-tab-btn" data-tab="tab-worksheet">📄 Worksheet</button>
+      <button class="studio-tab-btn" data-tab="tab-docs">🔌 Developer API</button>
+    </nav>
+
+    <!-- Global Actions -->
+    <div class="studio-actions-group">
+      <label class="studio-btn-secondary" title="Import JSON Activity File" style="cursor: pointer;">
+        📥 Import JSON
+        <input type="file" id="input-import-json" accept=".json" style="display:none;"/>
+      </label>
+      <button class="studio-btn-secondary" id="btn-download-json" title="Download current activity as JSON">💾 Save JSON</button>
+      <button class="studio-btn-primary" id="btn-export-html" title="Generate 100% self-contained standalone HTML game">🚀 Export Standalone HTML</button>
+    </div>
+  </header>
+
+  <main class="studio-main">
+    
+    <!-- ACTIVITY TEMPLATE CAROUSEL (Features the 6 from the reference prompt + classic wordwall modes) -->
+    <section class="activity-picker-shelf">
+      <div class="shelf-title">
+        <span>🎯 Select Activity Mechanic Template:</span>
+      </div>
+      <div class="activity-pills-row">
+        
+        <!-- 1. Matching -->
+        <div class="activity-pill active" data-type="matching">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="4" width="10" height="6" rx="2"/>
+              <rect x="4" y="13" width="10" height="6" rx="2"/>
+              <rect x="4" y="22" width="10" height="6" rx="2"/>
+              <rect x="18" y="4" width="10" height="6" rx="2"/>
+              <rect x="18" y="13" width="10" height="6" rx="2"/>
+              <rect x="18" y="22" width="10" height="6" rx="2"/>
+              <path d="M14 7 L18 16" stroke-dasharray="2 1"/>
+              <path d="M14 16 L18 25" stroke-dasharray="2 1"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Matching</span>
+        </div>
+
+        <!-- 2. Word Search -->
+        <div class="activity-pill" data-type="wordsearch">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="5" width="22" height="22" rx="4"/>
+              <line x1="12" y1="5" x2="12" y2="27"/>
+              <line x1="20" y1="5" x2="20" y2="27"/>
+              <line x1="5" y1="12" x2="27" y2="12"/>
+              <line x1="5" y1="20" x2="27" y2="20"/>
+              <circle cx="21" cy="21" r="5" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/>
+              <line x1="25" y1="25" x2="29" y2="29" stroke="#ffffff" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Word search</span>
+        </div>
+
+        <!-- 3. Reading Comprehension -->
+        <div class="activity-pill" data-type="reading">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 8 C4 8 8 7 16 9 C24 7 28 8 28 8 L28 25 C28 25 24 24 16 26 C8 24 4 25 4 25 Z"/>
+              <line x1="16" y1="9" x2="16" y2="26"/>
+              <circle cx="16" cy="5" r="3" fill="#38bdf8"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Reading comp.</span>
+        </div>
+
+        <!-- 4. Sorting & Categorizing -->
+        <div class="activity-pill" data-type="sorting">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 16 L7 27 C7 28 8 29 9 29 L14 29 C15 29 16 28 16 27 L18 16 Z"/>
+              <path d="M19 16 L21 27 C21 28 22 29 23 29 L28 29 C29 29 30 28 30 27 L32 16 Z"/>
+              <circle cx="10" cy="8" r="2.5" fill="#38bdf8"/>
+              <rect x="23" y="6" width="5" height="5" rx="1" fill="#ec4899"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Sorting & categorizing</span>
+        </div>
+
+        <!-- 5. Cloze / Fill in the blank -->
+        <div class="activity-pill" data-type="cloze">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="6" width="24" height="4" rx="2"/>
+              <rect x="4" y="14" width="24" height="4" rx="2"/>
+              <rect x="10" y="12" width="12" height="8" rx="2" fill="#3b82f6"/>
+              <rect x="4" y="22" width="24" height="4" rx="2"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Cloze / Fill-in</span>
+        </div>
+
+        <!-- 6. Labeling Diagram -->
+        <div class="activity-pill" data-type="diagram">
+          <div class="activity-pill-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="16" cy="12" r="4" fill="#fbbf24"/>
+              <circle cx="16" cy="6" r="3" fill="#ec4899"/>
+              <circle cx="10" cy="12" r="3" fill="#ec4899"/>
+              <circle cx="22" cy="12" r="3" fill="#ec4899"/>
+              <path d="M16 16 L16 28" stroke="#16a34a" stroke-width="3"/>
+              <line x1="22" y1="8" x2="28" y2="8" stroke="#38bdf8"/>
+              <line x1="20" y1="22" x2="28" y2="22" stroke="#38bdf8"/>
+            </svg>
+          </div>
+          <span class="activity-pill-label">Labeling diagram</span>
+        </div>
+
+        <!-- 7. Quiz / Gameshow -->
+        <div class="activity-pill" data-type="quiz">
+          <div class="activity-pill-icon">❓</div>
+          <span class="activity-pill-label">Quiz Show</span>
+        </div>
+
+        <!-- 8. Spin the Wheel -->
+        <div class="activity-pill" data-type="wheel">
+          <div class="activity-pill-icon">🎡</div>
+          <span class="activity-pill-label">Spin Wheel</span>
+        </div>
+
+        <!-- 9. Anagram / Unjumble -->
+        <div class="activity-pill" data-type="anagram">
+          <div class="activity-pill-icon">🔤</div>
+          <span class="activity-pill-label">Anagram</span>
+        </div>
+
+        <!-- 10. Speed Tap / Whack-a-Mole -->
+        <div class="activity-pill" data-type="speedtap">
+          <div class="activity-pill-icon">⚡</div>
+          <span class="activity-pill-label">Speed Tap</span>
+        </div>
+
+        <!-- 11. Crossword -->
+        <div class="activity-pill" data-type="crossword">
+          <div class="activity-pill-icon">🧩</div>
+          <span class="activity-pill-label">Crossword</span>
+        </div>
+
+        <!-- 12. Memory Match -->
+        <div class="activity-pill" data-type="memory">
+          <div class="activity-pill-icon">🃏</div>
+          <span class="activity-pill-label">Memory Match</span>
+        </div>
+
+        <!-- 13. Balloon Pop -->
+        <div class="activity-pill" data-type="balloon">
+          <div class="activity-pill-icon">🎈</div>
+          <span class="activity-pill-label">Balloon Pop</span>
+        </div>
+
+        <!-- 14. Airplane Cloud Pilot -->
+        <div class="activity-pill" data-type="airplane">
+          <div class="activity-pill-icon">✈️</div>
+          <span class="activity-pill-label">Airplane</span>
+        </div>
+
+        <!-- 15. Open the Box -->
+        <div class="activity-pill" data-type="openthebox">
+          <div class="activity-pill-icon">🎁</div>
+          <span class="activity-pill-label">Open the Box</span>
+        </div>
+
+        <!-- 16. Hangman / Rocket -->
+        <div class="activity-pill" data-type="hangman">
+          <div class="activity-pill-icon">🚀</div>
+          <span class="activity-pill-label">Hangman</span>
+        </div>
+
+        <!-- 17. Maze Chase (Pac-Man) -->
+        <div class="activity-pill" data-type="mazechase">
+          <div class="activity-pill-icon">👾</div>
+          <span class="activity-pill-label">Maze Chase</span>
+        </div>
+
+        <!-- 18. Venn Diagram Sort -->
+        <div class="activity-pill" data-type="venn">
+          <div class="activity-pill-icon">⭕</div>
+          <span class="activity-pill-label">Venn Diagram</span>
+        </div>
+
+        <!-- 19. Timeline Slider -->
+        <div class="activity-pill" data-type="timeline">
+          <div class="activity-pill-icon">⏳</div>
+          <span class="activity-pill-label">Timeline</span>
+        </div>
+
+        <!-- 20. Scratch & Reveal -->
+        <div class="activity-pill" data-type="scratch">
+          <div class="activity-pill-icon">🧼</div>
+          <span class="activity-pill-label">Scratch & Reveal</span>
+        </div>
+
+        <!-- 21. Sentence Scramble -->
+        <div class="activity-pill" data-type="scramble">
+          <div class="activity-pill-icon">🧩</div>
+          <span class="activity-pill-label">Scramble</span>
+        </div>
+
+        <!-- 22. Bubble Shooter / Cannon -->
+        <div class="activity-pill" data-type="bubbleshooter">
+          <div class="activity-pill-icon">🎯</div>
+          <span class="activity-pill-label">Bubble Cannon</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 1: PLAYER & PREVIEW -->
+    <section id="tab-player" class="studio-tab-content active">
+      <div class="player-wrap">
+        <div class="player-controls-bar">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <label style="font-weight:700; font-size:0.9rem; color:#94a3b8;">Visual Theme:</label>
+            <select id="studio-theme-select" class="studio-select" style="width: auto; padding:6px 12px;">
+              <option value="default">Modern Slate</option>
+              <option value="chalkboard">Chalkboard Classroom</option>
+              <option value="arcade">Cyberpunk Arcade (Neon)</option>
+              <option value="sunset">Sunset Coral</option>
+              <option value="forest">Emerald Forest</option>
+              <option value="kids">Playful Pastel</option>
+              <option value="midnight">Midnight Dark</option>
+            </select>
+          </div>
+          <div>
+            <span style="font-size:0.85rem; color:#94a3b8;">✨ Full Audio Synthesizer, Confetti & Interactive Touch Enabled</span>
+          </div>
+        </div>
+
+        <!-- Target Game Container for ActivityEngine -->
+        <div id="studio-player-container"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: VISUAL BUILDER -->
+    <section id="tab-builder" class="studio-tab-content">
+      <div class="builder-layout">
+        
+        <!-- Left: General Activity Metadata & Settings -->
+        <div class="builder-panel-card">
+          <div class="builder-section-title">General Settings:</div>
+          
+          <div>
+            <label class="studio-label">Activity Title:</label>
+            <input type="text" id="builder-title" class="studio-input" placeholder="e.g. Solar System Match"/>
+          </div>
+
+          <div>
+            <label class="studio-label">Student Instruction:</label>
+            <input type="text" id="builder-instruction" class="studio-input" placeholder="e.g. Connect the terms..."/>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <label class="studio-label">Theme:</label>
+              <select id="builder-theme" class="studio-select">
+                <option value="default">Modern Slate</option>
+                <option value="chalkboard">Chalkboard Classroom</option>
+                <option value="arcade">Cyberpunk Arcade</option>
+                <option value="sunset">Sunset Coral</option>
+                <option value="forest">Emerald Forest</option>
+                <option value="kids">Playful Pastel</option>
+                <option value="midnight">Midnight Dark</option>
+              </select>
+            </div>
+            <div>
+              <label class="studio-label">Lives Counter:</label>
+              <select id="builder-lives" class="studio-select">
+                <option value="0">Unlimited (Zen Mode)</option>
+                <option value="1">1 Life (Hardcore)</option>
+                <option value="3" selected>3 Hearts</option>
+                <option value="5">5 Hearts</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #334155; padding-top:14px;">
+            <label style="display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer;">
+              <input type="checkbox" id="builder-timer-enabled" checked/>
+              <span>Enable Timer</span>
+            </label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;">
+              <div>
+                <label class="studio-label">Timer Mode:</label>
+                <select id="builder-timer-mode" class="studio-select">
+                  <option value="countup">Count Up (Stopwatch)</option>
+                  <option value="countdown">Count Down (Time Attack)</option>
+                </select>
+              </div>
+              <div>
+                <label class="studio-label">Seconds (for Countdown):</label>
+                <input type="number" id="builder-timer-seconds" class="studio-input" value="60"/>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:auto; padding-top:16px;">
+            <button class="studio-btn-primary" id="btn-apply-builder" style="width:100%; justify-content:center; padding:12px;">
+              ▶️ Apply Changes & Play Live
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Dynamic Type-Specific Fields -->
+        <div class="builder-panel-card" id="builder-dynamic-fields">
+          <!-- Populated dynamically by ActivityStudio -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: JSON CONFIG -->
+    <section id="tab-json" class="studio-tab-content">
+      <div class="json-editor-wrap">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="color:#94a3b8; font-size:0.9rem;">
+            Edit the declarative JSON activity configuration directly. You can copy, modify, or paste your own data structures.
+          </div>
+          <button class="studio-btn-primary" id="btn-apply-json">⚡ Update & Run Game</button>
+        </div>
+        <textarea id="json-editor-textarea" class="json-textarea"></textarea>
+      </div>
+    </section>
+
+    <!-- TAB 4: WORKSHEET PRINT -->
+    <section id="tab-worksheet" class="studio-tab-content">
+      <div class="worksheet-actions">
+        <button class="studio-btn-primary" onclick="window.print()">🖨️ Print Worksheet / Save PDF</button>
+      </div>
+      <div id="worksheet-view-stage"></div>
+    </section>
+
+    <!-- TAB 5: DEVELOPER API -->
+    <section id="tab-docs" class="studio-tab-content">
+      <div class="docs-content">
+        <h2>🛠️ ActivityEngine Developer Guide & Architecture</h2>
+        <p>ActivityEngine is a modular, zero-dependency educational activity runtime built to power Wordwall-style mechanics in web applications, LMSs (Moodle, Canvas, Blackboard), and standalone single-file HTML deliverables.</p>
+        
+        <h3>1. Embedding in any HTML Document</h3>
+        <p>Simply include the CSS and JS files, create a target container div, and initialize the engine with a JSON activity object:</p>
+        <div class="docs-code-block">&lt;!-- 1. Include Stylesheet & Runtime --&gt;
+&lt;link rel="stylesheet" href="css/activity-engine.css"&gt;
+&lt;script src="js/sound-synth.js"&gt;&lt;/script&gt;
+&lt;script src="js/particles.js"&gt;&lt;/script&gt;
+&lt;script src="js/activity-engine.js"&gt;&lt;/script&gt;
+
+&lt;!-- 2. Mount Point --&gt;
+&lt;div id="my-activity"&gt;&lt;/div&gt;
+
+&lt;!-- 3. Initialize --&gt;
+&lt;script&gt;
+  const game = new ActivityEngine('#my-activity', {
+    theme: 'chalkboard',
+    sound: true
+  });
+
+  game.load({
+    type: 'matching',
+    title: 'States of Matter',
+    instruction: 'Match each state to its property.',
+    data: [
+      { left: 'Solid', right: 'Fixed shape and volume' },
+      { left: 'Liquid', right: 'Fixed volume, variable shape' },
+      { left: 'Gas', right: 'Expands to fill container' }
+    ]
+  });
+
+  game.on('score', (data) => console.log('Score updated:', data));
+  game.on('complete', (summary) => console.log('Activity finished:', summary));
+&lt;/script&gt;</div>
+
+        <h3>2. Supported Activity Types & Mechanics</h3>
+        <table style="width:100%; border-collapse:collapse; margin-top:14px;" border="1" cellpadding="8" bordercolor="#334155">
+          <thead>
+            <tr style="background:#0f172a; text-align:left;">
+              <th>Type Key</th>
+              <th>Mechanic Description</th>
+              <th>Data Payload Structure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>matching</code></td>
+              <td>Pair connecting with SVG dynamic bezier lines, tap/drag nodes</td>
+              <td><code>Array&lt;{ left: string, right: string }&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>wordsearch</code></td>
+              <td>Dynamic letter matrix with multi-angle touch/drag line finder</td>
+              <td><code>{ gridSize: number, words: string[] }</code></td>
+            </tr>
+            <tr>
+              <td><code>reading</code></td>
+              <td>Two-pane story reader with Web Speech TTS & interactive quiz</td>
+              <td><code>{ passageTitle, passageText, questions: [] }</code></td>
+            </tr>
+            <tr>
+              <td><code>sorting</code></td>
+              <td>Category buckets with drag-and-drop & tap-to-place items</td>
+              <td><code>{ categories: [], items: [] }</code></td>
+            </tr>
+            <tr>
+              <td><code>cloze</code></td>
+              <td>Fill-in-the-blank passage with draggable chips & distractors</td>
+              <td><code>{ text: "The {sun} rises in...", distractors: [] }</code></td>
+            </tr>
+            <tr>
+              <td><code>diagram</code></td>
+              <td>Hotspot canvas pins and draggable label tags</td>
+              <td><code>{ diagramSvg, labels: [{ id, name, x, y }] }</code></td>
+            </tr>
+            <tr>
+              <td><code>quiz</code></td>
+              <td>Timed gameshow quiz with 50/50 lifeline & streak bonus</td>
+              <td><code>{ questions: [{ question, options, answerIndex }] }</code></td>
+            </tr>
+            <tr>
+              <td><code>wheel</code></td>
+              <td>Interactive physics spinning wheel with pointer ticking audio</td>
+              <td><code>{ items: string[] }</code></td>
+            </tr>
+            <tr>
+              <td><code>anagram</code></td>
+              <td>Tile unjumble letter placement on tactile shelf</td>
+              <td><code>{ clue: string, word: string }</code></td>
+            </tr>
+            <tr>
+              <td><code>speedtap</code></td>
+              <td>Whack-a-mole fast reflex target identification</td>
+              <td><code>{ instruction, targets: [], distractors: [] }</code></td>
+            </tr>
+            <tr>
+              <td><code>crossword</code></td>
+              <td>Interactive crossword grid with keyboard navigation</td>
+              <td><code>{ grid: string[][], clues: [] }</code></td>
+            </tr>
+            <tr>
+              <td><code>memory</code></td>
+              <td>3D card flip matching pairs</td>
+              <td><code>{ pairs: [{ a, b }] }</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load Scripts -->
+  <script src="js/sound-synth.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/activity-engine.js"></script>
+  <script src="templates/presets.js"></script>
+  <script src="js/exporter.js"></script>
+  <script src="js/studio.js"></script>
+
+  <script>
+    // Initialize Studio App on load
+    document.addEventListener('DOMContentLoaded', () => {
+      window.studio = new ActivityStudio();
+    });
+  </script>
+<a href="/" class="daf-hub-back" style="position:fixed;left:12px;bottom:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(6,17,20,.72);color:#e8f3f5;font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(6px);opacity:.75" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75" aria-label="Back to the Learning Hub">&larr; Hub</a><style>@media print{.daf-hub-back{display:none!important}}</style>
+</body>
+</html>

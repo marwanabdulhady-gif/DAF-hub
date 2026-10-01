@@ -1,0 +1,1469 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dar Al Fikr · Wadi Activity & Experiences Atlas (All 91 Doors)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #12857c;
+  --teal-lit: #2ec4b6;
+  --teal-glow: rgba(46,196,182,0.25);
+  --gold: #c9a227;
+  --gold-lit: #f0cf6a;
+  --gold-glow: rgba(201,162,39,0.28);
+  --night: #041615;
+  --night-card: #082220;
+  --night-card-2: #0d2e2b;
+  --border: rgba(201,162,39,0.22);
+  --border-lit: rgba(46,196,182,0.45);
+  --text-main: #eaf4f2;
+  --text-muted: #9ebdb7;
+  --text-dust: #759992;
+  --paper: #f4ead0;
+  --ink: #1a160f;
+  --pass: #38ef7d;
+  --danger: #ff6b6b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  min-height: 100%;
+  background: radial-gradient(1400px 900px at 50% -10%, #0c3330 0%, var(--night) 65%);
+  color: var(--text-main);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px 100px; }
+
+/* Typography */
+h1, h2, h3, .serif { font-family: 'Fraunces', Georgia, serif; }
+.mono { font-family: 'Space Mono', ui-monospace, monospace; }
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+}
+.brand-lockup { display: flex; flex-direction: column; gap: 4px; }
+.brand-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .22em;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.brand-title {
+  font-size: clamp(28px, 4vw, 42px);
+  color: #fff;
+  font-weight: 900;
+  line-height: 1.1;
+}
+.brand-title em { color: var(--gold-lit); font-style: italic; }
+
+.stats-bar {
+  display: flex;
+  gap: 20px;
+  background: var(--night-card);
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.stat-item { text-align: center; }
+.stat-val { font-size: 20px; font-weight: 800; color: var(--gold-lit); font-family: 'Space Mono', monospace; }
+.stat-lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-dust); }
+
+/* Invariant Banner */
+.law-banner {
+  background: linear-gradient(90deg, rgba(201,162,39,0.12), rgba(18,133,124,0.12));
+  border-left: 4px solid var(--gold);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.law-banner b { color: var(--gold-lit); font-size: 15px; }
+.law-banner p { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+
+/* Filter & Search Bar */
+.controls-bar {
+  position: sticky;
+  top: 16px;
+  z-index: 50;
+  background: rgba(4,22,21,0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-lit);
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 32px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-box {
+  position: relative;
+  flex: 1 1 280px;
+}
+.search-box input {
+  width: 100%;
+  background: var(--night-card-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px 10px 38px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+}
+.search-box input:focus { outline: none; border-color: var(--teal-lit); box-shadow: 0 0 0 2px var(--teal-glow); }
+.search-box svg { position: absolute; left: 12px; top: 12px; fill: var(--text-dust); width: 16px; height: 16px; }
+
+.filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill-btn {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.pill-btn:hover { border-color: var(--gold); color: var(--gold-lit); }
+.pill-btn.active { background: var(--gold); color: #1a160f; border-color: var(--gold-lit); font-weight: 800; box-shadow: 0 0 12px var(--gold-glow); }
+
+.view-toggles { display: flex; gap: 6px; }
+.view-btn {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.view-btn.active { background: var(--teal); color: #fff; border-color: var(--teal-lit); }
+
+/* Cast Grid */
+.cast-section { margin-bottom: 40px; }
+.cast-title { font-size: 18px; color: var(--gold-lit); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .1em; font-family: 'Space Mono', monospace; }
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.cast-card {
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: transform .15s ease;
+}
+.cast-card:hover { transform: translateY(-2px); border-color: var(--teal-lit); }
+.cast-name { font-weight: 800; color: var(--gold-lit); font-size: 14px; margin-bottom: 2px; }
+.cast-role { font-size: 12px; color: var(--text-muted); }
+
+/* Gates & Doors Grid */
+.gate-block {
+  margin-bottom: 48px;
+  background: var(--night-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+}
+.gate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-bottom: 1px solid rgba(201,162,39,0.18);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+.gate-title-group { display: flex; align-items: baseline; gap: 14px; }
+.gate-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gold);
+  background: rgba(201,162,39,0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.gate-title-ar { font-size: 26px; font-weight: 800; color: #fff; }
+.gate-title-en { font-size: 16px; color: var(--text-dust); font-style: italic; font-family: 'Fraunces', serif; }
+.gate-commission {
+  background: rgba(18,133,124,0.15);
+  border: 1px solid var(--teal-lit);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--teal-lit);
+  font-weight: 700;
+}
+
+/* Door Cards Grid */
+.doors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+.door-card {
+  background: var(--night-card-2);
+  border: 1px solid rgba(234,244,242,0.08);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all .2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.door-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--teal));
+  opacity: 0.4;
+  transition: opacity .2s ease;
+}
+.door-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--teal-lit);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+}
+.door-card:hover::before { opacity: 1; }
+
+.door-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.door-code {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--gold-lit);
+}
+.door-job-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal-lit);
+  background: rgba(46,196,182,0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(46,196,182,0.25);
+}
+
+.door-title { font-size: 16px; font-weight: 700; color: #fff; }
+.door-cast { font-size: 12px; color: var(--gold-lit); font-weight: 600; }
+
+.door-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  border-top: 1px solid rgba(234,244,242,0.06);
+  padding-top: 10px;
+}
+.spec-row { display: grid; grid-template-columns: 85px 1fr; gap: 8px; }
+.spec-k { color: var(--text-dust); font-size: 11px; text-transform: uppercase; font-family: 'Space Mono', monospace; font-weight: 700; }
+.spec-v { color: var(--text-muted); }
+.spec-v.artifact { color: var(--pass); font-weight: 600; }
+.spec-v.twin { color: #f0d58a; font-weight: 600; }
+
+/* Modal Drawer */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,18,17,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal-content {
+  background: var(--night-card);
+  border: 1px solid var(--border-lit);
+  border-radius: 20px;
+  max-width: 820px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #fff;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { background: rgba(255,255,255,0.2); }
+
+.modal-header { border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+.modal-door-code { font-family: 'Space Mono', monospace; color: var(--gold); font-size: 14px; font-weight: 800; }
+.modal-title { font-size: 28px; color: #fff; font-weight: 800; margin: 4px 0; }
+.modal-subtitle { color: var(--text-muted); font-size: 15px; }
+
+.modal-section {
+  background: var(--night-card-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal-section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold-lit);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-section-content { font-size: 14.5px; color: var(--text-main); line-height: 1.5; }
+
+.modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 680px) { .modal-grid-2 { grid-template-columns: 1fr; } }
+
+.badge-pill {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+}
+.badge-twin { background: rgba(201,162,39,0.2); color: var(--gold-lit); border: 1px solid var(--gold); }
+.badge-engine { background: rgba(18,133,124,0.2); color: var(--teal-lit); border: 1px solid var(--teal-lit); }
+.badge-artifact { background: rgba(56,239,125,0.15); color: var(--pass); border: 1px solid var(--pass); }
+.badge-wind { background: rgba(255,107,107,0.15); color: var(--danger); border: 1px solid var(--danger); }
+
+/* Table View */
+.table-view-container { display: none; overflow-x: auto; margin-top: 20px; }
+.table-view-container.active { display: block; }
+.exp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.exp-table th {
+  background: var(--night-card);
+  color: var(--gold-lit);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 2px solid var(--gold);
+}
+.exp-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(234,244,242,0.06);
+  vertical-align: top;
+  color: var(--text-muted);
+}
+.exp-table tr:hover td { background: rgba(201,162,39,0.04); color: var(--text-main); }
+.exp-table .td-code { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--gold-lit); white-space: nowrap; }
+.exp-table .td-who { color: #fff; font-weight: 700; }
+
+.footer {
+  margin-top: 60px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--text-dust);
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  
+  <!-- Header -->
+  <header class="header-top">
+    <div class="brand-lockup">
+      <div class="brand-tag">Dar Al Fikr Boys School · Grade 4 · 2026–2027</div>
+      <h1 class="brand-title">Wadi Activity & <em>Experiences</em> Atlas</h1>
+      <p style="color:var(--text-muted); font-size:15px; margin-top:4px;">
+        Every lesson is an authentic vocational job. Every Stage 2 runs a concrete hands-on twin. Every Stage 6 is a signed physical artifact.
+      </p>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-val">16</div>
+        <div class="stat-lbl">Gates</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">91</div>
+        <div class="stat-lbl">Doors</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">22</div>
+        <div class="stat-lbl">2D Verbs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">100%</div>
+        <div class="stat-lbl">Offline</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Invariants & Boarding Pass Law -->
+  <div class="law-banner">
+    <b>The Boarding-Pass Law & Standing Invariants:</b>
+    <p>If two lessons could swap their artifact or hands-on twin and still make sense, one of them is not unique yet. Printed numbers are strictly locked to textbook figures. Currency is strictly SAR. School leads are <b>Abu, Jadd, Amm, Amma, Khal, Khala, Jadda</b> (No Umm). CRA sequence strictly enforced: concrete twin runs before the screen.</p>
+  </div>
+
+  <!-- Cast of Characters -->
+  <section class="cast-section">
+    <div class="cast-title">Valley Guild Leaders & Cast Members</div>
+    <div class="cast-grid">
+      <div class="cast-card">
+        <div class="cast-name">Omar & Zayd</div>
+        <div class="cast-role">The Two Boy Clerks · Sijill Keepers</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Jadd Khalid</div>
+        <div class="cast-role">Grandfather · Hangs Misbah</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Amm Fahad</div>
+        <div class="cast-role">Paternal Uncle · Al-Balad Vault Clerk</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Abu Yusuf</div>
+        <div class="cast-role">Father · Palm Nursery Agronomist</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Khal Saud</div>
+        <div class="cast-role">Maternal Uncle · Well Inspector</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Amma Hessa</div>
+        <div class="cast-role">Paternal Aunt · Community Baker</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Khala Noura</div>
+        <div class="cast-role">Maternal Aunt · Market Assayer</div>
+      </div>
+      <div class="cast-card">
+        <div class="cast-name">Jadda Amina</div>
+        <div class="cast-role">Grandmother · Master Weaver & Astrolabe</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Controls Bar -->
+  <div class="controls-bar">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="searchInput" placeholder="Search door, vocational job, manipulative, artifact...">
+    </div>
+    
+    <div class="filter-pills" id="gateFilters">
+      <button class="pill-btn active" data-gate="all">All 16 Gates</button>
+      <button class="pill-btn" data-gate="1">G1</button>
+      <button class="pill-btn" data-gate="2">G2</button>
+      <button class="pill-btn" data-gate="3">G3</button>
+      <button class="pill-btn" data-gate="4">G4</button>
+      <button class="pill-btn" data-gate="5">G5</button>
+      <button class="pill-btn" data-gate="6">G6</button>
+      <button class="pill-btn" data-gate="7">G7</button>
+      <button class="pill-btn" data-gate="8">G8</button>
+      <button class="pill-btn" data-gate="9">G9</button>
+      <button class="pill-btn" data-gate="10">G10</button>
+      <button class="pill-btn" data-gate="11">G11</button>
+      <button class="pill-btn" data-gate="12">G12</button>
+      <button class="pill-btn" data-gate="13">G13</button>
+      <button class="pill-btn" data-gate="14">G14</button>
+      <button class="pill-btn" data-gate="15">G15</button>
+      <button class="pill-btn" data-gate="16">G16</button>
+    </div>
+
+    <div class="view-toggles">
+      <button class="view-btn active" id="btnCardsView">Cards</button>
+      <button class="view-btn" id="btnTableView">Table</button>
+    </div>
+  </div>
+
+  <!-- Cards View Container -->
+  <div id="cardsViewContainer"></div>
+
+  <!-- Table View Container -->
+  <div id="tableViewContainer" class="table-view-container">
+    <table class="exp-table">
+      <thead>
+        <tr>
+          <th>Door</th>
+          <th>Gate & Topic</th>
+          <th>Vocational Job & Cast</th>
+          <th>Hands-on Concrete Twin (Stage 2)</th>
+          <th>2D Digital Verb (Stage 3)</th>
+          <th>The Wind Crisis (Stage 4)</th>
+          <th>Signed Artifact (Stage 6)</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>Dar Al Fikr Boys School · Grade 4 Mathematics Curriculum Ecosystem</div>
+    <div>Strictly 1-File Offline · Zero CDN Dependency · Locked Textbook Numbers</div>
+  </footer>
+
+</div>
+
+<!-- Modal Drawer for Full Door Drilldown -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-header">
+      <div class="modal-door-code" id="mDoorCode">DOOR 1-1</div>
+      <h2 class="modal-title" id="mDoorTitle">Numbers Through One Million</h2>
+      <div class="modal-subtitle" id="mDoorJob">Al-Balad Currency Exchange Clerk · Lead: Amm Fahad</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">
+        <span class="badge-pill badge-twin">Hands-On Concrete Twin</span> Stage 2 (3–6 min, runs before screen)
+      </div>
+      <div class="modal-section-content" id="mTwin"></div>
+    </div>
+
+    <div class="modal-grid-2">
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="badge-pill badge-engine">2D Arcade Verb</span> Stage 3
+        </div>
+        <div class="modal-section-content" id="mEngine"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="badge-pill badge-wind">The Wind Catastrophe</span> Stage 4
+        </div>
+        <div class="modal-section-content" id="mWind"></div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">
+        <span class="badge-pill badge-artifact">Signed Vocational Artifact</span> Stage 6 (The Stone)
+      </div>
+      <div class="modal-section-content" id="mArtifact"></div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Tellable Classroom Hook (20–40 sec)</div>
+      <div class="modal-section-content" style="font-style:italic; color:var(--gold-lit);" id="mHook"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Comprehensive Database of all 91 Doors across 16 Gates */
+const ATLAS_DATA = [
+  {
+    gate: 1,
+    ar: "Sahat al-Misbah",
+    en: "Lantern Court — Place Value",
+    commission: "School Census: Count classroom assets to 6 digits in 3 forms",
+    doors: [
+      { code: "1-1", title: "Numbers Through One Million", job: "Al-Balad Vault Currency Clerk", cast: "Amm Fahad & Jadd Khalid",
+        twin: "Human Place Value: 6 boys hold digit lanyards (3,5,6,0,3,9); 1 steps out and the empty chair must hold a solid zero-block.",
+        engine: "diagram / tills: Restore the eaten seat; pack ten SAR 100 notes into a brick.",
+        wind: "Luqman submits handwritten note '1,24' for 1,204. Alarm flashes.",
+        artifact: "Certified Treasury Deposit Slip: 356,039 written three ways + amānah stamp.",
+        hook: "Misbah is lit. The wind blew sand into the vault archives. A ledger entry for 356,039 had its zero eaten. Tonight we write it back." },
+      { code: "1-2", title: "Place Value Relationships", job: "Palm Nursery Warehouse Registrar", cast: "Abu Yusuf",
+        twin: "Slide a unit cube 1 seat left on a 10-grid paper dock; physically replace with 10 unit rods.",
+        engine: "airplane / chairs: Steer aircraft through ×10 staircase ladders (40 -> 400).",
+        wind: "Majid claims every 5 in 5,555 has the same value. Crate loader rejects.",
+        artifact: "Crate Inventory Label: 5 -> 50 -> 500 -> 5,000 with place-value multipliers.",
+        hook: "A single crate slides one seat to the left on the warehouse shelves. The entire court grows ten times. Listen to the leaves." },
+      { code: "1-3", title: "Compare Whole Numbers", job: "Regional Well Inspector", cast: "Khal Saud",
+        twin: "Two paper number strips face-to-face; walk fingers L->R until digits diverge.",
+        engine: "timeline / scan: Gold scanner drives L->R across digits and stops at first difference.",
+        wind: "Al-Baha (5,287) and Abha (5,729) well meters both claim 'greater'.",
+        artifact: "Water Log Comparison Stamp: 6,356 < 6,378 with tens place verified.",
+        hook: "Two wells, one aquifer. Both stations shout that they pumped more. The gold scanner does not lie." },
+      { code: "1-4", title: "Round Whole Numbers", job: "Desert Boundary Night Ranger", cast: "Jadd Khalid",
+        twin: "Stretch a 10-meter string across the room with a peg at the 5,000 halfway flag.",
+        engine: "balloon / trail: Pop numbers that round to target halfway flag; paint safe rounding band.",
+        wind: "Ranger writes 120,000 as rounded count; dispatch needs the true halfway boundary.",
+        artifact: "Night Ranger Situation Report: 181,376 -> 181,000 with 115k-125k tolerance band.",
+        hook: "The exact count arrives after sunset. Ghubar whispers pretty round numbers. We mark the exact halfway peg." }
+    ]
+  },
+  {
+    gate: 2,
+    ar: "Diwan al-Hisab",
+    en: "The Counting House — Addition & Subtraction",
+    commission: "Recycling Weigh-in: Dual-pan balance sum & inverse verification",
+    doors: [
+      { code: "2-1", title: "Mental Math Sums & Differences", job: "Diwan Head Account Clerk", cast: "Amm Fahad",
+        twin: "Move 3 washers from left pan to right pan of a dual-beam balance; balance stays level.",
+        engine: "matching / desk: Balance bench; compensate addends (+3, -3) to keep total level.",
+        wind: "Luqman adds 1,034 + 1,289 + 1,566 without paper; sum only balances if mental regrouping is proven.",
+        artifact: "Diwan Strategy Card: 'I broke ___ because ___' mental compensation proof.",
+        hook: "The beam balance will not click until both pans are honest. The clerks add in their heads so the Dust cannot nibble the paper." },
+      { code: "2-2", title: "Estimate Sums & Differences", job: "Well-Road Customs Gatekeeper", cast: "Abu Yusuf",
+        twin: "Estimate collection mass by hand, then weigh on balance to determine if loads fit under 15,000 limit.",
+        engine: "sorting / gate: Park cargo trucks on rounded pads; grant Go or Hold clearance.",
+        wind: "Jubail trucks (6,127 + 4,652 + 3,393) arrive at the aqueduct gate. An overestimate might block traffic.",
+        artifact: "Customs Gate Pass: Rounded addends + certified Go/No-Go clearance stamp.",
+        hook: "A heavy truck waits at the gate. If the load exceeds 15,000 kg, the well-road aqueduct will crack." },
+      { code: "2-3", title: "Add Whole Numbers", job: "Recycling Depot Master", cast: "Khal Saud",
+        twin: "Snap paper strips into place-value dock mat; carry cap physically walks left.",
+        engine: "diagram / stack: Pin carry caps into column dock; bundle 10 ones into 1 ten.",
+        wind: "A clerk lines up 357 + 243 + 468 with ones under tens. The total explodes.",
+        artifact: "Recycling Stack Ticket: Places lined, partial sums calculated and signed.",
+        hook: "Three months of recycled bottles sit in the courtyard. If one column slips, the weighbridge breaks." },
+      { code: "2-4", title: "Add Greater Numbers", job: "Multi-District Logistics Inspector", cast: "Abu Yusuf",
+        twin: "Three-row dock mat with 3 addends and bottle-cap carry chain (carry can reach 2).",
+        engine: "openthebox / weighbill: Multi-addend carry chests; verify column alignment.",
+        wind: "Three grade-level bottle collections (4,219 + 3,742 + 4,436) show an unaligned ten-thousands place.",
+        artifact: "Official Waybill: Standard algorithm with carry tokens explicit and places named.",
+        hook: "Thousands of containers arrive from three districts. The beam groans under the multi-district tally." },
+      { code: "2-5", title: "Subtract Whole Numbers", job: "Night Watch Motel Steward", cast: "Kareem & Khal Saud",
+        twin: "224-square grid paper; physically darken 176 squares with marker to find vacant dark windows.",
+        engine: "diagram / watch: Decompose a lit 100-block to subtract; total value unchanged.",
+        wind: "224 rooms, 176 occupied. A desk clerk subtracts 4 - 6 without regrouping, claiming 288 empty rooms.",
+        artifact: "Night Watch Log: Room subtraction model with dark windows certified.",
+        hook: "224 rooms in the oasis hostel. 176 lanterns are lit. How many dark windows remain? You cannot take 6 from 4 without breaking a ten." },
+      { code: "2-6", title: "Subtract Greater Numbers", job: "Kingdom Boundary Surveyor", cast: "Jadd Khalid",
+        twin: "Two measuring tapes on floor; read difference, then add back difference to smaller to prove whole.",
+        engine: "airplane / lands: Fly through inverse addition check equations (D + S = M).",
+        wind: "Najran (109,781) vs Al-Madinah (103,642). A surveyor borrows from the empty thousands without crossing.",
+        artifact: "Boundary Survey Difference Chart: Regrouping verified by inverse addition.",
+        hook: "Two vast regions of the Kingdom. Which holds greater land, and by how many square kilometers? Prove it by adding back." },
+      { code: "2-7", title: "Subtract Across Zeros", job: "Caravan Route Milestone Surveyor", cast: "Omar & Zayd",
+        twin: "Chain of ten-frames; open leftmost non-zero frame to ripple tokens across middle zeros.",
+        engine: "timeline / wells: Zero ripple; sequence regroupings from left-most non-zero well.",
+        wind: "Caravan mileage from Makkah: subtracting 1,486 from 5,000. A clerk claims 0 - 6 = 6.",
+        artifact: "Caravan Road Log: Every regrouping across zeros inked without panic.",
+        hook: "Zeros in a row, like dry wells along the pilgrimage route. Ghubar lives in the zeros you are afraid to break." }
+    ]
+  },
+  {
+    gate: 3,
+    ar: "Nakhil Yusuf",
+    en: "The Palm Nursery — 1-Digit Multiplication",
+    commission: "Date Nursery Grid: Measure nursery bed rows x date pots and verify area",
+    doors: [
+      { code: "3-1", title: "Multiply Multiples of 10, 100, 1,000", job: "Nursery Seedling Master", cast: "Abu Yusuf",
+        twin: "Deal cups in groups of tens on the floor (3x4, then 3x40, then 3x400).",
+        engine: "bubbleshooter / pots: Blast fact extension bubbles (4 x 600 = 2,400).",
+        wind: "A worker writes 3 x 4,000 = 120,000, losing the zero-seat pattern.",
+        artifact: "Seedling Zero-Pattern Strip: 3x4 -> 3x40 -> 3x400 -> 3x4,000 with seats named.",
+        hook: "Young palms in clay pots. Same 3 seedlings, but the chairs keep shifting. Listen to the leaves count." },
+      { code: "3-2", title: "Estimate Products", job: "Oasis Wage Assayer", cast: "Khal Saud & Amm Fahad",
+        twin: "Estimate tutoring wages (SAR 48 x 6) using compatible numbers before computing exact.",
+        engine: "airplane / pay: Steer through rounded product clouds; stamp ABOUT / OVER / UNDER.",
+        wind: "An estimate of SAR 300 is sold to a worker as the exact payout.",
+        artifact: "Wage Envelope: Compatible estimate (50 x 6 = 300) vs exact total.",
+        hook: "Tutoring wages must be honest. Estimate first so no one is cheated, but never sell 'about' as exact." },
+      { code: "3-3", title: "Arrays & Partial Products", job: "Music-Shade Pavilion Architect", cast: "Omar",
+        twin: "Cut a 6 x 18 grid with scissors into 6 x 10 and 6 x 8 sub-arrays.",
+        engine: "memory / shade: Match 6x18 chair arrays to partial products (60 + 48).",
+        wind: "An apprentice claims 6 x 18 = 60 + 8, forgetting to multiply the ones by 6.",
+        artifact: "Pavilion Seating Layout: 6 x 18 array partitioned into tens and ones.",
+        hook: "Chairs in the music-shade: 6 rows of 18. Split the shade where the places break." },
+      { code: "3-4", title: "Area Models & Partial Products", job: "Nursery Wall Mason", cast: "Abu Yusuf",
+        twin: "Fold paper rectangle; label only measured dimensions and sum internal partial areas.",
+        engine: "diagram / wall: Pin partial areas into rectangle grid; label only given sides.",
+        wind: "A mason invents a missing side length to make the multiplication 'easier'.",
+        artifact: "Masonry Area Blueprint: Unshaded nursery wall area model with no invented sides.",
+        hook: "An unshaded rectangle in the nursery wall. Only the given numbers may speak." },
+      { code: "3-6", title: "Mental Math for Multiplication", job: "Date Harvest Field Trader", cast: "Khal Saud",
+        twin: "Cover an extra strip of a paper array with cardboard to model compensation (4 x 98 = 400 - 8).",
+        engine: "scramble / trade: Reorder mental compensation steps (4 x 98 = 400 - 8).",
+        wind: "A trader applies compensation backwards, adding 8 instead of subtracting.",
+        artifact: "Field Trade Leaf-Card: Named distributive/compensation property with proof.",
+        hook: "Mental math under the palms. No paper for Ghubar to eat. Trade a hard pile for a friendly one." },
+      { code: "3-8", title: "Model with Math Problem Solving", job: "Historical Archive Photo Curator", cast: "Khalid & Omar",
+        twin: "Cut two paper strips, one twice the length of the other, to model comparison.",
+        engine: "reading / bar: Split-pane story reader; build 2-bar comparison model.",
+        wind: "Curator models 'twice as many' as +2 instead of x2.",
+        artifact: "Curator Bar Diagram: Signed comparison model for photo collection totals.",
+        hook: "Two boys, two archives of historical photos. One has twice as many as the other. Find the hidden ask." }
+    ]
+  },
+  {
+    gate: 4,
+    ar: "Mashghala al-Qawafil",
+    en: "The Caravan Workshop — 2-Digit Multiplication",
+    commission: "Pack the Caravan: Pack cargo box grid, calculate mass and price in SAR",
+    doors: [
+      { code: "4-1", title: "Multiply Multiples of 10", job: "School Supply Depot Master", cast: "Principal & Amm",
+        twin: "Place tens rods horizontally and vertically on desk to model 20 x 20.",
+        engine: "speedtap / ladder: Tap products of tens (3 tens x 8 tens = 24 hundreds).",
+        wind: "An order for 20 rooms x 30 chairs loses a zero, delivering 60 chairs instead of 600.",
+        artifact: "School Supply Order Form: Multiples of 10 with place-value shifts verified.",
+        hook: "Supplies for 20 classrooms. Desks, chairs, pencils. Everything comes in tens of tens. Watch the lost zeros." },
+      { code: "4-2", title: "Models for 2-Digit by Multiples of 10", job: "Athletic Kit Quartermaster", cast: "Abu Yusuf",
+        twin: "Fold a 10 x 10 grid once to separate tens from ones (10 x 25).",
+        engine: "diagram / cut: Hotspot pin partial areas (10 x 25 = 200 + 50).",
+        wind: "A team jersey order of 10 teams x 25 players omits the 10 x 5 partial area.",
+        artifact: "Athletic Team Manifest: 10 x 25 area model partitioned into tens.",
+        hook: "10 football teams, 25 players each. Area of tens: make the rectangle speak." },
+      { code: "4-3", title: "Estimate 2-Digit Products", job: "Caravan Freight Estimator", cast: "Khal Saud",
+        twin: "Deal number cards; hunt factors whose product sits closest to 1,600.",
+        engine: "sorting / hunt: Sort factor estimates by proximity to target benchmark.",
+        wind: "An estimator sells a wild overestimate as exact cargo weight.",
+        artifact: "Caravan Freight Estimate Card: Rounded factors vs true product bound.",
+        hook: "Which two factors sit closest to 1,600 without lying? Round before you pack." },
+      { code: "4-4", title: "Arrays & 2-Digit Partial Products", job: "Warehouse Array Stacker", cast: "Omar & Zayd",
+        twin: "Grid paper: build a 14 x 23 rectangular array, draw vertical and horizontal split lines.",
+        engine: "memory / shade: Match 4 array sectors to their 4 partial product equations.",
+        wind: "A stacker calculates 14 x 23 as (10 x 20) + (4 x 3), omitting the cross terms.",
+        artifact: "Warehouse Grid Stacking Manifest: 4 sub-arrays labelled and summed.",
+        hook: "A giant date warehouse. 14 rows of 23 crates. Split both sides or the cross-terms will vanish." },
+      { code: "4-5", title: "Area Models & 2-Digit Partial Products", job: "Playground Surface Engineer", cast: "Abu Yusuf",
+        twin: "Fold a sheet twice into 4 colored quadrats; compute each partial area.",
+        engine: "scratch / four: Scratch 4 sectors to reveal 4 partial products.",
+        wind: "A turf installer counts the tens-by-ones sector twice in the school playground.",
+        artifact: "Playground Surface Waybill: 4-quadrat area model signed and verified.",
+        hook: "Four sections of the new sports field. The distributive property is the only honest split." }
+    ]
+  },
+  {
+    gate: 5,
+    ar: "Qismat al-Ma'",
+    en: "Water-Sharing — Division & Remainders",
+    commission: "Solar Desalination Still: Build tabletop condenser, divide yield, interpret remainder",
+    doors: [
+      { code: "5-1", title: "Mental Math Quotients", job: "Youth Club Card Distributor", cast: "Yusuf & Omar",
+        twin: "Deal base-ten rods into 9 physical paper cups (270 / 9 = 3 tens).",
+        engine: "bubbleshooter / split: Blast split quotients (270 / 9 = 30).",
+        wind: "A distributor divides 270 by 9 and records 3 instead of 30.",
+        artifact: "Card Club Distribution Docket: 9 equal box labels verified.",
+        hook: "270 tournament cards, 9 team boxes, equal share. Mental divide that does not skip a place." },
+      { code: "5-2", title: "Estimate Quotients", job: "Arcade Prize Assayer", cast: "Khal Saud",
+        twin: "Peg dividend on a clothesline tape between compatible multiples of 3.",
+        engine: "airplane / dial: Steer plane into compatible dividend clouds (248 / 3 -> 240 / 3).",
+        wind: "A clerk divides 248 / 3 by rounding to 300 / 3, producing an unfair estimate.",
+        artifact: "Arcade Ticket Estimate Slip: Compatible numbers (240 / 3 = 80) certified.",
+        hook: "248 arcade tickets shared among 3 friends. Find a friendly dividend before the tickets tear." },
+      { code: "5-3", title: "Estimate Greater Dividends", job: "Oasis Carnival Logistician", cast: "Jassim & Abu",
+        twin: "High/Low bracket routine: test 3 compatible guesses with counters for 3,000 / 8.",
+        engine: "sorting / well: Sort 4-digit dividends into high vs low compatible bounds.",
+        wind: "Carnival dispatcher misjudges 3,000 / 8 as 30 groups instead of 300+.",
+        artifact: "Carnival Logistics Slip: 4-digit compatible bounds (2,400 to 3,200) verified.",
+        hook: "3,000 carnival ride tickets packaged in groups of 8. Compatible bounds keep the queue moving." },
+      { code: "5-4", title: "Interpret Remainders", job: "Expedition Watermaster", cast: "Abu Yusuf",
+        twin: "Deal 47 counters into 6 cups; handle the 5 leftover counters using 4 rule cards.",
+        engine: "sorting / lastcup: Sort remainders into 4 action bins (Round Up, Drop, Remainder Only, Fraction).",
+        wind: "A dispatcher sends 50 travelers in 8-passenger vans, leaving 2 travelers stranded in the desert.",
+        artifact: "Watermaster Ration Docket: Quotient + certified written meaning of leftover.",
+        hook: "Sunset at the oasis. Equal sharing is a trust. The remainder is the last cup — who drinks?" },
+      { code: "5-5", title: "Partial Quotients Division", job: "Aqueduct Reservoir Steward", cast: "Abu Yusuf",
+        twin: "Subtract chunk tokens (x10, x5, x2) along a floor measuring tape.",
+        engine: "mazechase / ladle: Chomp partial quotient multiples along corridor; refuse too-big jumps.",
+        wind: "A steward takes a partial jump larger than the remaining dividend.",
+        artifact: "Reservoir Subtraction Log: Honest partial quotient ladder listed and summed.",
+        hook: "Partial quotients: take what you can, honestly, again. No jump too big." },
+      { code: "5-6", title: "Partial Quotients for Greater Dividends", job: "Master Irrigation Engineer", cast: "Jadd Khalid",
+        twin: "Tape line of 277 units on floor; deduct 9-unit spans until remainder is smaller than divisor.",
+        engine: "diagram / room: Reverse area model; pin partial quotients until dividend is exhausted.",
+        wind: "An engineer ignores the final remainder of 7 liters during bulk canal discharge.",
+        artifact: "Canal Discharge Waybill: Complete greater-dividend partial quotient ledger.",
+        hook: "Greater dividends, same honesty, longer road. Every liter must be accounted for." }
+    ]
+  },
+  {
+    gate: 6,
+    ar: "Souq al-Su'al",
+    en: "Market of the Hidden Question — Multi-Step Problems",
+    commission: "Market Day Budget: Plan class purchase in SAR; write hidden question first",
+    doors: [
+      { code: "6-1", title: "Solve Comparison Problems", job: "Souq Spice Merchant", cast: "Amm Fahad",
+        twin: "Stretch physical ribbon against an 18-inch edge (4 times vs 4 more).",
+        engine: "bar / ribbon: Stretch 4 copies of base bar; toggle x / + to match problem.",
+        wind: "A buyer confuses '4 times as much' with '4 more riyals'.",
+        artifact: "Spice Trade Receipt: Comparison bar diagram with 'times / more' labelled.",
+        hook: "Spice stalls of Al-Balad. 'How many times' vs 'how many more'. The words are not interchangeable." },
+      { code: "6-2", title: "Continue Comparison Problems", job: "Rope & Rigging Merchant", cast: "Omar & Zayd",
+        twin: "Fold a 288-unit paper strip into 6 equal segments to divide and compare.",
+        engine: "treerings / unwind: Coil 288-inch rope into 6 segments; divide 288 / 6 = 48.",
+        wind: "A rope clerk draws a second bar with no scale label, miscalculating rig length.",
+        artifact: "Rigging Delivery Receipt: Two-bar comparison model fully scaled and named.",
+        hook: "Two ropes, one rigging mast. One is six times longer. Uncoil the rope and name both bars." },
+      { code: "6-3", title: "Model Multi-Step Problems", job: "Souq Purchasing Inspector", cast: "Khal Saud",
+        twin: "Two-card stall: visible question card + curtained intermediate question card.",
+        engine: "reading / hidden: Split-pane reader; identify Step 1 hidden question under curtain.",
+        wind: "An inspector multiplies final prices before solving the intermediate quantity.",
+        artifact: "Souq Trip Strip Diagram: Step 1 hidden question revealed and solved first.",
+        hook: "Every stall has a second question hiding behind the first. Do not pay until you find the hidden ask." },
+      { code: "6-5", title: "Solve Multi-Step Problems", job: "Qahwa Trading House Accountant", cast: "Amm Fahad",
+        twin: "Coins and price tags on tray; calculate change and surplus across multi-step purchases.",
+        engine: "openthebox / purse: 4 Two-step ledger chests; verify if budget is sufficient.",
+        wind: "An accountant stops after Step 1, claiming the purchase is complete without calculating change.",
+        artifact: "Qahwa Ledger Sheet: Complete multi-step solution path with units and change.",
+        hook: "Crowded coffee house ledger. Step 1 is only the halfway mark. Sabr means finishing the whole road." },
+      { code: "6-6", title: "Make Sense & Persevere", job: "Master Souq Arbitrator", cast: "Jadd Khalid",
+        twin: "Two boys solve the same market problem using two completely different valid algorithms.",
+        engine: "scramble / second: Reconstruct two distinct solution paths for the same total.",
+        wind: "A merchant gives up when the first method hits a snag, declaring the debt unpayable.",
+        artifact: "Arbitration Certificate: Two independent solution methods signed and compared.",
+        hook: "If stuck, a second way. A true mathematician does not throw down his pen; he takes another road." }
+    ]
+  },
+  {
+    gate: 7,
+    ar: "Bayt al-Tamr",
+    en: "The House of Dates — Factors & Primes",
+    commission: "Pack the Date Crate: Arrange 24 wooden tiles in all rectangular arrays; find min perimeter",
+    doors: [
+      { code: "7-1", title: "Understand Factors", job: "Date Packhouse Crate Builder", cast: "Jadd Khalid",
+        twin: "Arrange 24 wooden tiles into all possible rectangular arrays (1x24, 2x12, 3x8, 4x6).",
+        engine: "bubbleshooter / crate: Blast factor pairs of 24 to stamp the crate lid.",
+        wind: "A packer forgets the 1 x 24 factor pair, leaving an uninspected shipment.",
+        artifact: "Date Crate Factor Manifest: Complete list of factor pairs for 24.",
+        hook: "Wooden boxes and fresh dates. What is a factor? A row that fits with zero crumbs leftover." },
+      { code: "7-2", title: "Factors & Factor Rainbows", job: "Master Date Inspector", cast: "Abu Yusuf",
+        twin: "Pin colored string arcs between paired factor pegs on a wooden number board.",
+        engine: "matching / rainbow: Connect ascending factor pairs (1-24, 2-12, 3-8, 4-6).",
+        wind: "An inspector misses a middle factor pair; Ghubar eats the unlinked factor.",
+        artifact: "Official Crate Stamp: Complete arched factor rainbow inked on wood.",
+        hook: "Find them all. Miss one pair, and the Dust nibbles the shipment. Draw the rainbow arc." },
+      { code: "7-3", title: "Repeated Reasoning in Factor Searches", job: "Warehouse Inventory Logician", cast: "Khal Saud",
+        twin: "Two boys count factor tests up from 1 until their numbers cross at the square root.",
+        engine: "cloze / packing: State the square root crossing rule: stop when factors meet.",
+        wind: "A worker tests factors up to 100 for a small number, claiming the search never ends.",
+        artifact: "Factor Verification Rule Card: Square root stop-rule formulated in student's words.",
+        hook: "The pattern of packing. When the factors meet in the middle, the search is finished. State the rule." },
+      { code: "7-4", title: "Prime & Composite Numbers", job: "Rare Seed Agronomist", cast: "Abu Yusuf",
+        twin: "Build rectangles with 2, 3, 4, 7, 8 tiles; observe primes form only 1 single line.",
+        engine: "mazechase / venn: Chomp only prime numbers; Venn sort Prime vs Composite.",
+        wind: "An apprentice classifies the number 1 as prime, breaking the classification tree.",
+        artifact: "Seed Classification Dossier: Prime vs Composite definitions with 1 excluded.",
+        hook: "Some seed boxes will not share. They only pack in one single long row. That is not a failure; that is a prime." },
+      { code: "7-5", title: "Multiples", job: "Conveyor Belt Dispatcher", cast: "Omar & Zayd",
+        twin: "Skip-count along a numbered floor tape by 7s to mark bulk pallet stops.",
+        engine: "balloon / endless: Pop the first 5 multiples of 7 (14, 21, 28, 35, 42).",
+        wind: "A dispatcher confuses factors with multiples, claiming 3 is a multiple of 12.",
+        artifact: "Pallet Dispatch Strip: First five multiples verified and distinguished from factors.",
+        hook: "The row that never ends. Multiples march forward into the horizon. Stop honestly at the fifth." }
+    ]
+  },
+  {
+    gate: 8,
+    ar: "Sahn al-Zill",
+    en: "Courtyard of Shade — Equivalent Fractions",
+    commission: "Courtyard Shade Map: Mark shadow lines at 3 times of day; calculate shaded fraction",
+    doors: [
+      { code: "8-1", title: "Equivalent Fractions Area Models", job: "Courtyard Mosaic Mason", cast: "Jadd Khalid",
+        twin: "Fold paper square into halves, then quarters; observe shaded region area remains constant.",
+        engine: "diagram / shade: Cut floor finer (1/2 = 2/4 = 4/8); total shaded area unchanged.",
+        wind: "A mason cuts tiles into smaller pieces and claims the courtyard grew larger.",
+        artifact: "Courtyard Tile Blueprint: Two area models proving 1/2 = 2/4 with identical shaded area.",
+        hook: "Same floor, two names. A tile that is 1/2 is also 2/4 is also 4/8. The shade knows better." },
+      { code: "8-2", title: "Equivalent Fractions Number Lines", job: "Courtyard Shadow Surveyor", cast: "Omar & Zayd",
+        twin: "Overlay two paper rulers (halves and fourths) on desk; align tick marks.",
+        engine: "timeline / samepoint: Stack number lines; align tick marks at identical point.",
+        wind: "Surveyor places 2/4 at a different physical point than 1/2 on the court ruler.",
+        artifact: "Shadow Survey Line: Dual-scaled fraction line with shared points marked.",
+        hook: "Two fraction rulers on the courtyard stone. Different marks, identical location under the sun." },
+      { code: "8-3", title: "Generate Equivalence by Multiplication", job: "Tile Expansion Assayer", cast: "Abu Yusuf",
+        twin: "Lay transparent fraction grid overlays across paper strips (scale by 2/2, 3/3).",
+        engine: "speedtap / grower: Tap identity multipliers (x 2/2, x 3/3, x 4/4) to grow fraction name.",
+        wind: "Assayer multiplies only the numerator, distorting the fraction ratio.",
+        artifact: "Equivalence Scaling Card: Multiplication by n/n with area model proof.",
+        hook: "Grow the name, not the amount. Multiplying top and bottom by the same number changes nothing of the truth." },
+      { code: "8-4", title: "Generate Equivalence by Division", job: "Courtyard Restoration Mason", cast: "Amm Fahad",
+        twin: "Group individual small fraction tiles into larger composite blocks.",
+        engine: "sorting / shrinker: Sort fractions into Simplest Form vs Reducible bins.",
+        wind: "A worker divides the numerator by 2 and denominator by 3.",
+        artifact: "Simplification Assay Card: Division by n/n resulting in simplest form.",
+        hook: "Shrink the name, not the amount. Dividing top and bottom by a common factor reveals the simplest name." },
+      { code: "8-5", title: "Benchmark Fractions (0, 1/2, 1)", job: "Oasis Courtyard Lighting Keeper", cast: "Jadd Khalid",
+        twin: "Clothesline with 0, 1/2, 1 benchmark lantern pegs; hang test fraction cards.",
+        engine: "venn / lamps: Sort fractions into < 1/2, = 1/2, and > 1/2 benchmark zones.",
+        wind: "Keeper hangs 3/8 in the '> 1/2' zone, causing premature lamp lighting.",
+        artifact: "Courtyard Lighting Benchmark Map: Fractions sorted against 0, 1/2, 1 benchmarks.",
+        hook: "Three lamps in the courtyard: 0, 1/2, and 1 whole. Which side of the middle lamp does your fraction sit?" },
+      { code: "8-6", title: "Compare Fractions", job: "Courtyard Shade Arbitrator", cast: "Khal Saud",
+        twin: "Compare two fraction paper strips of equal whole length by physical alignment.",
+        engine: "airplane / twofloors: Fly through greater fraction cloud (5/8 > 3/8 or 2/3 > 2/5).",
+        wind: "A student cross-multiplies like magic without understanding common denominators.",
+        artifact: "Fraction Comparison Ruling: Mathematical justification (common denominator or benchmark).",
+        hook: "Two shadows across the marble floor. Which covers greater ground? Evidence, not magic tricks." },
+      { code: "8-7", title: "Construct Arguments with Fractions", job: "Master Court Advocate", cast: "Omar & Jadd",
+        twin: "Compare water fill in two identical bottles; formulate formal verbal claim and evidence.",
+        engine: "scramble / claim: Reconstruct formal claim + evidence fraction comparison proof.",
+        wind: "An advocate shouts loudly without presenting common whole references.",
+        artifact: "Formal Mathematical Argument: Two-sentence justification with diagrammatic proof.",
+        hook: "Convince, do not shout. In the court of truth, volume means nothing; mathematical evidence is everything." }
+    ]
+  },
+  {
+    gate: 9,
+    ar: "Suffat al-Iftar",
+    en: "The Sharing Ledge — Fraction Addition & Subtraction",
+    commission: "The Iftar Tray Share: Divide tray model into 8ths and 6ths; combine & check",
+    doors: [
+      { code: "9-1", title: "Model Addition of Fractions", job: "Community Kitchen Master Baker", cast: "Amma Hessa",
+        twin: "Physically re-cut paper loaves so all slices share equal denominator sizing.",
+        engine: "diagram / tray: Pin like fractional parts on tray; unlike cannot join without common cut.",
+        wind: "A baker adds 1/4 loaf + 2/4 loaf and claims the answer is 3/8 loaf.",
+        artifact: "Master Baker Tray Model: Joined like fraction addition with common denominator intact.",
+        hook: "A long stone ledge and evening trays. Adding parts of the same whole. Do not add the tray names." },
+      { code: "9-2", title: "Decompose Fractions", job: "Pantry Portioning Steward", cast: "Amma Hessa & Omar",
+        twin: "Cut paper fraction strip into multiple piece combinations (5/6 = 1/6+1/6+3/6 = 2/6+3/6).",
+        engine: "openthebox / bowls: 4 Decompositions of 5/6 into distinct sum combinations.",
+        wind: "A steward decomposes 5/6 into fractions that sum to 6/6, inventing grain.",
+        artifact: "Portioning Record Sheet: Three distinct valid decompositions of the same fraction.",
+        hook: "One tray of date-cake, many ways to share. Cut it as you like, but the pieces must sum to the whole." },
+      { code: "9-3", title: "Add Fractions with Like Denominators", job: "Community Kitchen Scribe", cast: "Amma Hessa",
+        twin: "Push two like fraction strips together on desk; count total unit slices.",
+        engine: "speedtap / join: Tap numerator sums; verify denominator remains constant.",
+        wind: "Scribe records 2/8 + 3/8 = 5/16, shrinking the slice size.",
+        artifact: "Kitchen Sum Slip: Like fraction addition with denominator justified.",
+        hook: "Add the slices, keep the cut. The slices grew in number; the size of each slice never changed." },
+      { code: "9-4", title: "Model Subtraction of Fractions", job: "Pantry Inventory Checker", cast: "Khal Saud",
+        twin: "Remove fractional paper strips from a fixed wooden tray frame.",
+        engine: "diagram / takeaway: Cross out subtracted parts; keep the denominator frame.",
+        wind: "Checker takes away a slice from a completely different sized whole tray.",
+        artifact: "Pantry Subtraction Diagram: Visual take-away model with common frame.",
+        hook: "Taking from the tray. You can only remove slices that belong to this whole. Watch the frame." },
+      { code: "9-5", title: "Subtract Fractions with Like Denominators", job: "Grain Rationing Steward", cast: "Amma Hessa",
+        twin: "Pour out measured fractional water volume and re-measure remaining water.",
+        engine: "airplane / road: Fly through fractional subtraction difference clouds.",
+        wind: "Steward subtracts smaller numerator from larger when writing the equation backwards.",
+        artifact: "Rationing Difference Slip: Like fraction subtraction calculated and signed.",
+        hook: "Subtracting from the sack. Denominator holds the identity; numerator tracks what remains." },
+      { code: "9-6", title: "Add & Subtract on the Same Ledge", job: "Kitchen Operations Dispatcher", cast: "Amma Hessa",
+        twin: "Walk along a floor fraction tape: jump right for addition, left for subtraction.",
+        engine: "timeline / track: Jump right to add fractions, left to subtract.",
+        wind: "Dispatcher executes subtraction when word problem describes combined recipe portions.",
+        artifact: "Kitchen Dispatch Ledger: Operation sign (+/-) mathematically justified.",
+        hook: "Joining or separating? Read the story before you touch the flour. Justify the sign." },
+      { code: "9-7", title: "Model Mixed Numbers", job: "Feast Table Supervisor", cast: "Abu Yusuf",
+        twin: "Compose 4 quarter paper slices into 1 whole circular loaf plus 3 extra quarters.",
+        engine: "memory / loaves: Match improper fractions (7/4) to mixed numbers (1 3/4).",
+        wind: "Supervisor ignores the whole loaves and counts only the loose slices.",
+        artifact: "Feast Table Inventory Model: Mixed numbers represented as whole + fraction sum.",
+        hook: "Whole loaves and loose slices. A mixed number is a whole family and its fractions together." },
+      { code: "9-8", title: "Add Mixed Numbers", job: "Bulk Grain Assayer", cast: "Amma Hessa",
+        twin: "Fill liquid beakers until 1 whole overflows into a second whole beaker.",
+        engine: "balloon / overflow: Pop mixed number sums that require whole regrouping (5 7/5 -> 6 2/5).",
+        wind: "Assayer leaves the fraction as 6/5, forgetting to regroup into the whole total.",
+        artifact: "Bulk Grain Addition Certificate: Mixed number sum with fraction overflow regrouped.",
+        hook: "When the slices overflow the dish, bundle them into a whole loaf. Regroup the extra whole." },
+      { code: "9-9", title: "Subtract Mixed Numbers", job: "Master Recipe Keeper", cast: "Amma Hessa",
+        twin: "Cut 1 whole paper loaf into sixths when the slice count is insufficient to subtract.",
+        engine: "hangman / borrow: Uncover math keywords; break 1 whole into 6/6 to subtract.",
+        wind: "Keeper subtracts smaller fraction from larger fraction in reverse order.",
+        artifact: "Recipe Subtraction Docket: Mixed number regrouping (trading 1 whole for n/n).",
+        hook: "Not enough slices to share? Break one whole loaf from the pantry into equal cuts. It is a trade, not a theft." },
+      { code: "9-10", title: "Model with Math (Fraction Word Problems)", job: "Community Kitchen Chief Architect", cast: "Jadd Khalid",
+        twin: "Draw a multi-step fraction bar model on paper; write the resulting equation.",
+        engine: "reading / model: Split-pane multi-step fraction word problem reader with TTS.",
+        wind: "Architect draws a decorative kitchen illustration with zero mathematical bar scaling.",
+        artifact: "Kitchen Distribution Blueprint: Scaled bar model matching verified equation.",
+        hook: "A picture that is mathematics, not decoration. Model the complete feast with precision." }
+    ]
+  },
+  {
+    gate: 10,
+    ar: "Qirbat al-Juz'",
+    en: "Water-Skin of Parts — Fraction Multiplication & Time",
+    commission: "Campus Time Trial: Record stopwatch lap times; calculate base-60 fractions of hours",
+    doors: [
+      { code: "10-1", title: "Fractions as Multiples of Unit Fractions", job: "Water-Skin Calibrator", cast: "Abu Yusuf",
+        twin: "Lay 5 unit fraction strips (1/5 each); count 4 copies aloud to make 4/5.",
+        engine: "bubbleshooter / count: Blast unit fraction multiples (4 x 1/5 = 4/5).",
+        wind: "A calibrator treats 3/8 as the whole number 3, ignoring the unit fraction 1/8.",
+        artifact: "Water-Skin Calibration Card: Unit fraction iteration (3/8 = 1/8 + 1/8 + 1/8 = 3 x 1/8).",
+        hook: "A skin marked in eighths. Three of these is not three skins; it is three copies of one part." },
+      { code: "10-2", title: "Multiply Fraction by Whole Number (Models)", job: "Ration Station Quartermaster", cast: "Khal Saud",
+        twin: "Pour 1/3-cup water measures repeatedly into glasses; count total whole cups filled.",
+        engine: "timeline / pour: Jump by 2/5 three times along the number line.",
+        wind: "Quartermaster counts each 1/3 cup as a full gallon in the delivery log.",
+        artifact: "Ration Station Model Card: Repeated addition and multiplication bar model.",
+        hook: "How many 1/3-cup rations? Scale the recipe without spilling a single drop." },
+      { code: "10-3", title: "Multiply Fraction by Whole Number (Symbols)", job: "Caravan Water Supply Officer", cast: "Abu Yusuf",
+        twin: "State the physical measurement unit aloud before computing 3/8 x 8 gallons.",
+        engine: "airplane / equation: Fly through product clouds with explicit units attached.",
+        wind: "Officer calculates 3/8 x 8 = 24/64 by multiplying numerator and denominator.",
+        artifact: "Supply Equation Docket: Fraction x whole equation with explicit units certified.",
+        hook: "Symbols are shorthand for physical water. 3/8 of 8 gallons. Keep the unit attached." },
+      { code: "10-4", title: "Solve Time Problems (Base 60)", job: "Haramain Rail Station Dispatcher", cast: "Abu Yusuf",
+        twin: "Move hands on a physical 60-notch dial clock; observe 60 minutes carry to +1 hour.",
+        engine: "diagram / two_clocks: 60-minute dial; 60 minutes carry into 1 hour (base 60).",
+        wind: "Dispatcher records arrival time as 10:95 after a 2h 50min train journey.",
+        artifact: "Official Haramain Boarding Pass: Departure, transit duration, and arrival arc (base 60).",
+        hook: "Time is a water-skin too: 60 minutes to the hour. Minutes are not base-10. Watch the regroup." },
+      { code: "10-5", title: "Model with Math (Time & Fractions)", job: "Master Transit Chronographer", cast: "Jadd Khalid",
+        twin: "Write model, equation, unit, and student signature on time trial paper.",
+        engine: "scramble / signed: Assemble complete fraction x whole number proof with time units.",
+        wind: "Chronographer leaves transit timeline uncalibrated against the 60-minute benchmark.",
+        artifact: "Chronographer Transit Blueprint: Signed mathematical model of multi-leg journey.",
+        hook: "The master chronometer. Model the entire caravan voyage with units, equations, and amānah." }
+    ]
+  },
+  {
+    gate: 11,
+    ar: "Darb al-Athar",
+    en: "The Track — Line Plots & Measurement Data",
+    commission: "Hand Span Line Plot: Measure class hand spans to 1/8 inch; construct wall plot",
+    doors: [
+      { code: "11-1", title: "Read Line Plots", job: "Red Sea Marine Biologist", cast: "Emad & Omar",
+        twin: "Read class wall plot of hand spans; identify longest, shortest, and most frequent values.",
+        engine: "diagram / track_read: Read data values under tallies (X); find most frequent span.",
+        wind: "A clerk reads 4 X marks as '4 inches' rather than 4 specimens of length 6 1/2 inches.",
+        artifact: "Marine Specimen Report: Line plot read with units and frequency distinguished.",
+        hook: "Footprints in the sand and fish in the Red Sea. Read the value under the dot, not just the pile of marks." },
+      { code: "11-2", title: "Make Line Plots", job: "Oasis Footwear Quartermaster", cast: "Abu Yusuf",
+        twin: "Set 1/8-inch fractional scale on wall strip before sticking dot decals.",
+        engine: "timeline / scale_first: Place scale ticks before placing dots; orphan data rejected.",
+        wind: "Quartermaster invents uneven scale gaps between shoe sizes on the axis.",
+        artifact: "Quartermaster Inventory Line Plot: Correctly scaled number line with plotted data.",
+        hook: "What shoe size sold most? Build the scale first. You cannot place dots on an unmeasured road." },
+      { code: "11-3", title: "Solve Problems Using Line Plots", job: "Wildlife Track Surveyor", cast: "Khal Saud",
+        twin: "Stretch string between extreme markers on physical plot to find data range.",
+        engine: "airplane / range: Fly through line plot range answers (Max Value - Min Value).",
+        wind: "Surveyor computes difference between the number of dots rather than the measurement values.",
+        artifact: "Wildlife Survey Analysis: Range and difference equations derived from plot values.",
+        hook: "Longest minus shortest. Subtract the actual lengths, not the count of dots. The numbers speak." },
+      { code: "11-4", title: "Critique Reasoning on Data", job: "Scientific Data Auditor", cast: "Nader & Jadd",
+        twin: "Two boys debate sample claims about the wall plot aloud using mathematical evidence.",
+        engine: "venn / critique: Sort data claims into Valid Findings vs False Interpretations.",
+        wind: "An auditor agrees with Nader's flawed claim just to be polite.",
+        artifact: "Scientific Audit Memo: Two-line constructive critique exposing dot vs value fallacy.",
+        hook: "Nader claims four dots means four inches. Correct him with adab, precision, and mathematics." }
+    ]
+  },
+  {
+    gate: 12,
+    ar: "Dakkan al-Halalah",
+    en: "The Honest Coin — Decimals & Currency",
+    commission: "Class Souq Stall: Real price ledger in SAR and halalah; make purchases & change",
+    doors: [
+      { code: "12-1", title: "Fractions & Decimals (Tenths & Hundredths)", job: "Royal Mint Coin Assayer", cast: "Khala Noura",
+        twin: "Shade 7 of 10 columns on 100-grid; write both 7/10 and 0.70 on coin card.",
+        engine: "memory / ten_strip: Match 7/10 to 0.7 and 70/100 visual decimal grids.",
+        wind: "An assayer writes seven tenths as 7.10 on the currency ledger.",
+        artifact: "Mint Coin Card: Tenths and hundredths represented in fraction and decimal forms.",
+        hook: "A stall of riyals and halalah (1 riyal = 100 halalah). 7 of 10 is 0.7, not 7.10. The place holds the value." },
+      { code: "12-2", title: "Fractions & Decimals on the Number Line", job: "Market Scale Inspector", cast: "Khala Noura & Omar",
+        twin: "Slide magnifying window over double-scaled paper ruler (tenths and hundredths).",
+        engine: "timeline / ruler_zoom: Zoom from tenths to hundredths on the price line.",
+        wind: "Inspector places 0.35 at 0.5 because '5 is in the number'.",
+        artifact: "Market Scale Ruler Card: Decimal points accurately located between tenth ticks.",
+        hook: "The stall's brass ruler. Between 0.3 and 0.4 sits 0.35. Zoom in and name the mark." },
+      { code: "12-3", title: "Compare Decimals", job: "Treasury Weight Assayer", cast: "Amm Fahad",
+        twin: "Place two weights (0.11 oz vs 0.09 oz) on scale; compare tenths before hundredths.",
+        engine: "sorting / pans: Sort into A > B vs A < B; tenths weighed before hundredths.",
+        wind: "A merchant claims 0.09 is heavier than 0.11 because '9 is bigger than 11'.",
+        artifact: "Assay Comparison Card: Place-value comparison proof showing 0.11 > 0.09.",
+        hook: "Which halalah coin is heavier: 0.11 oz or 0.09 oz? Look at the tenths seat first." },
+      { code: "12-4", title: "Add Fractions (Denominators of 10 & 100)", job: "Mosaic Restoration Artist", cast: "Majid & Khalid",
+        twin: "Color 100-grid in two colors: show 4/10 snaps to 40/100 before adding 5/100.",
+        engine: "bubbleshooter / mural: Shoot hundredths sum (40/100 + 5/100 = 45/100).",
+        wind: "Artist adds 4/10 + 5/100 = 9/110 by adding denominators.",
+        artifact: "100-Tile Mosaic Blueprint: Tenths converted to hundredths and summed correctly.",
+        hook: "A mural in 100 tiles. 4 tenths plus 5 hundredths. Rename tenths into hundredths before you add." },
+      { code: "12-5", title: "Solve Money Word Problems (SAR)", job: "Al-Balad Souq Cashier", cast: "Amm Fahad",
+        twin: "Count up play money change from purchase price (SAR 24 x 3 = 72) to SAR 80 banknote.",
+        engine: "openthebox / till: 4 Souq cash register transaction chests; count up change.",
+        wind: "Cashier invents an arbitrary tax fee when calculating change for Amm.",
+        artifact: "Souq Cash Register Slip: Line-item total, cash received, and exact change counted up.",
+        hook: "Flash drive purchase: SAR 24 x 3, pay with SAR 80. Count back honest change without inventing fees." },
+      { code: "12-6", title: "Look for & Use Structure (Decimals)", job: "Trail Marker Surveyor", cast: "Jadd Khalid",
+        twin: "Align three paper distance strips (0.25, 0.50, 0.75 mi) along 1-mile table edge.",
+        engine: "scramble / align: Assemble decimal alignment theorem for addition/subtraction.",
+        wind: "Surveyor marks 0.75 past the 1-mile marker on the trail map.",
+        artifact: "Trail Milepost Survey: Aligned decimal mile markers with 1.0 whole established.",
+        hook: "Three hikers at 0.25, 0.5, and 0.75 of a mile. Find where the 1-mile milestone must stand." }
+    ]
+  },
+  {
+    gate: 13,
+    ar: "Mizan al-Dhira'",
+    en: "House of the Cubit — Measurement Units",
+    commission: "Measure Classroom: Measure room in Customary and Metric; reconcile dual systems",
+    doors: [
+      { code: "13-1", title: "Customary Units of Length", job: "School Route Surveyor", cast: "Jawad & Abu",
+        twin: "Walk hallway laying down physical 1-yard rod; count 3 feet per yard.",
+        engine: "matching / rod: Match yards to feet (1 yd = 3 ft, 75 yd = 225 ft).",
+        wind: "Surveyor forgets the x3 factor, reporting 75 yards as 75 feet.",
+        artifact: "School Path Route Card: Distance in yards converted to feet with proof.",
+        hook: "75 yards from the gate to the school door. How many feet? Step with the 3-foot rod." },
+      { code: "13-2", title: "Customary Units of Capacity", job: "Oasis Juice Bottler", cast: "Karim & Amma",
+        twin: "Pour water between physical gallon, quart, and pint jugs to prove capacity tree.",
+        engine: "sorting / pour_tree: Sort into Gallon vs Quart vs Pint vs Cup buckets.",
+        wind: "Bottler treats a pint as equal to a cup, underfilling juice bottles.",
+        artifact: "Juice Bottling Log: Half-gallon converted to quarts and pints.",
+        hook: "Half a gallon of pomegranate juice. How many pints? The capacity tree does not lie." },
+      { code: "13-3", title: "Customary Units of Weight", job: "Oasis Veterinary Assayer", cast: "Badr & Khal",
+        twin: "Weigh objects on balance with ounce weights (16 oz = 1 lb).",
+        engine: "speedtap / balance: Tap ounce conversions (1 lb = 16 oz, 1/2 lb = 8 oz).",
+        wind: "Veterinarian assumes 1 pound equals 10 ounces.",
+        artifact: "Veterinary Weight Card: Puppy Badr's weight converted from pounds to ounces.",
+        hook: "Puppy Badr weighs half a pound. How many ounces? 16 ounces to the pound." },
+      { code: "13-4", title: "Metric Units of Length", job: "Science Lab Calibrator", cast: "Abu Yusuf",
+        twin: "Measure physical marker in both centimeters and millimeters (x10 scaling).",
+        engine: "timeline / zoom_ruler: Order metric lengths (50 mm, 8 cm, 1.2 m, 1 km).",
+        wind: "Calibrator treats cm and mm as equal units on lab report.",
+        artifact: "Lab Instrument Calibration Strip: Marker length dual-labelled in cm and mm.",
+        hook: "A lab marker measured in cm and mm. Jumps of 10 in the metric family." },
+      { code: "13-5", title: "Metric Units of Capacity & Mass", job: "Water Purification Chemist", cast: "Jad & Jadd",
+        twin: "Weigh 1 liter of water on balance to physically verify 1,000 mL = 1,000 g = 1 kg.",
+        engine: "bubbleshooter / water_fact: Blast conversions (1 L = 1,000 mL = 1 kg).",
+        wind: "Chemist reports 3 L of water as 300 mL, losing clean water volume.",
+        artifact: "Purification Water-Skin Label: 3 L converted to 3,000 mL and 3,000 grams.",
+        hook: "3 liters of purified well water. Milliliters and grams agree in the metric trust." },
+      { code: "13-6", title: "Perimeter & Area Problems", job: "Classroom Renovation Contractor", cast: "Abu Yusuf",
+        twin: "Tape a physical rectangle on floor; measure perimeter (2l+2w) and area (lxw).",
+        engine: "diagram / wall_area: Pin perimeter and area on floor plan; do not mix.",
+        wind: "Contractor orders paint (area) using the perimeter measurement.",
+        artifact: "Renovation Waybill: Wall width calculated from area; border tape from perimeter.",
+        hook: "Wall of 168 sq ft, 8 ft tall. Width from area; border tape from perimeter. Do not mix." },
+      { code: "13-7", title: "Precision in Measurement", job: "Master Standardization Inspector", cast: "Jadd Khalid",
+        twin: "Argue aloud the choice of millimeters vs meters for 3 distinct classroom tasks.",
+        engine: "venn / right_unit: Classify measurement jobs into Length vs Capacity vs Mass tools.",
+        wind: "Inspector measures desk thickness in kilometers.",
+        artifact: "Standardization Inspection Report: Justification of appropriate precision units.",
+        hook: "The right tool and the right unit is amānah. Choose precision with wisdom." }
+    ]
+  },
+  {
+    gate: 14,
+    ar: "Silsilat al-Najm",
+    en: "Chain of Stars — Number & Shape Patterns",
+    commission: "The Star Band: Design repeating 8-point star tile border; predict 37th tile",
+    doors: [
+      { code: "14-1", title: "Number Sequences", job: "Mountain Trail Cryptographer", cast: "Omar & Zayd",
+        twin: "Build pattern chain with physical counters (start 18, add 3); state even/odd feature.",
+        engine: "mazechase / chain: Chomp sequence rule numbers (+3: 18, 21, 24, 27, 30, 33).",
+        wind: "Cryptographer ignores the alternating even/odd feature of the sequence.",
+        artifact: "Trail Sequence Strip: Next six terms listed + even/odd feature explained.",
+        hook: "Start at 18, add 3 forever. Number tracks in the rock. The rule tells what comes next." },
+      { code: "14-2", title: "Patterns: Number Rules (Input/Output Tables)", job: "Factory Juice Packager", cast: "Abu Yusuf",
+        twin: "Fill first 3 rows of physical input/output table, then jump directly to row 10 and 100.",
+        engine: "speedtap / table_ext: Tap function machine outputs for row 10 (60) and 100 (600).",
+        wind: "Packager claims 10 juice packs contain 16 boxes (using +6 instead of x6).",
+        artifact: "Packaging Function Rule Card: Input x 6 = Output rule verified for 10 and 100.",
+        hook: "6 juice boxes per pack. 10 packs? 100 packs? The rule is x6, not +6." },
+      { code: "14-3", title: "Patterns: Repeating Shapes", job: "Mosaic Border Artisan", cast: "Jadd Khalid",
+        twin: "Lay physical pattern blocks (Square, Triangle) along border; use remainder to find 37th.",
+        engine: "wheel / repeat_wheel: Spin repeating motif wheel; use remainder (37 mod 2) to find shape.",
+        wind: "Artisan claims the 37th shape is 'whatever looks pretty'.",
+        artifact: "Mosaic Border Key: 37th shape identified through core repeat math.",
+        hook: "Square, triangle, square, triangle... What is the 37th tile? The 37th is not a guess; it is a rule." },
+      { code: "14-4", title: "Look for & Use Structure (Patterns)", job: "Architectural Cryptanalyst", cast: "Jadd Khalid",
+        twin: "Identify and isolate the repeating core block in physical geometric fabric pattern.",
+        engine: "scratch / hidden_rep: Scratch foil to reveal repeating motif core.",
+        wind: "Analyst mistakes a growing pattern for a repeating pattern.",
+        artifact: "Pattern Architecture Dossier: Hidden repeating unit identified and verified.",
+        hook: "Look beneath the surface. Find the core that repeats and you master the entire wall." }
+    ]
+  },
+  {
+    gate: 15,
+    ar: "al-Mizwala",
+    en: "The Sundial — Angles & Measurement",
+    commission: "Courtyard Sundial Build: Construct sundial; mark shadow rays at 3 times; measure angles",
+    doors: [
+      { code: "15-1", title: "Lines, Rays & Angles", job: "Courtyard Stone Mason", cast: "Jadd Khalid",
+        twin: "Hunt right angles in room using square corner of index card; draw 2 acute angles.",
+        engine: "diagram / square_corner: Hotspot pin right (90°), acute (<90°), and obtuse (>90°) angles.",
+        wind: "Mason calls a ray a line with two endpoints.",
+        artifact: "Stone Mason Angle Sketch: Right angle benchmark + two acute angles drawn.",
+        hook: "A bronze triangle on a stone slab. Find the square corner of the court. Angles are counted turns." },
+      { code: "15-2", title: "Understand Angles & Unit Angles", job: "Astronomical Clockmaker", cast: "Abu Yusuf",
+        twin: "Rotate pricked card circle around fixed center pin; count 1/360 turns.",
+        engine: "balloon / turn: Pop angle turns (1/4 circle = 90°, 1/2 = 180°, 3/4 = 270°).",
+        wind: "Clockmaker records 3 o'clock as an angle of '3 degrees'.",
+        artifact: "Clockmaker Calibration Dial: Quarter turn named as 90 degrees of 360.",
+        hook: "Clock hands at 3 o'clock. The turn of the ray. 90 degrees is not '3'. Name the fraction of the circle." },
+      { code: "15-4", title: "Measure & Draw Angles", job: "Sundial Solar Calibrator", cast: "Khal Saud",
+        twin: "Place real protractor on drawn shadow angle; select scale starting at 0° base ray.",
+        engine: "diagram / double_scale: Align protractor vertex; select scale starting at 0° ray.",
+        wind: "Calibrator reads the wrong scale of the protractor (130° instead of 50°).",
+        artifact: "Solar Calibrator Angle Log: Exact angle measurement with chosen scale justified.",
+        hook: "The shadow does not guess. The protractor has two scales. Start at zero and read true." },
+      { code: "15-5", title: "Add & Subtract Angle Measures", job: "Celestial Navigator", cast: "Jadd Khalid",
+        twin: "Fold paper angle along internal ray; verify sum of two parts equals whole angle.",
+        engine: "airplane / split_ray: Fly through adjacent angle sums (angle ABD = angle ABC + angle CBD).",
+        wind: "Navigator subtracts adjacent angles when calculating total solar sweep.",
+        artifact: "Celestial Angle Chart: Sum of adjacent angles proving angle ABD = whole.",
+        hook: "Morning shadow to noon shadow, noon to asr. Two smaller angles join to make the whole." },
+      { code: "15-6", title: "Use Appropriate Tools for Angles", job: "Astrolabe Instrument Maker", cast: "Jadd Khalid",
+        twin: "Select and justify tool (protractor vs ruler vs compass) for 3 physical tasks.",
+        engine: "sorting / tool_named: Sort geometry tasks into Protractor vs Ruler vs Compass bins.",
+        wind: "Maker attempts to measure degree turn using a straight measuring tape.",
+        artifact: "Instrument Maker Tool Docket: Protractor selected and justified for angle measurement.",
+        hook: "A straight ruler measures length. A protractor measures turning. Use the right tool with amānah." }
+    ]
+  },
+  {
+    gate: 16,
+    ar: "Qubbat al-Thamaniya",
+    en: "The Eight-Point Dome — Geometry & Symmetry",
+    commission: "Capstone 8-Point Star: Build official DAF 8-point star; classify shapes & fold true symmetry",
+    doors: [
+      { code: "16-1", title: "Lines (Parallel, Perpendicular, Intersecting)", job: "Dome Foundation Engineer", cast: "Abu Yusuf",
+        twin: "Place two wooden straightedges on desk; test parallel lines (never cross) vs perpendicular (right angles).",
+        engine: "diagram / two_lines: Pin parallel, perpendicular, and intersecting street lines.",
+        wind: "An engineer claims two straight lines can intersect twice.",
+        artifact: "Foundation Line Blueprint: Parallel and perpendicular lines identified and justified.",
+        hook: "Palm rows that never meet. The dome's foundation. A straight line does not get a second chance to cross." },
+      { code: "16-2", title: "Classify Triangles", job: "Stained-Glass Mosaic Craftsman", cast: "Khal Saud",
+        twin: "Sort card triangles into two physical hoops on floor (sides: equilateral/isosceles/scalene & angles).",
+        engine: "venn / double_sort: 2-Set Venn: Right Triangles intersect Isosceles Triangles.",
+        wind: "Craftsman sorts triangles by color instead of geometric properties.",
+        artifact: "Stained-Glass Triangle Dossier: Triangles classified by both sides and angles.",
+        hook: "Sorting triangles for the dome mosaic. Sides and angles. A triangle is named by its truth, not its paint." },
+      { code: "16-3", title: "Classify Quadrilaterals", job: "Master Dome Architect", cast: "Jadd Khalid",
+        twin: "Place card quadrilaterals into nested loops of colored string (quadrilateral -> parallelogram -> rectangle/rhombus -> square).",
+        engine: "mazechase / family_tree: Chomp shapes that belong to Parallelogram family.",
+        wind: "Architect calls every 4-sided shape a square.",
+        artifact: "Quadrilateral Family Tree Chart: Three distinct quadrilaterals drawn and classified.",
+        hook: "Four sides, opposite sides parallel. Is every rectangle a square, or every square a rectangle? Prove the family tree." },
+      { code: "16-4", title: "Line Symmetry", job: "Dome Glass Artisan", cast: "Jadda Amina & Omar",
+        twin: "Fold paper shapes; check reflection match using an acrylic mirror.",
+        engine: "scratch / fold: Scratch foil to verify folding symmetry lines across polygons.",
+        wind: "Artisan claims the letter R has a line of symmetry.",
+        artifact: "Symmetry Inspection Report: Exact count of symmetry lines for square, rectangle, and star.",
+        hook: "Fold a square four ways. Fold the letter R. Reflection must match without a sliver of error." },
+      { code: "16-5", title: "Draw Shapes with Line Symmetry", job: "Islamic Geometric Master Draftsman", cast: "Jadda Amina",
+        twin: "Lay acrylic mirror along line of symmetry to verify complete drawn figure matches half.",
+        engine: "diagram / mirror_pen: Draw missing half across mirror line of symmetry.",
+        wind: "Draftsman draws decorative embellishments that do not match across the symmetry line.",
+        artifact: "Capstone Symmetrical Star Drawing: Exact symmetrical polygon drawn across center line.",
+        hook: "Draw the missing half. The reflection does not forgive sloppy hands. Match the line of truth." },
+      { code: "16-6", title: "Critique Reasoning in Geometry", job: "Chief Geometric Jurist", cast: "Jadd Khalid",
+        twin: "Two boys debate quadrilateral hierarchy claims aloud using rigorous definitions.",
+        engine: "scramble / critique: Assemble formal critique of geometric hierarchy claim.",
+        wind: "A jurist approves a flawed geometric proof out of friendship.",
+        artifact: "Chief Jurist Geometric Ruling: Two-line constructive mathematical proof on polygon properties.",
+        hook: "The last court. Review the geometric claim. Critique with kindness, firmness, and pure mathematics." }
+    ]
+  }
+];
+
+/* State & DOM Elements */
+let currentGate = "all";
+let currentSearch = "";
+let currentView = "cards";
+
+const cardsContainer = document.getElementById("cardsViewContainer");
+const tableBody = document.getElementById("tableBody");
+const tableView = document.getElementById("tableViewContainer");
+const searchInput = document.getElementById("searchInput");
+const gateFilters = document.getElementById("gateFilters");
+const btnCards = document.getElementById("btnCardsView");
+const btnTable = document.getElementById("btnTableView");
+
+const modalOverlay = document.getElementById("modalOverlay");
+const modalClose = document.getElementById("modalClose");
+const mDoorCode = document.getElementById("mDoorCode");
+const mDoorTitle = document.getElementById("mDoorTitle");
+const mDoorJob = document.getElementById("mDoorJob");
+const mTwin = document.getElementById("mTwin");
+const mEngine = document.getElementById("mEngine");
+const mWind = document.getElementById("mWind");
+const mArtifact = document.getElementById("mArtifact");
+const mHook = document.getElementById("mHook");
+
+/* Render Engine */
+function render() {
+  cardsContainer.innerHTML = "";
+  tableBody.innerHTML = "";
+
+  const query = currentSearch.toLowerCase().trim();
+
+  ATLAS_DATA.forEach(g => {
+    if (currentGate !== "all" && String(g.gate) !== String(currentGate)) return;
+
+    // Filter doors by search
+    const matchingDoors = g.doors.filter(d => {
+      if (!query) return true;
+      return d.code.toLowerCase().includes(query) ||
+             d.title.toLowerCase().includes(query) ||
+             d.job.toLowerCase().includes(query) ||
+             d.cast.toLowerCase().includes(query) ||
+             d.twin.toLowerCase().includes(query) ||
+             d.artifact.toLowerCase().includes(query) ||
+             g.ar.toLowerCase().includes(query) ||
+             g.en.toLowerCase().includes(query);
+    });
+
+    if (matchingDoors.length === 0) return;
+
+    // Render Gate Block in Cards View
+    const gateBlock = document.createElement("div");
+    gateBlock.className = "gate-block";
+    gateBlock.innerHTML = `
+      <div class="gate-header">
+        <div class="gate-title-group">
+          <span class="gate-num">Gate ${g.gate}</span>
+          <span class="gate-title-ar">${g.ar}</span>
+          <span class="gate-title-en">${g.en}</span>
+        </div>
+        <div class="gate-commission">🎯 ${g.commission}</div>
+      </div>
+      <div class="doors-grid" id="grid-g${g.gate}"></div>
+    `;
+    cardsContainer.appendChild(gateBlock);
+
+    const grid = gateBlock.querySelector(`#grid-g${g.gate}`);
+
+    matchingDoors.forEach(d => {
+      // 1. Card View Item
+      const card = document.createElement("div");
+      card.className = "door-card";
+      card.onclick = () => openModal(d, g);
+      card.innerHTML = `
+        <div class="door-card-head">
+          <span class="door-code">Door ${d.code}</span>
+          <span class="door-job-badge">${d.job.split("·")[0]}</span>
+        </div>
+        <div class="door-title">${d.title}</div>
+        <div class="door-cast">Lead: ${d.cast}</div>
+        <div class="door-specs">
+          <div class="spec-row">
+            <span class="spec-k">Twin</span>
+            <span class="spec-v twin">${d.twin.slice(0, 75)}...</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-k">Artifact</span>
+            <span class="spec-v artifact">${d.artifact.slice(0, 75)}...</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      // 2. Table View Row
+      const tr = document.createElement("tr");
+      tr.onclick = () => openModal(d, g);
+      tr.style.cursor = "pointer";
+      tr.innerHTML = `
+        <td class="td-code">${d.code}</td>
+        <td><b>Gate ${g.gate}</b><br><small>${g.ar}</small></td>
+        <td><span class="td-who">${d.job}</span><br><small>${d.cast}</small></td>
+        <td>${d.twin}</td>
+        <td><code>${d.engine}</code></td>
+        <td style="color:var(--danger)">${d.wind}</td>
+        <td style="color:var(--pass); font-weight:600">${d.artifact}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  });
+
+  if (cardsContainer.children.length === 0) {
+    cardsContainer.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--text-dust); font-size:16px;">
+      No doors match your filter or search query: "<b>${currentSearch}</b>"
+    </div>`;
+  }
+}
+
+function openModal(d, g) {
+  mDoorCode.textContent = `GATE ${g.gate} · DOOR ${d.code}`;
+  mDoorTitle.textContent = d.title;
+  mDoorJob.textContent = `${d.job} · Lead: ${d.cast}`;
+  mTwin.textContent = d.twin;
+  mEngine.textContent = d.engine;
+  mWind.textContent = d.wind;
+  mArtifact.textContent = d.artifact;
+  mHook.textContent = `“${d.hook}”`;
+  modalOverlay.classList.add("active");
+}
+
+function closeModal() {
+  modalOverlay.classList.remove("active");
+}
+
+/* Event Listeners */
+searchInput.addEventListener("input", e => {
+  currentSearch = e.target.value;
+  render();
+});
+
+gateFilters.addEventListener("click", e => {
+  if (e.target.tagName === "BUTTON") {
+    gateFilters.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    currentGate = e.target.dataset.gate;
+    render();
+  }
+});
+
+btnCards.addEventListener("click", () => {
+  btnCards.classList.add("active");
+  btnTable.classList.remove("active");
+  cardsContainer.style.display = "block";
+  tableView.classList.remove("active");
+});
+
+btnTable.addEventListener("click", () => {
+  btnTable.classList.add("active");
+  btnCards.classList.remove("active");
+  cardsContainer.style.display = "none";
+  tableView.classList.add("active");
+});
+
+modalClose.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", e => {
+  if (e.target === modalOverlay) closeModal();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
+
+// Initial Render
+render();
+</script>
+<a href="/" class="daf-hub-back" style="position:fixed;left:12px;bottom:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(6,17,20,.72);color:#e8f3f5;font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(6px);opacity:.75" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75" aria-label="Back to the Learning Hub">&larr; Hub</a><style>@media print{.daf-hub-back{display:none!important}}</style>
+</body>
+</html>

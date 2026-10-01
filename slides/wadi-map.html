@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Map of Wadi al-Amanah · Grade 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Outfit:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --night:#051014;
+  --night-2:#091e24;
+  --edge:#173d47;
+  --gold:#d4af37;
+  --gold-lit:#f6d872;
+  --teal:#00bed6;
+  --teal-deep:#0e8f94;
+  --teal-lit:#38effa;
+  --sand:#e2f2f5;
+  --sand-2:#aedde6;
+  --sand-3:#80c2cd;
+  --paper:#f1f9fa;
+  --ink:#082228;
+  --ink-2:#1c4953;
+  --dust:#568791;
+  --chrome-text:#a4d5dc;
+  --pass:#10b981;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #0c2b33 0%, transparent 60%),
+    var(--night);
+  color:var(--chrome-text);
+  font-family:"Outfit","Segoe UI",system-ui,sans-serif;
+  font-weight:300;
+  display:flex;flex-direction:column;align-items:center;
+  padding:14px 14px 26px;
+}
+.shell{width:min(1600px,100%);display:flex;flex-direction:column;gap:12px}
+
+/* ---------- chrome bar ---------- */
+.bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 26px;border-bottom:1px solid rgba(201,162,39,0.2);padding-bottom:12px;}
+.mark{display:flex;align-items:baseline;gap:12px;flex:1 1 320px}
+.mark h1{
+  font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:28px;letter-spacing:-.01em;
+  margin:0;color:#f4ead4;
+}
+.mark .sub{
+  font-family:"Space Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);
+}
+.counts{display:flex;gap:22px;font-family:"Space Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.counts b{display:block;font-size:22px;color:#f4ead4;letter-spacing:0;margin-bottom:1px;font-weight:700}
+.counts span{color:var(--dust)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+button.tool{
+  font-family:"Space Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--night-2);color:var(--chrome-text);border:1px solid var(--edge);
+  padding:8px 12px;border-radius:6px;cursor:pointer;transition:.15s;
+  display:flex;align-items:center;gap:6px;
+}
+button.tool:hover{border-color:var(--gold);color:var(--gold-lit)}
+button.tool[aria-pressed="true"]{background:rgba(201,162,39,.18);border-color:var(--gold);color:var(--gold-lit)}
+button.tool:focus-visible{outline:2px solid var(--teal-lit);outline-offset:2px}
+
+/* ---------- layout ---------- */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;align-items:start}
+@media (max-width:1120px){.stage{grid-template-columns:minmax(0,1fr)}}
+
+.frame{
+  position:relative;border:2px solid var(--gold);border-radius:8px;overflow:hidden;
+  background:var(--paper);box-shadow:0 24px 70px rgba(0,0,0,.55), inset 0 0 0 6px rgba(244,234,208,.9), inset 0 0 0 7px rgba(201,162,39,.35);
+}
+svg.map{display:block;width:100%;height:auto;touch-action:manipulation}
+
+/* ---------- map pieces ---------- */
+.site{cursor:pointer}
+.site:focus{outline:none}
+.site .hit{fill:transparent}
+.site .cairn{transition:transform .18s ease}
+.site:hover .cairn,.site:focus-visible .cairn,.site.sel .cairn{transform:translateY(-4px)}
+.site .halo{opacity:0;transition:opacity .18s ease}
+.site:hover .halo,.site:focus-visible .halo,.site.sel .halo{opacity:1}
+.lbl{
+  font-family:"Fraunces",Georgia,serif;font-size:13px;font-weight:600;fill:var(--ink);
+  paint-order:stroke;stroke:rgba(246,238,217,.92);stroke-width:3.5px;stroke-linejoin:round;
+}
+.lbl.dim{fill:var(--dust);font-style:italic;font-weight:400}
+.site .no{font-family:"Space Mono",ui-monospace,monospace;font-size:11px;font-weight:700}
+.qtr{cursor:pointer}
+.qtr .lbl{font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:15px;fill:var(--dust)}
+@media (prefers-reduced-motion:reduce){
+  .site .cairn,.site .halo{transition:none}
+  .flame{animation:none !important}
+}
+.flame{transform-origin:center;animation:flick 2.4s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scale(1)}45%{transform:scale(1.18)}70%{transform:scale(.94)}}
+
+/* Water animation */
+@keyframes waterRipples {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 40; }
+}
+.water-flow-line {
+  animation: waterRipples 3s linear infinite;
+}
+
+/* ---------- folio ---------- */
+.folio{
+  border:1px solid var(--edge);border-radius:8px;background:var(--night-2);
+  padding:20px 20px 22px;min-height:460px;display:flex;flex-direction:column;gap:4px;
+  box-shadow:0 12px 36px rgba(0,0,0,0.4);
+}
+.folio .kick{font-family:"Space Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.folio h2{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:26px;line-height:1.15;margin:0;color:#f4ead4}
+.folio .en{font-size:13.5px;color:var(--dust);margin:2px 0 10px;font-weight:400;}
+.folio .guild-badge{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(18,133,124,0.18);
+  border:1px solid var(--teal-lit);color:var(--teal-lit);padding:4px 10px;
+  border-radius:6px;font-size:11.5px;font-weight:700;margin-bottom:12px;
+}
+.folio .page{
+  font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:15.5px;line-height:1.45;
+  color:var(--gold-lit);border-left:3px solid var(--gold);padding-left:12px;margin:0 0 14px;
+}
+.folio .meter{height:6px;background:rgba(201,162,39,.14);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.folio .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lit))}
+.folio .mnote{font-family:"Space Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dust);margin-bottom:14px}
+.doors{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.doors a,.doors span{
+  font-family:"Space Mono",ui-monospace,monospace;font-size:11.5px;font-weight:700;
+  padding:6px 9px;border-radius:5px;border:1px solid var(--edge);color:var(--dust);
+  text-decoration:none;background:rgba(255,255,255,0.02);transition:all .15s ease;
+}
+.doors a{color:var(--chrome-text);border-color:#4d432f}
+.doors a:hover{border-color:var(--teal-lit);color:var(--teal-lit);transform:translateY(-1px)}
+.doors a:focus-visible{outline:2px solid var(--teal-lit);outline-offset:1px}
+.doors .sealed{background:rgba(201,162,39,.22);border-color:var(--gold);color:var(--gold-lit);font-weight:800;box-shadow:0 0 8px rgba(201,162,39,0.3)}
+.doors .unbuilt{opacity:.45}
+.folio .hint{font-size:12.5px;color:var(--dust);line-height:1.5;margin-top:auto;padding-top:14px;border-top:1px solid var(--edge)}
+.folio .hint b{color:var(--chrome-text);font-weight:600}
+
+/* ---------- sijill ---------- */
+.sijill{border-top:1px solid var(--edge);padding-top:16px}
+.sijill h3{font-family:"Space Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 10px;font-weight:700}
+.pages{display:flex;gap:6px;flex-wrap:wrap;padding:0;margin:0;list-style:none}
+.pg{
+  position:relative;width:50px;height:64px;border-radius:3px 8px 8px 3px;
+  border:1px solid rgba(201,162,39,.35);background:rgba(201,162,39,.05);
+  overflow:hidden;cursor:pointer;padding:0;transition:.15s;
+}
+.pg:hover{border-color:var(--gold);transform:translateY(-2px)}
+.pg:focus-visible{outline:2px solid var(--teal-lit);outline-offset:2px}
+.pg i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,var(--gold-lit),var(--gold));opacity:.75}
+.pg b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Space Mono",monospace;font-size:14px;font-weight:700;color:var(--chrome-text)}
+.pg u{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:"Space Mono",monospace;font-size:8.5px;text-decoration:none;color:rgba(42,34,17,.85);font-weight:700;}
+.pg.part b,.pg.full b{color:#241d0c}
+.pg.full{border-color:var(--gold);box-shadow:0 0 14px rgba(201,162,39,.45)}
+.pg.full i{opacity:1}
+.pg.sel{border-color:var(--teal-lit);box-shadow:0 0 0 2px rgba(47,192,178,.45)}
+.foot{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12.5px;color:var(--dust);line-height:1.5;align-items:center;}
+.foot b{color:var(--gold);font-weight:600}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dust)}
+.legend em{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+/* Audio Indicator */
+.audio-live-pill {
+  display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 10px;
+  background: rgba(18,133,124,0.15); border: 1px solid var(--teal-lit); color: var(--teal-lit);
+  padding: 4px 8px; border-radius: 999px;
+}
+.audio-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-lit); box-shadow: 0 0 6px var(--teal-lit); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Header Bar -->
+  <div class="bar">
+    <div class="mark" style="display:flex;align-items:center;gap:18px;">
+      <a href="/" title="Back to Learning Hub" style="display:flex;align-items:center;"><img src="/assets/img/daf-logo.png" alt="Dar Al Fikr Schools" style="height:44px;object-fit:contain;"></a>
+      <div>
+      <h1>Wadi al-Amanah</h1>
+      <span class="sub">Valley of Trust · Grade 4 Math Ecosystem</span>
+    </div></div>
+    <div class="counts">
+      <div><b id="cDoors">0</b><span>doors of 91</span></div>
+      <div><b id="cPages">0</b><span>pages of 16</span></div>
+      <div><b id="cWater">0%</b><span>water returned</span></div>
+    </div>
+    <div class="tools">
+      <button class="tool" id="tAudio" aria-pressed="false" title="Toggle Procedural Desert & Lantern Sounds (100% Offline Web Audio)">
+        <span id="audioIcon">🔊</span> <span id="audioLabel">Sound: ON</span>
+      </button>
+      <button class="tool" id="tPreview" aria-pressed="false" title="Teacher planning view. Reveal all Gate names.">Reveal all names</button>
+      <button class="tool" id="tWalk" title="Send the caravan along the road as far as the wall has restored.">Walk the caravan</button>
+      <button class="tool" id="tSimulate" title="Simulate +1 sealed door for classroom demonstration">+1 Door (Demo)</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- Map Frame -->
+    <div class="frame">
+      <svg class="map" id="map" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="application" aria-label="Map of the valley of Wadi al-Amanah. Sixteen gates. Use arrow keys to move between gates.">
+        <defs>
+          <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#efe2c2"/><stop offset=".45" stop-color="#f4ead0"/><stop offset="1" stop-color="#e6d5ab"/>
+          </linearGradient>
+          <radialGradient id="gLamp" cx="50%" cy="50%">
+            <stop offset="0" stop-color="#ffe9a8" stop-opacity=".85"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gHalo" cx="50%" cy="50%">
+            <stop offset="0" stop-color="#12857c" stop-opacity=".30"/><stop offset="1" stop-color="#12857c" stop-opacity="0"/>
+          </radialGradient>
+          <pattern id="pStipple" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="4" r="1" fill="#a68a60" opacity=".45"/>
+            <circle cx="10" cy="10" r="1" fill="#a68a60" opacity=".35"/>
+            <circle cx="12" cy="2" r=".8" fill="#a68a60" opacity=".25"/>
+          </pattern>
+          <filter id="fGrain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" result="n"/>
+            <feColorMatrix in="n" type="saturate" values="0"/>
+            <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+          </filter>
+          <filter id="fGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+
+          <!-- The serpentine watercourse -->
+          <path id="bed" d="M 92 300
+               C 240 268, 330 352, 470 344
+               C 620 336, 690 232, 852 250
+               C 1010 268, 1116 340, 1186 420
+               C 1252 496, 1136 556, 964 556
+               C 806 556, 690 512, 540 552
+               C 396 590, 306 652, 292 736
+               C 280 812, 414 858, 596 856
+               C 792 854, 1000 828, 1168 782"/>
+
+          <!-- Water reveal mask based on class progress -->
+          <mask id="mWater" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+            <use id="waterMask" href="#bed" stroke="#fff" stroke-width="28" fill="none" stroke-linecap="round"/>
+          </mask>
+        </defs>
+
+        <rect width="1600" height="900" fill="url(#gSky)"/>
+
+        <!-- Irregular Mountain Ranges -->
+        <g id="ranges"></g>
+
+        <!-- The Plain Contours -->
+        <g fill="none" stroke="#c2a878" stroke-width="1.3" opacity=".7">
+          <path d="M0 372 C220 352, 470 408, 720 388 C980 368, 1240 420, 1600 388"/>
+          <path d="M0 452 C240 430, 500 488, 760 466 C1020 444, 1280 496, 1600 464"/>
+          <path d="M0 672 C260 650, 520 708, 800 684 C1060 662, 1320 714, 1600 682"/>
+          <path d="M0 762 C280 740, 540 796, 820 774 C1080 754, 1340 804, 1600 772"/>
+        </g>
+        <g fill="none" stroke="#b09763" stroke-width="4" stroke-linecap="round" opacity=".55">
+          <path d="M356 292 C372 330, 398 340, 424 348"/>
+          <path d="M622 268 C636 300, 664 306, 690 300"/>
+          <path d="M1046 296 C1066 336, 1092 364, 1122 388"/>
+          <path d="M868 596 C900 616, 928 632, 946 664"/>
+        </g>
+        <g id="flora"></g>
+
+        <!-- Eastern Sands -->
+        <path d="M1150 900 C1178 700, 1290 600, 1414 548 C1516 506, 1578 456, 1600 412 L1600 900 Z" fill="#dcc396"/>
+        <path d="M1150 900 C1178 700, 1290 600, 1414 548 C1516 506, 1578 456, 1600 412 L1600 900 Z" fill="url(#pStipple)"/>
+        <path d="M1150 900 C1178 700, 1290 600, 1414 548 C1516 506, 1578 456, 1600 412"
+              fill="none" stroke="#b39a6c" stroke-width="1.6" stroke-dasharray="9 8" opacity=".9"/>
+        <g fill="none" stroke="#a68a60" stroke-width="2" stroke-linecap="round" opacity=".65">
+          <path d="M1236 812 C1268 776, 1330 772, 1372 800 M1252 812 C1276 792, 1320 790, 1348 802"/>
+          <path d="M1318 720 C1348 686, 1406 684, 1444 710 M1332 720 C1354 702, 1394 700, 1420 712"/>
+          <path d="M1408 862 C1442 826, 1508 822, 1552 850 M1424 862 C1450 842, 1496 840, 1526 852"/>
+          <path d="M1440 638 C1466 612, 1512 610, 1544 630"/>
+        </g>
+
+        <!-- Dry Bed & Animated Returning Watercourse -->
+        <use href="#bed" stroke="#8a7250" stroke-width="22" fill="none" stroke-linecap="round" opacity=".8"/>
+        <use href="#bed" stroke="#efe4c4" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <use href="#bed" stroke="#b09763" stroke-width="16" fill="none" stroke-linecap="round" stroke-dasharray="2 8" opacity=".7"/>
+        
+        <!-- Masked Water Layer with Animation -->
+        <g mask="url(#mWater)">
+          <use href="#bed" stroke="#0f9d90" stroke-width="14" fill="none" stroke-linecap="round" opacity=".95"/>
+          <use href="#bed" class="water-flow-line" stroke="#dff5f1" stroke-width="3" fill="none" stroke-dasharray="8 14" stroke-linecap="round" opacity=".85"/>
+        </g>
+
+        <!-- Palms along the watercourse -->
+        <g id="palms" fill="#0f6a61" opacity=".9"></g>
+
+        <!-- Gate of the Wind (Bab al-Rih) -->
+        <g transform="translate(66,296)">
+          <ellipse cx="0" cy="18" rx="62" ry="52" fill="#f0e5c6" opacity=".92"/>
+          <path d="M-20,34 L-20,-8 Q0,-40 20,-8 L20,34 Z" fill="none" stroke="#7d6647" stroke-width="3"/>
+          <path d="M-20,34 L20,34" stroke="#7d6647" stroke-width="3"/>
+          <text x="0" y="56" text-anchor="middle" class="lbl" style="font-family:Fraunces,Georgia,serif;font-size:13px;fill:#5d5137">Bab al-Rih</text>
+          <text x="0" y="72" text-anchor="middle" style="font-family:'Space Mono',monospace;font-size:9px;fill:#8a7a5c;letter-spacing:.08em">YOU ENTER HERE</text>
+        </g>
+
+        <!-- Landmarks -->
+        <g transform="translate(214,432)">
+          <circle r="20" fill="#0f6a61" stroke="#0a4f49" stroke-width="2"/>
+          <circle r="9" fill="#dff5f1"/>
+          <path d="M-26 -22 L-26 -30 M26 -22 L26 -30 M-26 -30 L26 -30" stroke="#6b563a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <text y="40" text-anchor="middle" class="lbl">Bi'r Umm al-Ma'</text>
+          <text y="55" text-anchor="middle" style="font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.1em;fill:#7a6647">THE MOTHER-WELL</text>
+        </g>
+        <g transform="translate(700,650)">
+          <path d="M-34 -6 L-28 -20 L28 -20 L34 -6 Z" fill="#c9a227" stroke="#6b4f0f" stroke-width="1.8" stroke-linejoin="round"/>
+          <rect x="-30" y="-6" width="60" height="22" rx="2" fill="#f0e2bd" stroke="#6b563a" stroke-width="1.8"/>
+          <path d="M-14 -6 L-14 16 M14 -6 L14 16" stroke="#6b563a" stroke-width="1.4"/>
+          <text y="36" text-anchor="middle" class="lbl">Souq al-Mizan</text>
+        </g>
+
+        <!-- The Unwritten Quarter -->
+        <g class="qtr" id="quarter" transform="translate(1420,700)" tabindex="0" role="button" aria-label="Unmapped ground in the east">
+          <ellipse rx="128" ry="96" fill="var(--sand-3)" opacity=".45"/>
+          <ellipse rx="128" ry="96" fill="none" stroke="#a68a60" stroke-width="1.5" stroke-dasharray="5 7" opacity=".9"/>
+          <g id="qtrSand" stroke="#8a7a5c" fill="none" opacity=".55" stroke-linecap="round">
+            <path d="M-80 -20 C-40 -34, 20 -30, 74 -14"/>
+            <path d="M-90 14 C-44 0, 22 4, 84 22"/>
+            <path d="M-64 48 C-26 34, 30 38, 72 54"/>
+          </g>
+          <text id="qtrLabel" y="6" text-anchor="middle" class="lbl">?</text>
+          <text id="qtrSub" y="30" text-anchor="middle" style="font-family:'Space Mono',monospace;font-size:9px;fill:#8a7a5c;letter-spacing:.1em">SAND STILL MOVING</text>
+        </g>
+
+        <!-- Upgraded Caravan Token Group -->
+        <g id="caravan" opacity="0">
+          <circle r="14" fill="rgba(201,162,39,0.25)" stroke="#c9a227" stroke-width="1.5"/>
+          <circle r="7" fill="#c9a227" stroke="#7a6014" stroke-width="2"/>
+          <circle r="2.5" fill="#f4ead0"/>
+          <!-- Moving Dust Particles -->
+          <circle cx="-12" cy="4" r="2" fill="#dcc79a" opacity=".7"/>
+          <circle cx="-18" cy="8" r="1.5" fill="#dcc79a" opacity=".5"/>
+        </g>
+
+        <!-- Gate sites injected here along #bed -->
+        <g id="sites"></g>
+
+        <!-- Compass Rose -->
+        <g transform="translate(1512,118)" opacity=".8">
+          <circle r="30" fill="none" stroke="#7d6647" stroke-width="1.5"/>
+          <path d="M0,-24 L6,0 L0,24 L-6,0 Z" fill="#7d6647" opacity=".55"/>
+          <path d="M0,-24 L6,0 L-6,0 Z" fill="#7d6647"/>
+          <text y="-36" text-anchor="middle" style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;fill:#5d5137">N</text>
+        </g>
+
+        <!-- Cartouche -->
+        <g transform="translate(300,838)">
+          <text text-anchor="middle" style="font-family:Fraunces,Georgia,serif;font-style:italic;font-size:15px;fill:#5d5137">
+            The Valley of Trust · Dar Al Fikr
+          </text>
+          <text y="20" text-anchor="middle" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;fill:#8a7a5c">
+            BEYOND THE LAST RIDGE · NOT TO SCALE
+          </text>
+        </g>
+
+        <rect width="1600" height="900" filter="url(#fGrain)" pointer-events="none" opacity=".55"/>
+      </svg>
+    </div>
+
+    <!-- Interactive Gate Folio Drawer -->
+    <aside class="folio" id="folio" aria-live="polite">
+      <p class="kick" id="fKick">The valley</p>
+      <h2 id="fName">Sixteen gates</h2>
+      <p class="en" id="fEn">Hover a cairn on the road, or press the arrow keys.</p>
+      <div id="fGuild" style="display:none;" class="guild-badge">🏛️ Vocational Guild</div>
+      <p class="page" id="fPage">Ghubar eats whatever we skip. Restore a page, and he cannot eat that kind of number again.</p>
+      <div class="meter"><i id="fMeter" style="width:0%"></i></div>
+      <p class="mnote" id="fMeterNote">nothing restored yet</p>
+      <div class="doors" id="fDoors"></div>
+      <p class="hint" id="fHint">A gate has no name until the class opens its first door. <b>Click a door</b> to open its deck.</p>
+    </aside>
+  </div>
+
+  <!-- Sijill Ribbon -->
+  <div class="sijill">
+    <h3>The Sijill · sixteen pages</h3>
+    <ul class="pages" id="pages"></ul>
+  </div>
+
+  <!-- Footer Legend -->
+  <div class="foot">
+    <span class="legend">
+      <span><em style="background:#b9a67f"></em>not yet opened</span>
+      <span><em style="background:#12857c"></em>opened</span>
+      <span><em style="background:#c9a227"></em>page sealed</span>
+    </span>
+    <span id="note" style="margin-left:auto;"></span>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   PROCEDURAL WEB AUDIO SYNTHESIZER (100% Offline · Zero CDN Dependency)
+   Generates desert wind, flowing streams, brass bells, and resonant chimes
+   ========================================================================= */
+const AudioEngine = (function () {
+  let ctx = null;
+  let enabled = true;
+
+  function initCtx() {
+    if (!ctx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) ctx = new AudioContext();
+    }
+    if (ctx && ctx.state === "suspended") {
+      ctx.resume();
+    }
+  }
+
+  function playChime(freq = 520, duration = 1.2) {
+    if (!enabled) return;
+    initCtx();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration);
+
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  function playCaravanStep() {
+    if (!enabled) return;
+    initCtx();
+    if (!ctx) return;
+    try {
+      // Brass camel bell metallic ping
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(880 + Math.random() * 80, ctx.currentTime);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.35);
+    } catch (e) {}
+  }
+
+  function playStonePlace() {
+    if (!enabled) return;
+    initCtx();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(140, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(45, ctx.currentTime + 0.4);
+
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.4);
+    } catch (e) {}
+  }
+
+  return {
+    init: initCtx,
+    chime: playChime,
+    caravan: playCaravanStep,
+    stone: playStonePlace,
+    toggle: function () {
+      enabled = !enabled;
+      return enabled;
+    },
+    isEnabled: function () { return enabled; }
+  };
+})();
+
+/* =========================================================================
+   VALLEY CORE MAP & SIJILL DATA ENGINE
+   ========================================================================= */
+(function () {
+  "use strict";
+
+  var GATES = [
+    { ar:"Sahat al-Misbah",       en:"Lantern Court",              guild:"Al-Balad Vault Clerks",       page:"every digit keeps its seat",                          doors:["1-1","1-2","1-3","1-4"] },
+    { ar:"Diwan al-Hisab",        en:"the Counting House",         guild:"Caravan Customs Inspectors",  page:"every sum and difference can be checked",             doors:["2-1","2-2","2-3","2-4","2-5","2-6","2-7"] },
+    { ar:"Nakhil Yusuf",          en:"the Palm Nursery",           guild:"Date Nursery Agronomists",    page:"a jump of one place is ten times",                    doors:["3-1","3-2","3-3","3-4","3-6","3-8"] },
+    { ar:"Mashghala al-Qawafil",  en:"the Caravan Workshop",       guild:"Expedition Logisticians",     page:"two digits by two digits, honest partials",           doors:["4-1","4-2","4-3","4-5"] },
+    { ar:"Qismat al-Ma'",         en:"the Water Share",            guild:"Solar Still Watermasters",    page:"divide, and say what the leftover means",             doors:["5-1","5-2","5-3","5-4","5-5","5-6"] },
+    { ar:"Souq al-Su'al",         en:"Market of the Hidden Ask",   guild:"Souq Trade Detectives",       page:"every stall hides a second question",                 doors:["6-1","6-2","6-3","6-5","6-6"] },
+    { ar:"Bayt al-Tamr",          en:"the House of Dates",         guild:"Date Packhouse Masters",      page:"some boxes will not split",                           doors:["7-1","7-2","7-3","7-4","7-5"] },
+    { ar:"Sahn al-Zill",          en:"Courtyard of Shade",         guild:"Courtyard Shadow Masons",     page:"the same floor, a finer cut",                         doors:["8-1","8-2","8-3","8-4","8-5","8-6","8-7"] },
+    { ar:"Suffat al-Iftar",       en:"the Sharing Ledge",          guild:"Community Feast Bakers",      page:"join and separate parts of the same whole",           doors:["9-1","9-2","9-3","9-4","9-5","9-6","9-7","9-8","9-9","9-10"] },
+    { ar:"Qirbat al-Juz'",        en:"Water-Skin of Parts",        guild:"Haramain Rail Dispatchers",   page:"a fraction is copies of one part",                    doors:["10-1","10-2","10-3","10-4","10-5"] },
+    { ar:"Darb al-Athar",         en:"the Track",                  guild:"Marine Track Scientists",     page:"read the value, not the pile of dots",                doors:["11-1","11-2","11-3","11-4"] },
+    { ar:"Dakkan al-Halalah",     en:"the Honest Coin",            guild:"Royal Mint Cashiers",         page:"tenths, hundredths, and honest change",               doors:["12-1","12-2","12-3","12-4","12-5","12-6"] },
+    { ar:"Mizan al-Dhira'",       en:"the House of the Cubit",     guild:"Civil Engineering Surveyors", page:"both rod-families are a trust",                       doors:["13-1","13-2","13-3","13-4","13-5","13-6","13-7"] },
+    { ar:"Silsilat al-Najm",      en:"the Chain of Stars",         guild:"Ridge Trail Cryptographers",  page:"the rule, and what the rule does not say",            doors:["14-1","14-2","14-3","14-4"] },
+    { ar:"al-Mizwala",            en:"the Sundial",                guild:"Astrolabe Solar Observers",   page:"degrees are counted turns",                           doors:["15-1","15-2","15-4","15-5","15-6"] },
+    { ar:"Qubbat al-Thamaniya",   en:"the Eight-Point Dome",       guild:"Master Geometric Architects", page:"lines, triangles, quadrilaterals, symmetry",          doors:["16-1","16-2","16-3","16-4","16-5","16-6"] }
+  ];
+
+  /* Built standalone interactive HTML decks */
+  var BUILT = {};
+  ["1-1","1-2","1-3","1-4","2-1","2-2","2-3","2-4","2-5","2-6","2-7",
+   "3-1","3-2","3-3","3-4","3-6","3-8","4-1","4-2","4-3","4-5",
+   "5-1","5-2","5-3","5-4","5-5","5-6","6-1","6-2","6-3","6-5","6-6",
+   "7-1","7-2","7-3","7-4","7-5","8-1","8-2","8-3","8-4","8-5","8-6","8-7",
+   "9-1","9-2","9-3","9-4","9-5","9-6","9-7","9-8","9-9","9-10",
+   "10-1","10-2","10-3","10-4","10-5","11-1","11-2","11-3","11-4",
+   "12-1","12-2","12-3","12-4","12-5","12-6","13-1","13-2","13-3","13-4","13-5","13-6","13-7",
+   "14-1","14-2","14-3","14-4","15-1","15-2","15-4","15-5","15-6",
+   "16-1","16-2","16-3","16-4","16-5","16-6"].forEach(function (c) { BUILT[c] = 1; });
+
+  var QUARTER_UNLOCK = 12;
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  /* ---------- ledger sync ---------- */
+  var ledger = {};
+  try { ledger = JSON.parse(localStorage.getItem("daf.sijill.v1") || "{}") || {}; } catch (e) { ledger = {}; }
+  function sealedDoor(code) { return !!(ledger[code] && ledger[code].done); }
+
+  var totalDoors = 0, doneDoors = 0, sealedPages = 0;
+  function recomputeLedger() {
+    totalDoors = 0; doneDoors = 0; sealedPages = 0;
+    GATES.forEach(function (g) {
+      g.done = g.doors.filter(sealedDoor).length;
+      g.total = g.doors.length;
+      g.full = g.done >= g.total;
+      g.open = g.done > 0;
+      totalDoors += g.total; doneDoors += g.done; if (g.full) sealedPages += 1;
+    });
+    waterPct = totalDoors ? doneDoors / totalDoors : 0;
+    quarterOpen = sealedPages >= QUARTER_UNLOCK;
+  }
+  var waterPct = 0, quarterOpen = false;
+  recomputeLedger();
+
+  /* ---------- terrain generation ---------- */
+  (function ranges() {
+    var host = document.getElementById("ranges");
+    function range(base, seed, faceL, faceD, ink, op, scale) {
+      var g = document.createElementNS(SVGNS, "g");
+      g.setAttribute("opacity", String(op));
+      var x = -40, out = "";
+      seed.forEach(function (s, i) {
+        var w = s[0] * scale, h = s[1] * scale, b = base + (s[2] || 0), cx = x + w;
+        out += '<polygon points="' + (cx - w) + ',' + b + ' ' + cx + ',' + (b - h) + ' ' + cx + ',' + b + '" fill="' + faceD + '"/>' +
+               '<polygon points="' + cx + ',' + (b - h) + ' ' + (cx + w * 0.92) + ',' + b + ' ' + cx + ',' + b + '" fill="' + faceL + '"/>';
+        if (ink) {
+          out += '<polyline points="' + (cx - w) + ',' + b + ' ' + cx + ',' + (b - h) + ' ' + (cx + w * 0.92) + ',' + b + '"' +
+                 ' fill="none" stroke="' + ink + '" stroke-width="1.6" stroke-linejoin="round" opacity=".6"/>';
+          if (h > 100 * scale) {
+            out += '<polyline points="' + (cx - w * 0.34) + ',' + (b - h * 0.62) + ' ' + (cx - w * 0.12) + ',' + (b - h * 0.78) + ' ' + cx + ',' + (b - h) + '"' +
+                   ' fill="none" stroke="' + ink + '" stroke-width="1.2" opacity=".3"/>';
+          }
+        }
+        x += w * 1.18;
+      });
+      out += '<rect x="-40" y="' + (base + 12) + '" width="1700" height="26" fill="' + faceD + '"/>';
+      g.innerHTML = out;
+      host.appendChild(g);
+    }
+    range(244, [[62,80,0],[44,52,6],[78,112,-4],[52,64,8],[70,92,0],[40,46,10],[86,120,-6],[56,70,4],[64,84,0],[46,56,8],[80,104,-4],[50,62,6],
+                [72,96,0],[42,50,10],[68,88,-2],[54,66,6],[76,106,-6],[48,58,8],[64,82,2],[44,54,6]],
+          "#c6ad82", "#ab9066", "", 0.42, 1);
+    range(304, [[54,98,0],[76,144,-8],[46,68,10],[88,162,-12],[58,92,4],[70,126,-4],[42,60,12],[82,146,-10],[50,80,6],[74,132,-6],[60,96,2],[86,154,-10],
+                [48,74,8],[68,120,-6],[56,88,4],[80,140,-8],[44,66,10],[72,128,-4],[52,84,6],[78,136,-8]],
+          "#d6be92", "#a3855a", "#6b563a", 1, 1);
+    
+    var FOOT = "M-40 306 C 140 330, 300 302, 470 326 C 640 350, 800 316, 970 338 C 1080 352, 1150 376, 1196 420";
+    var foot = document.createElementNS(SVGNS, "path");
+    foot.setAttribute("d", FOOT + " L1196 372 L-40 372 Z");
+    foot.setAttribute("fill", "#cdb289");
+    host.appendChild(foot);
+  })();
+
+  (function flora() {
+    var host = document.getElementById("flora"), out = "";
+    [[196,606],[452,712],[1014,668],[1252,470],[836,812],[318,536]].forEach(function (p, i) {
+      var s = 0.85 + (i % 3) * 0.22;
+      out += '<g transform="translate(' + p[0] + ',' + p[1] + ') scale(' + s + ')" fill="#c9b088" stroke="#8a7250" stroke-width="1.5" stroke-linejoin="round">' +
+             '<path d="M-20 8 C-16 -4, -4 -8, 4 -2 C12 -7, 22 -2, 24 8 Z"/></g>';
+    });
+    [[150,660],[262,468],[520,398],[560,760],[760,410],[900,700],[1080,600],[1150,720],[404,832],[980,470],[724,880],[1200,352]]
+      .forEach(function (p, i) {
+        var r = 4 + (i % 3);
+        out += '<g transform="translate(' + p[0] + ',' + p[1] + ')" stroke="#8fa06a" stroke-width="1.6" fill="none" opacity=".85">' +
+               '<path d="M0 0 L0 -' + (r + 3) + ' M0 -' + r + ' L-' + r + ' -' + (r + 5) + ' M0 -' + r + ' L' + r + ' -' + (r + 5) + '"/></g>';
+      });
+    host.innerHTML = out;
+  })();
+
+  /* ---------- riverbed watercourse update ---------- */
+  var bed = document.getElementById("bed");
+  var bedLen = bed.getTotalLength();
+  var wmask = document.getElementById("waterMask");
+  function updateWater() {
+    wmask.style.strokeDasharray = bedLen + " " + bedLen;
+    wmask.style.strokeDashoffset = String(bedLen * (1 - waterPct));
+  }
+  updateWater();
+
+  /* ---------- palms ---------- */
+  function renderPalms() {
+    var host = document.getElementById("palms");
+    host.innerHTML = "";
+    var spots = [0.07, 0.16, 0.21, 0.27, 0.39, 0.44, 0.58, 0.63, 0.74, 0.81, 0.90];
+    spots.forEach(function (t, i) {
+      if (t > waterPct + 0.02) return;
+      var p = bed.getPointAtLength(bedLen * t);
+      var up = i % 2 ? -1 : 1, h = 30 + (i % 3) * 9;
+      var g = document.createElementNS(SVGNS, "g");
+      g.setAttribute("transform", "translate(" + p.x.toFixed(1) + "," + (p.y + up * 34).toFixed(1) + ")");
+      g.innerHTML =
+        '<path d="M0 0 C -1.5 -' + (h * 0.5) + ', 1.5 -' + (h * 0.7) + ', 0 -' + h + '" stroke="#8a6b3a" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+        '<g stroke="#0f6a61" stroke-width="2.6" fill="none" stroke-linecap="round">' +
+        '<path d="M0 -' + h + ' C -8 -' + (h + 7) + ', -15 -' + (h + 5) + ', -19 -' + (h - 1) + '"/>' +
+        '<path d="M0 -' + h + ' C 8 -' + (h + 7) + ', 15 -' + (h + 5) + ', 19 -' + (h - 1) + '"/>' +
+        '<path d="M0 -' + h + ' C -6 -' + (h + 11) + ', -11 -' + (h + 12) + ', -14 -' + (h + 8) + '"/>' +
+        '<path d="M0 -' + h + ' C 6 -' + (h + 11) + ', 11 -' + (h + 12) + ', 14 -' + (h + 8) + '"/>' +
+        '</g>';
+      host.appendChild(g);
+    });
+  }
+  renderPalms();
+
+  /* ---------- gate sites ---------- */
+  var sitesG = document.getElementById("sites");
+  var nodes = [];
+  function renderGateSites() {
+    sitesG.innerHTML = "";
+    nodes = [];
+    GATES.forEach(function (g, i) {
+      var t = (i + 0.62) / (GATES.length + 0.25);
+      var p = bed.getPointAtLength(bedLen * t);
+      var ahead = bed.getPointAtLength(Math.min(bedLen, bedLen * t + 26));
+      var above = ahead.x >= p.x ? -1 : 1;
+      g.x = p.x; g.y = p.y + above * 30; g.above = above;
+
+      var el = document.createElementNS(SVGNS, "g");
+      el.setAttribute("class", "site" + (g.full ? " full" : "") + (g.open ? " open" : ""));
+      el.setAttribute("transform", "translate(" + g.x.toFixed(1) + "," + g.y.toFixed(1) + ")");
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", label(g, i) + ". " + g.done + " of " + g.total + " doors restored.");
+
+      var body = g.full
+        ? '<polygon class="cairn" points="0,-20 5.9,-6.3 20,-6.3 8.8,3.2 12.6,17.4 0,9 -12.6,17.4 -8.8,3.2 -20,-6.3 -5.9,-6.3"' +
+          ' fill="#c9a227" stroke="#6b4f0f" stroke-width="1.8" stroke-linejoin="round"/>'
+        : g.open
+          ? '<g class="cairn"><rect x="-11" y="-14" width="22" height="28" rx="1.5" fill="#f7efd8" stroke="#0f6a61" stroke-width="2.6"/>' +
+            '<path d="M-6,-7 H6 M-6,-1 H6 M-6,5 H2" stroke="#0f6a61" stroke-width="1.8" stroke-linecap="round" opacity=".75"/></g>'
+          : '<g class="cairn"><path d="M-11,-14 L11,-14 L11,7 L6.5,13 L2,7 L-2.5,13 L-7,7 L-11,13 Z"' +
+            ' fill="#e8dab6" stroke="#7a6647" stroke-width="2.2" stroke-linejoin="round"/>' +
+            '<path d="M-6,-7 H6 M-6,-1 H1" stroke="#a68a60" stroke-width="1.6" stroke-linecap="round"/></g>';
+
+      var named = g.open || reveal;
+      el.innerHTML =
+        '<circle class="halo" r="34" fill="url(#gHalo)"/>' +
+        (g.full ? '<circle r="24" fill="url(#gLamp)" opacity=".8"/>' : '') +
+        body +
+        (i === 0 && g.open ? '<circle class="flame" cy="-1" r="3.4" fill="#ffd968" filter="url(#fGlow)"/>' : '') +
+        '<text class="no" y="' + (above < 0 ? 31 : -23) + '" text-anchor="middle" fill="' + (g.full ? "#6b4f0f" : g.open ? "#0f6a61" : "#7a6647") + '">' + (i + 1) + '</text>' +
+        '<text class="lbl' + (named ? '' : ' dim') + '" y="' + (above < 0 ? 48 : -40) + '" text-anchor="middle">' + (named ? esc(g.ar) : '') + '</text>' +
+        '<circle class="hit" r="30"/>';
+
+      sitesG.appendChild(el);
+      nodes.push(el);
+
+      el.addEventListener("mouseenter", function () { if (pinned === null) show(i); });
+      el.addEventListener("mouseleave", function () { if (pinned === null) show(null); });
+      el.addEventListener("focus", function () { show(i); });
+      el.addEventListener("click", function () { 
+        pinned = i; 
+        select(i);
+        AudioEngine.chime(440 + i * 35, 1.0);
+      });
+      el.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { 
+          ev.preventDefault(); 
+          pinned = i; 
+          select(i);
+          AudioEngine.chime(440 + i * 35, 1.0);
+        }
+      });
+    });
+  }
+  renderGateSites();
+
+  function label(g, i) {
+    if (g.open || reveal) return g.ar;
+    return "Gate " + (i + 1);
+  }
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+
+  /* ---------- folio & drawer ---------- */
+  var pinned = null, reveal = false, cur = null;
+  var fKick = document.getElementById("fKick"), fName = document.getElementById("fName"),
+      fEn = document.getElementById("fEn"), fPage = document.getElementById("fPage"),
+      fGuild = document.getElementById("fGuild"),
+      fMeter = document.getElementById("fMeter"), fMeterNote = document.getElementById("fMeterNote"),
+      fDoors = document.getElementById("fDoors"), fHint = document.getElementById("fHint");
+
+  function show(i) {
+    cur = i;
+    nodes.forEach(function (n, k) { n.classList.toggle("sel", k === i); });
+    paintPages();
+    if (i === null) {
+      fKick.textContent = "The valley";
+      fName.textContent = "Sixteen gates";
+      fEn.textContent = "Hover a cairn on the road, or press the arrow keys.";
+      fGuild.style.display = "none";
+      fPage.textContent = "Ghubar eats whatever we skip. Restore a page, and he cannot eat that kind of number again.";
+      fMeter.style.width = Math.round(waterPct * 100) + "%";
+      fMeterNote.textContent = doneDoors + " of " + totalDoors + " doors restored on this wall";
+      fDoors.innerHTML = "";
+      fHint.innerHTML = "A gate has no name until the class opens its first door. <b>Click a door</b> to open its deck.";
+      return;
+    }
+    var g = GATES[i];
+    var known = g.open || reveal;
+    fKick.textContent = "Gate " + (i + 1) + " · page " + (i + 1) + " of the Sijill";
+    fName.textContent = known ? g.ar : "Not yet opened";
+    fEn.textContent = known ? g.en : "The class has not opened a door here. It has no name on this wall yet.";
+    
+    if (known && g.guild) {
+      fGuild.style.display = "inline-flex";
+      fGuild.textContent = "🏛️ Guild: " + g.guild;
+    } else {
+      fGuild.style.display = "none";
+    }
+
+    fPage.textContent = known ? g.page : "The page is blank. Ghubar still eats this kind of number.";
+    fMeter.style.width = Math.round(g.done / g.total * 100) + "%";
+    fMeterNote.textContent = g.done + " of " + g.total + " doors" + (g.full ? " · page sealed" : "");
+
+    fDoors.innerHTML = "";
+    g.doors.forEach(function (code) {
+      var built = BUILT[code], done = sealedDoor(code);
+      var node = document.createElement(built ? "a" : "span");
+      node.textContent = code;
+      node.className = (done ? "sealed" : "") + (built ? "" : " unbuilt");
+      if (built) {
+        node.href = "door-" + code + ".html";
+        node.title = "Open the deck for door " + code + (done ? " · sealed " + (ledger[code].date || "") : "");
+      } else {
+        node.title = "Door " + code + " is written, not yet built.";
+      }
+      fDoors.appendChild(node);
+    });
+    fHint.innerHTML = g.full
+      ? "<b>Sealed.</b> The whole gate is closed behind you and the water runs this far."
+      : g.open
+        ? "<b>Open.</b> " + (g.total - g.done) + " door" + (g.total - g.done === 1 ? "" : "s") + " still torn."
+        : "Tell the place, put the printed problem inside it, stop at the Wind, let him sign the stone.";
+  }
+
+  function select(i) {
+    show(i);
+    if (nodes[i]) nodes[i].focus({ preventScroll: true });
+  }
+
+  /* ---------- sixteen pages ribbon ---------- */
+  var host = document.getElementById("pages");
+  function renderPagesRibbon() {
+    host.innerHTML = "";
+    GATES.forEach(function (g, i) {
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.className = "pg" + (g.full ? " full" : g.done ? " part" : "");
+      b.type = "button";
+      b.title = (i + 1) + " · " + (g.open || reveal ? g.ar : "not yet opened") + " · " + g.done + " of " + g.total + " doors";
+      b.innerHTML = '<i style="height:' + Math.round(g.done / g.total * 100) + '%"></i><b>' + (i + 1) + "</b><u>" + g.done + "/" + g.total + "</u>";
+      b.addEventListener("click", function () { 
+        pinned = i; 
+        select(i); 
+        AudioEngine.chime(440 + i * 35, 1.0);
+      });
+      b.addEventListener("mouseenter", function () { if (pinned === null) show(i); });
+      li.appendChild(b); host.appendChild(li);
+    });
+  }
+  renderPagesRibbon();
+
+  function paintPages() {
+    [].forEach.call(host.querySelectorAll(".pg"), function (b, k) { b.classList.toggle("sel", k === cur); });
+  }
+
+  /* ---------- counters ---------- */
+  function updateCounters() {
+    document.getElementById("cDoors").textContent = doneDoors;
+    document.getElementById("cPages").textContent = sealedPages;
+    document.getElementById("cWater").textContent = Math.round(waterPct * 100) + "%";
+    document.getElementById("note").innerHTML = doneDoors
+      ? "The wadi runs as far as this wall has restored. <b>" + (totalDoors - doneDoors) + "</b> doors still torn."
+      : "No doors restored on this browser yet. Open a deck, sign a Stone, and the water starts to move.";
+  }
+  updateCounters();
+
+  /* ---------- unwritten quarter ---------- */
+  var quarter = document.getElementById("quarter");
+  function checkQuarter() {
+    if (quarterOpen) {
+      document.getElementById("qtrLabel").textContent = "The Unwritten Quarter";
+      document.getElementById("qtrSub").textContent = "OPEN · BRING A REAL PROBLEM";
+      quarter.setAttribute("aria-label", "The Unwritten Quarter, open");
+    }
+  }
+  checkQuarter();
+
+  function quarterFolio() {
+    pinned = -1;
+    nodes.forEach(function (n) { n.classList.remove("sel"); });
+    cur = null; paintPages();
+    fKick.textContent = "The east";
+    fName.textContent = quarterOpen ? "The Unwritten Quarter" : "Unmapped";
+    fEn.textContent = quarterOpen ? "Open — twelve pages are sealed." : "Sand still moving. Nothing here is named yet.";
+    fGuild.style.display = "none";
+    fPage.textContent = quarterOpen
+      ? "A commission with no printed answer: the water, the recycling, or where the new bench should go."
+      : "It opens when twelve pages of the Sijill are sealed. Do not name it before then.";
+    fMeter.style.width = Math.round(Math.min(1, sealedPages / QUARTER_UNLOCK) * 100) + "%";
+    fMeterNote.textContent = sealedPages + " of " + QUARTER_UNLOCK + " pages sealed";
+    fDoors.innerHTML = "";
+    fHint.innerHTML = quarterOpen
+      ? "Runs in the expedition weeks. Several gates at once, on numbers the boys measured themselves."
+      : "Tolkien never handed Frodo a map of Mordor. Leave the east blank.";
+  }
+  quarter.addEventListener("click", quarterFolio);
+  quarter.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); quarterFolio(); } });
+
+  /* ---------- teacher preview toggle ---------- */
+  var tPreview = document.getElementById("tPreview");
+  tPreview.addEventListener("click", function () {
+    reveal = !reveal;
+    tPreview.setAttribute("aria-pressed", String(reveal));
+    tPreview.textContent = reveal ? "Hide unopened names" : "Reveal all names";
+    renderGateSites();
+    renderPagesRibbon();
+    if (cur !== null) show(cur);
+  });
+
+  /* ---------- audio toggle ---------- */
+  var tAudio = document.getElementById("tAudio");
+  tAudio.addEventListener("click", function () {
+    var state = AudioEngine.toggle();
+    tAudio.setAttribute("aria-pressed", String(state));
+    document.getElementById("audioLabel").textContent = state ? "Sound: ON" : "Sound: OFF";
+    document.getElementById("audioIcon").textContent = state ? "🔊" : "🔇";
+    if (state) AudioEngine.chime(660, 0.5);
+  });
+
+  /* ---------- interactive caravan animation ---------- */
+  var caravan = document.getElementById("caravan"), walking = false;
+  document.getElementById("tWalk").addEventListener("click", function () {
+    if (walking) return;
+    var stopAt = waterPct > 0 ? waterPct : 0.08;
+    caravan.setAttribute("opacity", "1");
+    walking = true;
+    var t0 = null, dur = 3200;
+    var stepInterval = 0;
+
+    requestAnimationFrame(function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur);
+      var progress = stopAt * (k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+      place(progress);
+
+      stepInterval++;
+      if (stepInterval % 18 === 0) AudioEngine.caravan();
+
+      if (k < 1) {
+        requestAnimationFrame(step);
+      } else {
+        walking = false;
+        AudioEngine.stone();
+      }
+    });
+
+    function place(t) {
+      var p = bed.getPointAtLength(bedLen * Math.max(0.004, t));
+      caravan.setAttribute("transform", "translate(" + p.x.toFixed(1) + "," + p.y.toFixed(1) + ")");
+    }
+  });
+
+  /* ---------- teacher demo simulation tool ---------- */
+  document.getElementById("tSimulate").addEventListener("click", function () {
+    // Find next unsealed door
+    var found = null;
+    for (var i = 0; i < GATES.length; i++) {
+      var g = GATES[i];
+      for (var j = 0; j < g.doors.length; j++) {
+        var c = g.doors[j];
+        if (!ledger[c] || !ledger[c].done) {
+          found = c;
+          break;
+        }
+      }
+      if (found) break;
+    }
+    if (found) {
+      ledger[found] = { done: true, date: new Date().toLocaleDateString() };
+      try { localStorage.setItem("daf.sijill.v1", JSON.stringify(ledger)); } catch(e) {}
+      recomputeLedger();
+      updateWater();
+      renderPalms();
+      renderGateSites();
+      renderPagesRibbon();
+      updateCounters();
+      checkQuarter();
+      AudioEngine.stone();
+      if (cur !== null) show(cur);
+    }
+  });
+
+  /* ---------- keyboard nav ---------- */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { pinned = null; show(null); return; }
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    var i = cur === null ? -1 : cur;
+    i = e.key === "ArrowRight" ? Math.min(GATES.length - 1, i + 1) : Math.max(0, i - 1);
+    pinned = i; 
+    select(i); 
+    AudioEngine.chime(440 + i * 35, 0.8);
+    e.preventDefault();
+  });
+
+  show(null);
+})();
+</script>
+</body>
+</html>

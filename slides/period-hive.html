@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Period Hive · Lesson 1-1 · Dar Al Fikr</title>
+<style>
+:root{
+  --teal:#12857c; --teal-2:#1aa79b; --deep:#0a5f58;
+  --gold:#c9a227; --gold-2:#e3c05a;
+  --ink:#10242b; --ink-2:#47616a;
+  --mint:#e8f6f4; --paper:#f7fbfa; --line:#cde7e3;
+  --omar:#12857c; --zayd:#c9a227;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#d7ece9;color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{display:flex;flex-direction:column;align-items:center;padding:12px 12px 20px}
+.brand{width:min(920px,100%);display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+.brand b{color:var(--deep);font-size:13px;letter-spacing:.04em}
+.brand span{color:var(--ink-2);font-size:11px;font-weight:700}
+.wrap{width:min(920px,100%);background:var(--paper);border:1px solid var(--line);border-radius:20px;
+  box-shadow:0 18px 50px rgba(10,95,88,.16);overflow:hidden}
+.goldline{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-2),var(--teal))}
+.head{padding:14px 20px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:22px} h1 em{font-style:normal;color:var(--teal)}
+.sub{margin:4px 0 0;font-size:13px;color:var(--ink-2);max-width:560px}
+.turn{display:flex;gap:8px;align-items:center}
+.pill{border-radius:999px;padding:6px 12px;font-weight:800;font-size:12px;border:2px solid transparent}
+.pill.omar{background:#e7f6f4;color:var(--deep);border-color:var(--teal)}
+.pill.zayd{background:#fff8e6;color:#6a4e00;border-color:var(--gold)}
+.pill.dim{opacity:.4}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 20px 16px}
+.cell{aspect-ratio:1;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;text-align:center;
+  font-weight:900;font-size:clamp(13px,2.4vw,18px);color:var(--ink);transition:transform .12s}
+.cell:hover:not(.taken):not(.won){transform:translateY(-2px);border-color:var(--teal)}
+.cell small{font-weight:700;font-size:10px;color:var(--ink-2);margin-top:4px}
+.cell.omar{background:var(--teal);color:#fff;border-color:var(--deep)}
+.cell.zayd{background:var(--gold);color:#3d2e00;border-color:#8a6a10}
+.cell.taken{cursor:default}
+.cell.win{outline:3px solid var(--deep);outline-offset:1px}
+.legend{padding:0 20px 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.mask{position:fixed;inset:0;background:rgba(16,36,43,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:5}
+.mask.on{display:flex}
+.card{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:18px;border:1px solid var(--line)}
+.card h2{margin:0 0 6px;font-size:18px}
+.q{font-weight:800;margin:8px 0}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:10px;
+  border:1.5px solid var(--line);background:#fff;font:700 14px system-ui;cursor:pointer}
+.opt:hover{border-color:var(--teal)}
+.fb{min-height:1.3em;font-size:13px;font-weight:700;margin-top:8px}
+.ok{color:#2e7d32} .bad{color:#c74440}
+.btn{border:0;background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#fff;
+  border-radius:10px;padding:8px 14px;font-weight:800;cursor:pointer;margin-top:10px}
+.winbox{padding:12px 20px 18px;display:none}
+.winbox.on{display:block}
+.winbox p{margin:0;font-weight:800;font-size:16px}
+</style>
+</head>
+<body>
+<div class="brand">
+  <div><b>DAR AL FIKR BOYS SCHOOL · JEDDAH</b><br><span>Period Hive · the move is place value · Lesson 1-1 numbers locked</span></div>
+  <div><span>Easy: claim. Then block. Four in a line.</span></div>
+</div>
+<div class="wrap">
+  <div class="goldline"></div>
+  <div class="head">
+    <div>
+      <h1>Period <em>Hive</em></h1>
+      <p class="sub">Claim a cell by reading the number the printed way. Wrong? Ask <i>why he thinks that</i> — then hint from the 356,039 chart. Not a leaderboard.</p>
+    </div>
+    <div class="turn">
+      <span class="pill omar" id="pOmar">Omar · teal</span>
+      <span class="pill zayd dim" id="pZayd">Zayd · gold</span>
+    </div>
+  </div>
+  <div class="board" id="board"></div>
+  <div class="winbox" id="winbox"><p id="winmsg"></p><button class="btn" type="button" id="again">Play again</button></div>
+  <div class="legend">
+    <span>Numbers from <b>Lesson 1-1</b> as printed. 4 in a row (line or diagonal).</span>
+    <span>Stage 3 Practice · 8–10 min · then back to Independent.</span>
+  </div>
+</div>
+
+<div class="mask" id="mask">
+  <div class="card">
+    <h2 id="mq"></h2>
+    <p class="q" id="mqsub"></p>
+    <div id="mopts"></div>
+    <div class="fb" id="mfb"></div>
+    <button class="btn" type="button" id="mclose" hidden>Close</button>
+  </div>
+</div>
+
+<script>
+/* Printed Lesson 1-1 numbers only. */
+const CELLS = [
+  { n:"356,039", q:"Expanded form of 356,039?",
+    opts:["300,000 + 50,000 + 6,000 + 30 + 9","3 + 5 + 6 + 0 + 3 + 9","300,000 + 56,000 + 39"], a:0 },
+  { n:"21,125", q:"Which expansion equals 21,125?",
+    opts:["20,000 + 1,000 + 100 + 20 + 5","21,000 + 1,000 + 25","2,000 + 1,000 + 125"], a:0 },
+  { n:"7,320", q:"7,320 in expanded form?",
+    opts:["7,000 + 30 + 2","7,000 + 300 + 20","700 + 300 + 20"], a:1 },
+  { n:"55,426", q:"Number name for 55,426?",
+    opts:["five thousand, five hundred forty-six","fifty-five thousand, four hundred sixty-two","fifty-five thousand, four hundred twenty-six"], a:2 },
+  { n:"7,622", q:"7,622 in expanded form?",
+    opts:["7,000 + 600 + 20 + 2","7,000 + 60 + 22","70,000 + 622"], a:0 },
+  { n:"294,160", q:"Which digit is in the thousands place in 294,160?",
+    opts:["2","9","4","1"], a:2 },
+  { n:"43,702", q:"43,702 in expanded form?",
+    opts:["40,000 + 3,000 + 700 + 2","4,000 + 3,000 + 702","40,000 + 370 + 2"], a:0 },
+  { n:"1,688", q:"Number name for 1,688?",
+    opts:["one thousand, six hundred eighty-eight","sixteen hundred eighty-eight thousand","one thousand, six hundred eighteen"], a:0 },
+  { n:"331,872", q:"The comma in 331,872 separates…",
+    opts:["the decimal from the ones","the thousands period from the ones period","hundreds from tens"], a:1 },
+  { n:"44,444", q:"Number name for 44,444?",
+    opts:["forty-four thousand, four hundred forty-four","four thousand, four hundred forty-four","forty-four hundred, forty-four"], a:0 },
+  { n:"284,604", q:"Thousands digit in 284,604 (Dammam playoffs)?",
+    opts:["2","8","4","6"], a:2 },
+  { n:"1,204", q:"Luqman wrote one thousand, two hundred four. Correct standard form?",
+    opts:["1,24","124","1,204","12,04"], a:2 },
+  { n:"72,204", q:"Waleed writes 72,204. Which places are filled?",
+    opts:["Millions and hundred thousands","Ten thousands through ones (tens hold 0)","Thousands and ones only"], a:1 },
+  { n:"5,066", q:"One hundred more than 5,066, as a number name?",
+    opts:["five thousand, sixty-six","five thousand, one hundred sixty-six","six thousand, sixty-six"], a:1 },
+  { n:"1,000", q:"Umm Fahad: ten SAR 100 bills. How much?",
+    opts:["100 riyals","1,000 riyals","10,000 riyals"], a:1 },
+  { n:"96,014", q:"Which is equal to 96,014?",
+    opts:["90,000 + 60,000 + 10 + 4","90,000 + 6,000 + 10 + 4","90,000 + 6,000 + 4"], a:1 }
+];
+
+const boardEl = document.getElementById("board");
+const mask = document.getElementById("mask");
+const mq = document.getElementById("mq");
+const mqsub = document.getElementById("mqsub");
+const mopts = document.getElementById("mopts");
+const mfb = document.getElementById("mfb");
+const mclose = document.getElementById("mclose");
+const pOmar = document.getElementById("pOmar");
+const pZayd = document.getElementById("pZayd");
+const winbox = document.getElementById("winbox");
+const winmsg = document.getElementById("winmsg");
+
+let owner = Array(16).fill(null);
+let turn = "omar";
+let open = -1;
+let over = false;
+
+function renderBoard(){
+  boardEl.innerHTML = "";
+  CELLS.forEach((c,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cell" + (owner[i] ? " taken "+owner[i] : "");
+    b.innerHTML = c.n + "<small>claim</small>";
+    if(!owner[i] && !over) b.onclick = () => ask(i);
+    boardEl.appendChild(b);
+  });
+}
+
+function setTurn(t){
+  turn = t;
+  pOmar.classList.toggle("dim", t!=="omar");
+  pZayd.classList.toggle("dim", t!=="zayd");
+}
+
+function ask(i){
+  if(over || owner[i]) return;
+  open = i;
+  const c = CELLS[i];
+  mq.textContent = c.n;
+  mqsub.textContent = c.q;
+  mfb.textContent = ""; mfb.className = "fb";
+  mclose.hidden = true;
+  mopts.innerHTML = "";
+  c.opts.forEach((t,k)=>{
+    const o = document.createElement("button");
+    o.type="button"; o.className="opt"; o.textContent = t;
+    o.onclick = () => pick(k);
+    mopts.appendChild(o);
+  });
+  mask.classList.add("on");
+}
+
+function pick(k){
+  const c = CELLS[open];
+  if(k===c.a){
+    mfb.className="fb ok";
+    mfb.textContent = "Yes — the cell is yours. Four in a line still to play.";
+    owner[open] = turn;
+    mclose.hidden = false;
+    mopts.querySelectorAll(".opt").forEach(o=>o.onclick=null);
+  }else{
+    mfb.className="fb bad";
+    mfb.textContent = "Not yet. Why do you think that? Look back at 356,039 in the chart — then try another cell.";
+    mclose.hidden = false;
+    mopts.querySelectorAll(".opt").forEach(o=>o.onclick=null);
+  }
+}
+
+mclose.onclick = () => {
+  mask.classList.remove("on");
+  renderBoard();
+  const w = winner();
+  if(w){
+    over = true;
+    document.querySelectorAll(".cell").forEach((el,i)=>{ if(w.line.includes(i)) el.classList.add("win"); });
+    winmsg.textContent = (w.who==="omar"?"Omar (teal)":"Zayd (gold)") + " — four in a line. Name the method, not the boy.";
+    winbox.classList.add("on");
+    return;
+  }
+  if(owner.every(Boolean)){
+    over = true;
+    winmsg.textContent = "Board full. No four. Play again — blocking is the next layer.";
+    winbox.classList.add("on");
+    return;
+  }
+  if(owner[open]) setTurn(turn==="omar"?"zayd":"omar");
+};
+
+function winner(){
+  const lines = [];
+  for(let r=0;r<4;r++) lines.push([r*4,r*4+1,r*4+2,r*4+3]);
+  for(let c=0;c<4;c++) lines.push([c,c+4,c+8,c+12]);
+  lines.push([0,5,10,15],[3,6,9,12]);
+  for(const line of lines){
+    const a = owner[line[0]];
+    if(a && line.every(i=>owner[i]===a)) return {who:a, line};
+  }
+  return null;
+}
+
+document.getElementById("again").onclick = () => {
+  owner = Array(16).fill(null); turn="omar"; over=false; open=-1;
+  winbox.classList.remove("on"); setTurn("omar"); renderBoard();
+};
+
+renderBoard();
+</script>
+<a href="/" class="daf-hub-back" style="position:fixed;left:12px;bottom:12px;z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(6,17,20,.72);color:#e8f3f5;font:600 12px/1 Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(6px);opacity:.75" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75" aria-label="Back to the Learning Hub">&larr; Hub</a><style>@media print{.daf-hub-back{display:none!important}}</style>
+</body>
+</html>
